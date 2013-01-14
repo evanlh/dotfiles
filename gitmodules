@@ -1,0 +1,24 @@
+[submodule "bundle/command-t"]
+	path = vim/.vim/bundle/command-t
+	url = git://git.wincent.com/command-t.git
+[submodule "bundle/nerdtree"]
+	path = vim/.vim/bundle/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule "bundle/git"]
+	path = vim/.vim/bundle/git
+	url = https://github.com/mileszs/ack.vim.git
+[submodule "bundle/PIV"]
+	path = vim/.vim/bundle/PIV
+	url = https://github.com/spf13/PIV.git
+[submodule "bundle/solarized"]
+	path = vim/.vim/bundle/solarized
+	url = git://github.com/altercation/vim-colors-solarized.git
+[submodule "bundle/checksyntax_vim"]
+	path = vim/.vim/bundle/checksyntax_vim
+	url = https://github.com/tomtom/checksyntax_vim.git
+[submodule "bundle/javascript-syntax"]
+	path = vim/.vim/bundle/javascript-syntax
+	url = https://github.com/jelera/vim-javascript-syntax
+[submodule "bundle/ctrlp"]
+	path = vim/.vim/bundle/ctrlp
+	url = https://github.com/kien/ctrlp.vim.git
