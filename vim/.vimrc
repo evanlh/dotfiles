@@ -4,11 +4,14 @@ call pathogen#helptags()
 let leader = '\'
 noremap <leader>t <Esc>:CtrlP<CR>
 noremap <leader>r <Esc>:CtrlPMRU<CR>
+noremap <leader>e <Esc>:CtrlPClearCache<CR>
 noremap <leader>g <Esc>:Ack 
 noremap <leader>d <Esc>:NERDTreeToggle<CR>
 
 noremap <leader>s <Esc>:split<CR>
 noremap <leader>v <Esc>:vsplit<CR>
+
+nnoremap ; :
 
 set expandtab
 set tabstop=4
@@ -53,3 +56,4 @@ set statusline=%F%m%r%h%w\
 set statusline+=%{fugitive#statusline()}\ 
 set statusline+=\ [%l\/%L]\ 
 
+set backupskip=/tmp/*,/private/tmp/*

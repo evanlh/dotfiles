@@ -51,19 +51,19 @@
 (package-initialize)
 
 ;; this approached is taken from Prelude
-(defvar jackrusher-packages '(ack-and-a-half ac-slime auto-complete clojure-mode clojurescript-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode magit magithub markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein))
+(defvar evanlh-packages '(icicles helm ack-and-a-half ac-slime auto-complete clojure-mode clojurescript-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode magit magithub markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein))
 
-(defun jackrusher-packages-installed-p ()
-  (loop for p in jackrusher-packages
+(defun evanlh-packages-installed-p ()
+  (loop for p in evanlh-packages
         when (not (package-installed-p p)) do (return nil)
         finally (return t)))
 
-(unless (jackrusher-packages-installed-p)
+(unless (evanlh-packages-installed-p)
   (message "%s" "Emacs is now refreshing its package database...")
   (package-refresh-contents)
   (message "%s" " done.")
   ;; install the missing packages
-  (dolist (p jackrusher-packages)
+  (dolist (p evanlh-packages)
     (when (not (package-installed-p p))
       (package-install p))))
 
@@ -97,7 +97,8 @@
 (setq line-number-mode t
       column-number-mode t)
 
-;; disable bell on scroll (http://stackoverflow.com/questions/324457/disable-carbon-emacs-scroll-beep)
+;; disable bell on scroll
+;; http://stackoverflow.com/questions/324457/disable-carbon-emacs-scroll-beep
 (defun my-bell-function ()
   (unless (memq this-command
     	'(isearch-abort abort-recursive-edit exit-minibuffer
@@ -233,6 +234,7 @@
 (global-set-key (kbd "C-a") 'ack)
 
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PROGRAMMING/LANGUAGES
 
 ;; four space tabs in general
@@ -250,12 +252,6 @@
 (ac-flyspell-workaround)
 (define-key ac-complete-mode-map [tab] 'ac-expand)
 (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
-
-;; TODO customize ac-complete for color theme
-;(set-face-background 'ac-candidate-face "#366060")
-;(set-face-foreground 'ac-selection-face "#1f1f1f")
-;(set-face-background 'ac-selection-face "#8cd0d3")
-;(set-face-foreground 'ac-selection-face "#1f1f1f")
 
 ;; command-k compile shortcut
 (define-key global-map (kbd "s-k") 'compile)
@@ -320,16 +316,13 @@
 (add-hook 'clojure-mode-hook
           (lambda () (setq inferior-lisp-program "lein repl")))
 
-;; XXX temporarily commented out because it fights with clojure
-;; (*really* irritating)
-;; (setq slime-lisp-implementations
-;;       `((clojure ,(swank-clojure-cmd) :init swank-clojure-init)
-;;         (sbcl ("sbcl") :coding-system utf-8-unix)))
-;;;; sbcl with quicklisp under slime
-;; (add-hook 'lisp-mode-hook
-;;           (lambda () (setq inferior-lisp-program "sbcl --noinform")))
-;;(load (expand-file-name "~/quicklisp/slime-helper.el"))
-;; (setq common-lisp-hyperspec-root "file:/Users/jack/lisp/HyperSpec/")
+;; disable stack traces outside of repl
+;;(setq nrepl-popup-stacktraces nil)
+;; rainbow parens
+;;(add-hook 'nrepl-mode-hook 'rainbow-delimiters-mode)
+;; hide special buffers
+;;(setq nrepl-hide-special-buffers t)
+
 
 ;; add auto-completion for slime
 (add-hook 'slime-mode-hook 'set-up-slime-ac)
@@ -358,7 +351,62 @@
 (setq auto-mode-alist
       (cons '("\\.\\(md\\|markdown\\)$" . markdown-mode) auto-mode-alist))
 
-;;; DO NOT TOUCH
+;; Icicles (got sick of em)
+(icy-mode 0)
+
+;; Org-mode
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+(setq org-startup-indented 1)
+(setq org-support-shift-select 1)
+(setq org-pretty-entities 1)
+(setq org-todo-keywords
+       '((sequence "TODO" "IN-PROGRESS" "|" "DONE" "DEFERRED")))
+
+(setq org-directory "~/writing")
+(setq org-default-notes-file (concat org-directory "/notes.org"))
+
+;; soft wrap lines
+;;(add-hook 'org-mode-hook 'soft-wrap-lines)
+(defun soft-wrap-lines ()
+  "Make lines wrap at window edge and on word boundary, in current buffer."
+  (interactive)
+  (setq truncate-lines nil)
+  (setq word-wrap t))
+
+;; capture templates
+(setq org-capture-templates
+  '(("t" "Todo" entry (file+headline "~/writing/dailytodo.org" "UNASSIGNED")
+         "** TODO %?\n  %i\n")
+    ("d" "Draft" entry (file+datetree "~/writing/drafts.org")
+         "* Entered on %U\n  %i\n")))
+;; long lines mode instead
+(add-hook 'org-mode-hook 'longlines-mode)
+; Targets include this file and any file contributing to the agenda - up to 9 levels deep
+(setq org-refile-targets (quote ((nil :maxlevel . 9)
+                                 (org-agenda-files :maxlevel . 9))))
+; Use full outline paths for refile targets - we file directly with IDO
+(setq org-refile-use-outline-path t)
+; Targets complete directly with IDO
+(setq org-outline-path-complete-in-steps nil)
+; Allow refile to create parent tasks with confirmation
+(setq org-refile-allow-creating-parent-nodes (quote confirm))
+; Use IDO for both buffer and file completion and ido-everywhere to t
+(setq org-completion-use-ido t)
+
+(describe-variable 'org-refile-targets)
+;; mobileorg
+;; Set to the name of the file where new notes will be stored
+(setq org-mobile-inbox-for-pull "~/writing/flagged.org")
+;; Set to <your Dropbox root directory>/MobileOrg.
+(setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+
+(setq org-agenda-files (quote ("~/writing/entropy.org" "~/writing/ideas.org" "~/writing/projects.org" "~/writing/dailytodo.org")))
+
+
+;;;;;;;;;;;;;;; DO NOT TOUCH ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -372,3 +420,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+
+
+
+

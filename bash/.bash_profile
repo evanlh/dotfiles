@@ -11,9 +11,10 @@ alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Cres
 alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
 EDITOR='/usr/bin/mvim -v'
 
-PATH=~/bin:/usr/local/bin:/usr/local/Cellar/php/5.3.10/bin/:/usr/local/sbin:$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+PATH=~/bin:/usr/local/bin:/usr/local/sbin:$PATH:$HOME/.rvm/bin:/usr/local/share/npm/bin
+export PATH="$(brew --prefix php54)/bin:$PATH"
 
-NODE_PATH=/usr/local/lib/node_modules
+#NODE_PATH=/usr/local/lib/node_modules
 
 brew list --versions > ~/Dropbox/$HOSTNAME-brew.txt
 
