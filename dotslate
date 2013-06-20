@@ -1,0 +1,33 @@
+alias hyper ctrl;alt
+
+config defaultToCurrentScreen true
+config nudgePercentOf screenSize
+config resizePercentOf screenSize
+
+# Abstract positions
+alias full move screenOriginX;screenOriginY screenSizeX;screenSizeY
+alias lefthalf move screenOriginX;screenOriginY screenSizeX/2;screenSizeY
+alias righthalf move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY
+alias tophalf move screenOriginX;screenOriginY/2 screenSizeX;screenSizeY/2
+alias bottomhalf move screenOriginX;screenOriginY+screenSizeY/2 screenSizeX;screenSizeY/2
+alias topleft corner top-left resize:screenSizeX/2;screenSizeY/2
+alias topright corner top-right resize:screenSizeX/2;screenSizeY/2
+alias bottomleft corner bottom-left resize:screenSizeX/2;screenSizeY/2
+alias bottomright corner bottom-right resize:screenSizeX/2;screenSizeY/2
+
+bind h:${hyper} ${lefthalf}
+bind l:${hyper} ${righthalf}
+bind j:${hyper} ${bottomhalf}
+bind k:${hyper} ${tophalf}
+bind [:${hyper} ${topleft}
+bind ]:${hyper} ${topright}
+bind ;:${hyper} ${bottomleft}
+bind ':${hyper} ${bottomright}
+bind space:${hyper} ${full}
+
+# Window focus using arrow keys
+bind    up:${hyper} focus up
+bind  down:${hyper} focus down
+bind  left:${hyper} focus left
+bind right:${hyper} focus right
+

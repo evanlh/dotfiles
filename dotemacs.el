@@ -23,11 +23,6 @@
 ;; use OS X's Spotlight for M-x locate
 (setq locate-make-command-line (lambda (s) `("mdfind" "-name" ,s)))
 
-;; use MacSpell until ns-spell-checker support is ported to cocoa emacs
-;; https://github.com/ruda/macspell
-(setq ispell-program-name "~/bin/macspell.py")
-(setq ispell-extra-args '("--encoding=utf8" "--auto-lang=yes"))
-
 ;; I'll be sending files from the command line
 (server-start)
 
@@ -51,7 +46,7 @@
 (package-initialize)
 
 ;; this approached is taken from Prelude
-(defvar evanlh-packages '(icicles helm ack-and-a-half ac-slime auto-complete clojure-mode clojurescript-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode magit magithub markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein))
+(defvar evanlh-packages '(projectile helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode clojurescript-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode js2-refactor magit magithub markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein))
 
 (defun evanlh-packages-installed-p ()
   (loop for p in evanlh-packages
@@ -69,7 +64,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; APPEARANCE
 
-;; split new windows horirzontal (http://stackoverflow.com/questions/2081577/setting-emacs-split-to-horizontal)
+;; split new windows horizontal
+;; (http://stackoverflow.com/questions/2081577/setting-emacs-split-to-horizontal)
 (setq split-height-threshold 0)
 (setq split-width-threshold nil)
 
@@ -89,6 +85,7 @@
 ;; typeface and spacing
 (set-default-font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
 (setq-default line-spacing 3)
+(set-face-attribute 'default nil :font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
 
 ;; Show me empty lines after buffer end
 (set-default 'indicate-empty-lines t)
@@ -226,15 +223,6 @@
 ;; delete selected text if you hit backspace or del
 (delete-selection-mode t)
 
-;; ack-and-a-half
-(defalias 'ack 'ack-and-a-half)
-(defalias 'ack-same 'ack-and-a-half-same)
-(defalias 'ack-find-file 'ack-and-a-half-find-file)
-(defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
-(global-set-key (kbd "C-a") 'ack)
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PROGRAMMING/LANGUAGES
 
 ;; four space tabs in general
@@ -252,6 +240,22 @@
 (ac-flyspell-workaround)
 (define-key ac-complete-mode-map [tab] 'ac-expand)
 (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+;; hook AC into completion-at-point
+(defun set-auto-complete-as-completion-at-point-function ()
+  (setq completion-at-point-functions '(auto-complete)))
+(add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
+
+;; ac-mode for nrepl for clojure
+(require 'ac-nrepl)
+(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+(eval-after-load "auto-complete"
+  '(add-to-list 'ac-modes 'nrepl-mode))
+
+(add-hook 'nrepl-mode-hook 'set-auto-complete-as-completion-at-point-function)
+(add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
+(add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+(define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
 
 ;; command-k compile shortcut
 (define-key global-map (kbd "s-k") 'compile)
@@ -312,9 +316,10 @@
   (require 'geiser)
   (setq geiser-active-implementations '(racket)))
 
-;;;; clojure-mode uses lein repl
-(add-hook 'clojure-mode-hook
-          (lambda () (setq inferior-lisp-program "lein repl")))
+;; this is needed to prevent ac-nrepl from breaking
+;; clojure-mode's starting of nrepl-interaction mode
+;; on nrepl-jack-in
+(setq nrepl-connected-hook (reverse nrepl-connected-hook))
 
 ;; disable stack traces outside of repl
 ;;(setq nrepl-popup-stacktraces nil)
@@ -322,7 +327,6 @@
 ;;(add-hook 'nrepl-mode-hook 'rainbow-delimiters-mode)
 ;; hide special buffers
 ;;(setq nrepl-hide-special-buffers t)
-
 
 ;; add auto-completion for slime
 (add-hook 'slime-mode-hook 'set-up-slime-ac)
@@ -332,18 +336,23 @@
 
 ;; no need to highlight trailing whitepsace in the repl
 (add-hook 'slime-repl-mode-hook (lambda () (setq show-trailing-whitespace nil)))
-(add-hook 'slime-repl-mode-hook
-          (defun clojure-mode-slime-font-lock ()
-            (require 'clojure-mode)
-            (let (font-lock-mode)
-              (clojure-mode-font-lock-setup))))
 
-;;;; Haskell preferences
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+;; js2-mode
+(require 'js2-mode)
+(setq-default js2-auto-indent-p t)
+(setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON"))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
-;; Ignore compiled Haskell files in filename completions
-(add-to-list 'completion-ignored-extensions ".hi")
+;; skewer mode for browser mind control
+(require 'skewer-mode)
+(require 'skewer-repl)
+(require 'skewer-html)
+(require 'skewer-css)
+(defun skewer-start ()
+  (interactive)
+  (let ((httpd-port 8023))
+    (httpd-start)
+    (message "Ready to skewer the browser. Now jack in with the bookmarklet.")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PROSE AND NOTES
 
@@ -351,10 +360,36 @@
 (setq auto-mode-alist
       (cons '("\\.\\(md\\|markdown\\)$" . markdown-mode) auto-mode-alist))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; MODULES I DEPEND ON
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ack-and-a-half
+(defalias 'ack 'ack-and-a-half)
+(defalias 'ack-same 'ack-and-a-half-same)
+(defalias 'ack-find-file 'ack-and-a-half-find-file)
+(defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
+(global-set-key (kbd "C-a") 'ack)
+
 ;; Icicles (got sick of em)
 (icy-mode 0)
 
-;; Org-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; web-mode
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Projectile
+(projectile-global-mode t)
+(setq projectile-completion-system 'ido)
+(global-set-key (kbd "C-c h") 'helm-projectile)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Org-mode
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
@@ -370,11 +405,11 @@
 
 ;; soft wrap lines
 ;;(add-hook 'org-mode-hook 'soft-wrap-lines)
-(defun soft-wrap-lines ()
-  "Make lines wrap at window edge and on word boundary, in current buffer."
-  (interactive)
-  (setq truncate-lines nil)
-  (setq word-wrap t))
+;; (defun soft-wrap-lines ()
+;;   "Make lines wrap at window edge and on word boundary, in current buffer."
+;;   (interactive)
+;;   (setq truncate-lines nil)
+;;   (setq word-wrap t))
 
 ;; capture templates
 (setq org-capture-templates
@@ -425,3 +460,4 @@
 
 
 
+(put 'dired-find-alternate-file 'disabled nil)
