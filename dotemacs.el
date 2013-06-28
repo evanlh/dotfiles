@@ -46,7 +46,7 @@
 (package-initialize)
 
 ;; this approached is taken from Prelude
-(defvar evanlh-packages '(projectile helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode clojurescript-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode js2-refactor magit magithub markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein))
+(defvar evanlh-packages '(ac-nrepl projectile helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode clojurescript-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode js2-refactor magit magithub markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein))
 
 (defun evanlh-packages-installed-p ()
   (loop for p in evanlh-packages
@@ -375,19 +375,43 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; web-mode
 (require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+
+(add-to-list 'auto-mode-alist '("\\.php" . php-mode))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Projectile
 (projectile-global-mode t)
 (setq projectile-completion-system 'ido)
 (global-set-key (kbd "C-c h") 'helm-projectile)
+(global-set-key (kbd "C-c t") 'helm-cmd-t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EIN
+(setq ein:use-auto-complete t)
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; php-mode
+
+;; from http://www.emacswiki.org/emacs/PhpMode
+(add-hook 'php-mode-hook (lambda ()
+    (defun ywb-php-lineup-arglist-intro (langelem)
+      (save-excursion
+        (goto-char (cdr langelem))
+        (vector (+ (current-column) c-basic-offset))))
+    (defun ywb-php-lineup-arglist-close (langelem)
+      (save-excursion
+        (goto-char (cdr langelem))
+        (vector (current-column))))
+    (c-set-offset 'arglist-intro 'ywb-php-lineup-arglist-intro)
+    (c-set-offset 'arglist-close 'ywb-php-lineup-arglist-close)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Org-mode
 (global-set-key (kbd "C-c l") 'org-store-link)
@@ -417,8 +441,12 @@
          "** TODO %?\n  %i\n")
     ("d" "Draft" entry (file+datetree "~/writing/drafts.org")
          "* Entered on %U\n  %i\n")))
+;; agenda files
+(setq org-agenda-files (quote ("~/writing/entropy.org" "~/writing/ideas.org" "~/writing/projects.org" "~/writing/dailytodo.org")))
+
 ;; long lines mode instead
 (add-hook 'org-mode-hook 'longlines-mode)
+
 ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
 (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                  (org-agenda-files :maxlevel . 9))))
@@ -431,15 +459,30 @@
 ; Use IDO for both buffer and file completion and ido-everywhere to t
 (setq org-completion-use-ido t)
 
-(describe-variable 'org-refile-targets)
 ;; mobileorg
 ;; Set to the name of the file where new notes will be stored
 (setq org-mobile-inbox-for-pull "~/writing/flagged.org")
 ;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
 
-(setq org-agenda-files (quote ("~/writing/entropy.org" "~/writing/ideas.org" "~/writing/projects.org" "~/writing/dailytodo.org")))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Misc
 
+(setq ffip-patterns '("*.html" "*.org" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" "*.pl" "*.sh" "*.erl" "*.hs" "*.ml" "*.php" "*.html" "*.phtml"))
+(setq ffip-limit 4096)
+(toggle-diredp-find-file-reuse-dir 1)
+(global-auto-revert-mode)
+(global-set-key (kbd "C-x f") 'find-file-in-project)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ido
+;; Display ido results vertically, rather than horizontally
+(setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
+(defun ido-disable-line-truncation () (set (make-local-variable 'truncate-lines) nil))
+(add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
+(defun ido-define-keys () ;; C-n/p is more intuitive in vertical layout
+  (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
+  (define-key ido-completion-map (kbd "C-p") 'ido-prev-match))
+(add-hook 'ido-setup-hook 'ido-define-keys)
+(setq ido-enable-flex-matching t)
 
 ;;;;;;;;;;;;;;; DO NOT TOUCH ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -460,4 +503,3 @@
 
 
 
-(put 'dired-find-alternate-file 'disabled nil)

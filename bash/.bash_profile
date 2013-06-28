@@ -19,3 +19,8 @@ export PATH="$(brew --prefix php54)/bin:$PATH"
 brew list --versions > ~/Dropbox/$HOSTNAME-brew.txt
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+# Java settings
+JAVA_HOME=/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
+export JAVA_HOME
+export PATH=$PATH:$JAVA_HOME/bin
