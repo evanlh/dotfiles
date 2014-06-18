@@ -63,7 +63,8 @@
       (package-install p))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; APPEARANCE
-
+(desktop-save-mode 1)
+(cua-mode t)
 ;; split new windows horizontal
 ;; (http://stackoverflow.com/questions/2081577/setting-emacs-split-to-horizontal)
 (setq split-height-threshold 0)
@@ -133,6 +134,10 @@
                     :box nil
                     :background "#000040")
 
+(setq backup-directory-alist `(("." . "~/.saves")))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; INPUT MAPPING
 
 ;;;; Normalize with Mac OS X
@@ -148,7 +153,7 @@
 (global-set-key (kbd "<C-s-down>") 'end-of-buffer)
 
 (setq shift-select-mode t) ; shift-select mode
-(delete-selection-mode 1)  ; typing after selection kills the region
+(setq delete-selection-mode 1)  ; typing after selection kills the region
 
 ;; Mac OS X-style font-size control
 (define-key global-map (kbd "s-+") 'text-scale-increase)
@@ -187,6 +192,8 @@
 ;; make M-up and M-down the same as C-up and C-down
 (global-set-key (kbd "<M-up>") 'backward-paragraph)
 (global-set-key (kbd "<M-down>") 'forward-paragraph)
+(global-set-key (kbd "<M-right>") 'end-of-line)
+(global-set-key (kbd "<M-left>") 'beginning-of-line)
 
 ;; like in the shell
 (global-set-key (kbd "C-d") 'delete-forward-char)
@@ -344,6 +351,17 @@
 (setq-default js2-auto-indent-p t)
 (setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON"))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-hook 'javascript-mode-hook
+          (lambda () (flymake-mode t)))
+(add-hook 'js2-mode-hook
+          (lambda ()
+            (setq js2-basic-offset 2)
+            (setq js2-bounce-indent-p t)))
+
+(setq js2-basic-offset 2)
+(setq js-indent-level 2)
+(setq c-basic-offset 2)
+(setq indent-tabs-mode nil)
 
 ;; skewer mode for browser mind control
 (require 'skewer-mode)
@@ -370,7 +388,8 @@
 (defalias 'ack-same 'ack-and-a-half-same)
 (defalias 'ack-find-file 'ack-and-a-half-find-file)
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
-(global-set-key (kbd "C-a") 'ack)
+(setq ack-and-a-half-prompt-for-directory 1)
+(global-set-key (kbd "C-x C-a") 'ack)
 
 ;; Icicles (got sick of em)
 (icy-mode 0)
