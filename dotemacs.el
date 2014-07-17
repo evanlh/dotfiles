@@ -46,7 +46,7 @@
 (package-initialize)
 
 ;; this approached is taken from Prelude
-(defvar evanlh-packages '(ac-nrepl projectile dired+ helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein cider))
+(defvar evanlh-packages '(ac-nrepl projectile dired+ helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js js-comint starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein cider))
 
 (defun evanlh-packages-installed-p ()
   (loop for p in evanlh-packages
@@ -348,20 +348,27 @@
 
 ;; js2-mode
 (require 'js2-mode)
-(setq-default js2-auto-indent-p t)
+(setq-default js2-auto-indent-p 0)
 (setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON"))
+(setq inferior-js-program-command "node")
+
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-hook 'javascript-mode-hook
           (lambda () (flymake-mode t)))
 (add-hook 'js2-mode-hook
           (lambda ()
             (setq js2-basic-offset 2)
-            (setq js2-bounce-indent-p t)))
+            (setq js2-bounce-indent-p t)
+            (imenu-add-menubar-index)
+            (hs-minor-mode t)))
 
 (setq js2-basic-offset 2)
 (setq js-indent-level 2)
 (setq c-basic-offset 2)
 (setq indent-tabs-mode nil)
+
+(global-set-key (kbd "<backtab>") 'hs-hide-all)
+(global-set-key (kbd "S-SPC") 'hs-toggle-hiding)
 
 ;; skewer mode for browser mind control
 (require 'skewer-mode)
@@ -514,14 +521,13 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (sanityinc-tomorrow-bright)))
  '(custom-safe-themes (quote ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default)))
- '(exec-path (quote ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/bin" "/usr/local/bin"))))
+ '(exec-path (quote ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/bin" "/usr/local/bin" "/home/vagrant/bin"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
 
 
 
