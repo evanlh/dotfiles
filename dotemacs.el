@@ -368,8 +368,9 @@
 (setq indent-tabs-mode nil)
 
 (global-set-key (kbd "<backtab>") 'hs-hide-all)
-(global-set-key (kbd "S-SPC") 'hs-toggle-hiding)
+(global-set-key (kbd "C-<tab>") 'hs-toggle-hiding)
 
+;; (global-unset-key (kbd "S-SPC"))
 ;; skewer mode for browser mind control
 (require 'skewer-mode)
 (require 'skewer-repl)
