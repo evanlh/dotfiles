@@ -14,31 +14,6 @@
                     (or (buffer-file-name) load-file-name)))
 (add-to-list 'load-path "~/.emacs.d/")
 
-(setq exec-path (quote ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/bin" "/usr/local/bin")))
-(setenv "PATH" (mapconcat 'identity exec-path ":"))
-
-;; Make sure the path is set up for programs launched
-;; via Spotlight, the Dock, Finder, &c, by running:
-;; $ defaults write $HOME/.MacOSX/environment PATH "$PATH"
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; OS INTEGRATION
-
-;; use OS X's Spotlight for M-x locate
-(setq locate-make-command-line (lambda (s) `("mdfind" "-name" ,s)))
-
-;; I'll be sending files from the command line
-(server-start)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ENCODING
-
-;; always utf-8, all the time
-(setq locale-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-selection-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
-(setq slime-net-coding-system 'utf-8-unix)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PACKAGES
 
 ;; more (and more up-to-date) packages than plain ELPA
@@ -49,7 +24,7 @@
 (package-initialize)
 
 ;; this approached is taken from Prelude
-(defvar evanlh-packages '(projectile dired+ helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby twilight-theme undo-tree web-mode yaml-mode ein cider))
+(defvar evanlh-packages '(ac-nrepl projectile helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js-comint yasnippet js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein))
 
 (defun evanlh-packages-installed-p ()
   (loop for p in evanlh-packages
@@ -65,88 +40,83 @@
     (when (not (package-installed-p p))
       (package-install p))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; APPEARANCE
-(desktop-save-mode 1)
-(cua-mode t)
-;; split new windows horizontal
-;; (http://stackoverflow.com/questions/2081577/setting-emacs-split-to-horizontal)
-(setq split-height-threshold 0)
-(setq split-width-threshold nil)
+;; Make sure the path is set up for programs launched
+;; via Spotlight, the Dock, Finder, &c, by running:
+;; $ defaults write $HOME/.MacOSX/environment PATH "$PATH"
 
-;; show menu
-(menu-bar-mode 1)
-;; turn off splash screen messages
-(setq inhibit-startup-echo-area-message t
-      inhibit-startup-screen t)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; OS INTEGRATION
 
-;; drop window chrome
-(setq tool-bar-mode -1
-      fringe-mode -1)
+;; use OS X's Spotlight for M-x locate
+;;(setq locate-make-command-line (lambda (s) `("mdfind" "-name" ,s)))
 
-;; speed up screen re-paint
-(setq redisplay-dont-pause t)
+(if (equal system-type 'windows-nt)
+    (progn
+      ;; (setq explicit-shell-file-name
+      ;;       "C:/Program Files (x86)/Git/bin/sh.exe")
+      ;; (setq shell-file-name "bash")
+      ;; (setq explicit-sh.exe-args '("--login" "-i"))
+      ;; (setenv "SHELL" shell-file-name)
+      ;; (add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
+      (setq url-proxy-services
+            '(("http"     . "adm-wp.hq.itginc.com:8080")
+              ("ftp"      . "adm-wp.hq.itginc.com:8080")
+              ("https"    . "adm-wp.hq.itginc.com:8080")
+              ("no_proxy" . "^.*example.com")))
+      (setenv "PATH"
+              (concat
+               "C:/cygwin64/usr/local/bin" ";"
+               "C:/cygwin64/usr/bin" ";"
+               "C:/cygwin64/bin" ";"
+               (getenv "PATH")
+               ))
+      ;; keys for windows
+      (setq w32-pass-lwindow-to-system nil
+            w32-pass-rwindow-to-system nil
+            w32-pass-apps-to-system nil
+            w32-lwindow-modifier 'super ; Left Windows key
+            w32-rwindow-modifier 'super ; Right Windows key
+            w32-apps-modifier 'hyper)
+      (add-to-list 'exec-path "C:/cygwin64/bin")
+      (add-to-list 'exec-path "C:/cygwin64/usr/bin")
+      (add-to-list 'exec-path "C:/cygwin64/usr/local/bin")
+      (setq shell-file-name "bash")
+      (setq explicit-sh.exe-args '("--login" "-i"))
+      (setq explicit-shell-file-name shell-file-name)
 
-;; typeface and spacing
-(if (string-equal system-type "darwin")
-    (progn (set-default-font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
-           (set-face-attribute 'default nil :font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")))
+      ;; Mouse wheel behavior
+      (global-set-key [C-wheel-up] 'text-scale-increase)
+      (global-set-key [C-wheel-down] 'text-scale-decrease)
+      (global-set-key [C-down-mouse-2] 'text-scale-normal-size)
 
-(setq-default line-spacing 3)
+      ;; automatically copy text when mouse drag. Similar to Linux X11 behavior
+      (setq mouse-drag-copy-region t)
+      ;; when pasting with linux x11 middle click, set to paste at cursor position, not at click position
+      (setq mouse-yank-at-point t)
+      (cua-mode t)
+      (global-set-key (kbd "<M-up>") 'beginning-of-buffer)
+      (global-set-key (kbd "<M-down>") 'end-of-buffer)
 
+      (add-to-list 'load-path "~/lintnode")
+      (require 'flymake-jslint)
+      ;; Make sure we can find the lintnode executable
+      (setq lintnode-location "~/lintnode")
+      ;; JSLint can be... opinionated
+      (setq lintnode-jslint-excludes (list 'nomen 'undef 'plusplus 'onevar 'white))
 
-;; Show me empty lines after buffer end
-(set-default 'indicate-empty-lines t)
-
-;; Always display line & column numbers in mode-line
-(setq line-number-mode t
-      column-number-mode t)
-
-;; disable bell on scroll
-;; http://stackoverflow.com/questions/324457/disable-carbon-emacs-scroll-beep
-(defun my-bell-function ()
-  (unless (memq this-command
-    	'(isearch-abort abort-recursive-edit exit-minibuffer
-              keyboard-quit mwheel-scroll down up next-line previous-line
-              backward-char forward-char))
-    (ding)))
-(setq ring-bell-function 'my-bell-function)
-
-;; some general look and feel things
-(setq font-lock-maximum-decoration t
-      color-theme-is-global t
-      truncate-partial-width-windows nil)
-
-;; global line numbering
-(setq linum-format " %5i ")
-(global-linum-mode 0)
-
-;; no highlight on the current line, nor word highlight on page
-(remove-hook 'prog-mode-hook 'idle-highlight-mode)
-(global-hl-line-mode -1)
-
-;; bring on the color theme
-(if (string-equal system-type "darwin")
-  (color-theme-sanityinc-tomorrow-night)
-  (color-theme-sanityinc-tomorrow-bright))
-
-
-;; powerline gives a much aesthetically improved mode line, the look
-;; of which is stolen from vi.
-(require 'powerline)
-(powerline-default-theme)
-;;(powerline-default)
-
-;; I hate the box on the mode-line
-(set-face-attribute 'mode-line nil
-                    :background "#000020"
-                    :box nil)
-(set-face-attribute 'mode-line-inactive nil
-                    :box nil
-                    :background "#000040")
-
-(setq backup-directory-alist `(("." . "~/.saves")))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
+      (setq inferior-js-program-command "node")
+      (setq inferior-js-mode-hook
+      (lambda ()
+        ;; We like nice colors
+        (ansi-color-for-comint-mode-on)
+        ;; Deal with some prompt nonsense
+        (add-to-list 'comint-preoutput-filter-functions
+                     (lambda (output)
+                       (replace-regexp-in-string ".*1G\.\.\..*5G" "..."
+                     (replace-regexp-in-string ".*1G.*3G" "&gt;" output))))
+        ))
+      (require 'windata)
+      (require 'dirtree)
+      ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; INPUT MAPPING
 
@@ -156,6 +126,7 @@
 ;; commenting command-up because I often use it
 (global-set-key (kbd "<s-left>") 'move-beginning-of-line)
 (global-set-key (kbd "<s-right>") 'move-end-of-line)
+
 (global-set-key (kbd "<s-mouse-1>") 'mouse-major-mode-menu)
 
 ;; I prefer C-s-up and C-s-down so I don't do it accidentally
@@ -165,7 +136,7 @@
 (setq shift-select-mode t) ; shift-select mode
 (setq delete-selection-mode 1)  ; typing after selection kills the region
 
-;; Mac OS X-style font-size control
+ ;; Mac OS X-style font-size control
 (define-key global-map (kbd "s-+") 'text-scale-increase)
 (define-key global-map (kbd "s--") 'text-scale-decrease)
 
@@ -187,6 +158,7 @@
 (require 'undo-tree)
 (global-undo-tree-mode 1)
 (defalias 'redo 'undo-tree-redo)
+
 (global-set-key (kbd "s-z") 'undo) ; command+z
 (global-set-key (kbd "s-Z") 'redo) ; shift+command+z
 
@@ -204,6 +176,7 @@
 (global-set-key (kbd "<M-down>") 'forward-paragraph)
 (global-set-key (kbd "<M-right>") 'end-of-line)
 (global-set-key (kbd "<M-left>") 'beginning-of-line)
+
 
 ;; like in the shell
 (global-set-key (kbd "C-d") 'delete-forward-char)
@@ -238,8 +211,103 @@
 (put 'downcase-region 'disabled nil)
 
 ;; delete selected text if you hit backspace or del
-(delete-selection-mode t)
-system-type
+(delete-selection-mode 1)
+
+
+;; I'll be sending files from the command line
+(server-start)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ENCODING
+
+;; always utf-8, all the time
+(setq locale-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(setq slime-net-coding-system 'utf-8-unix)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; APPEARANCE
+
+;; split new windows horizontal
+;; (http://stackoverflow.com/questions/2081577/setting-emacs-split-to-horizontal)
+(setq split-height-threshold nil)
+(setq split-width-threshold nil)
+
+;; disable autofill mode
+(auto-fill-mode -1)
+(remove-hook 'text-mode-hook #'turn-on-auto-fill)
+(remove-hook 'js2-mode-hook #'turn-on-auto-fill)
+
+; show menu
+(menu-bar-mode 1)
+;; turn off splash screen messages
+(setq inhibit-startup-echo-area-message t
+      inhibit-startup-screen t)
+
+;; drop window chrome
+(setq tool-bar-mode -1
+      fringe-mode -1)
+
+;; speed up screen re-paint
+(setq redisplay-dont-pause t)
+
+;; typeface and spacing
+;;(set-default-font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
+(setq-default line-spacing 3)
+;;(set-face-attribute 'default nil :font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
+
+;; Show me empty lines after buffer end
+(set-default 'indicate-empty-lines t)
+
+;; Always display line & column numbers in mode-line
+(setq line-number-mode t
+      column-number-mode t)
+
+;; disable bell on scroll
+;; http://stackoverflow.com/questions/324457/disable-carbon-emacs-scroll-beep
+(defun my-bell-function ()
+  (unless (memq this-command
+    	'(isearch-abort abort-recursive-edit exit-minibuffer
+              keyboard-quit mwheel-scroll down up next-line previous-line
+              backward-char forward-char))
+    (ding)))
+(setq ring-bell-function 'my-bell-function)
+
+;; some general look and feel things
+(setq font-lock-maximum-decoration t
+      color-theme-is-global t
+      truncate-partial-width-windows nil)
+
+;; global line numbering
+(setq linum-format " %5i ")
+(global-linum-mode 0)
+
+;; no highlight on the current line, nor word highlight on page
+(remove-hook 'prog-mode-hook 'idle-highlight-mode)
+(global-hl-line-mode -1)
+
+;; bring on the color theme
+(color-theme-sanityinc-tomorrow-night)
+
+;; powerline gives a much aesthetically improved mode line, the look
+;; of which is stolen from vi.
+(require 'powerline)
+;;(powerline-default)
+
+;; I hate the box on the mode-line
+(set-face-attribute 'mode-line nil
+                    :background "#000020"
+                    :box nil)
+(set-face-attribute 'mode-line-inactive nil
+                    :box nil
+                    :background "#000040")
+
+(setq backup-directory-alist `(("." . "~/.saves")))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PROGRAMMING/LANGUAGES
 
 ;; four space tabs in general
@@ -263,16 +331,16 @@ system-type
 (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 ;; ac-mode for nrepl for clojure
-;; (require 'ac-nrepl)
-;; (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-;; (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-;; (eval-after-load "auto-complete"
-;;   '(add-to-list 'ac-modes 'nrepl-mode))
+(require 'ac-nrepl)
+(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+(eval-after-load "auto-complete"
+  '(add-to-list 'ac-modes 'nrepl-mode))
 
-;; (add-hook 'nrepl-mode-hook 'set-auto-complete-as-completion-at-point-function)
-;; (add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
-;; (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
-;; (define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
+(add-hook 'nrepl-mode-hook 'set-auto-complete-as-completion-at-point-function)
+(add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
+(add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode) 
+;;(define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
 
 ;; command-k compile shortcut
 (define-key global-map (kbd "s-k") 'compile)
@@ -336,7 +404,7 @@ system-type
 ;; this is needed to prevent ac-nrepl from breaking
 ;; clojure-mode's starting of nrepl-interaction mode
 ;; on nrepl-jack-in
-;; (setq nrepl-connected-hook (reverse nrepl-connected-hook))
+(setq nrepl-connected-hook (reverse nrepl-connected-hook))
 
 ;; disable stack traces outside of repl
 ;;(setq nrepl-popup-stacktraces nil)
@@ -358,7 +426,8 @@ system-type
 (require 'js2-mode)
 (setq-default js2-auto-indent-p t)
 (setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON"))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.js" . js2-mode))
+
 (add-hook 'javascript-mode-hook
           (lambda () (flymake-mode t)))
 (add-hook 'js2-mode-hook
@@ -396,8 +465,7 @@ system-type
 (defalias 'ack-same 'ack-and-a-half-same)
 (defalias 'ack-find-file 'ack-and-a-half-find-file)
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
-(setq ack-and-a-half-prompt-for-directory 1)
-(global-set-key (kbd "C-x C-a") 'ack)
+(global-set-key (kbd "C-a") 'ack)
 
 ;; Icicles (got sick of em)
 (icy-mode 0)
@@ -412,7 +480,7 @@ system-type
 ;; (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 
-;; (add-to-list 'auto-mode-alist '("\\.php" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.php" . php-mode))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Projectile
@@ -423,7 +491,6 @@ system-type
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EIN
 (setq ein:use-auto-complete t)
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; php-mode
@@ -456,7 +523,6 @@ system-type
 (setq org-directory "~/writing")
 (setq org-default-notes-file (concat org-directory "/notes.org"))
 
-(add-hook 'org-mode-hook 'visual-line-mode)
 ;; soft wrap lines
 ;;(add-hook 'org-mode-hook 'soft-wrap-lines)
 ;; (defun soft-wrap-lines ()
@@ -499,7 +565,7 @@ system-type
 
 (setq ffip-patterns '("*.html" "*.org" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" "*.pl" "*.sh" "*.erl" "*.hs" "*.ml" "*.php" "*.html" "*.phtml"))
 (setq ffip-limit 4096)
-(toggle-diredp-find-file-reuse-dir 1)
+;;(toggle-diredp-find-file-reuse-dir 1)
 (global-auto-revert-mode)
 (global-set-key (kbd "C-x f") 'find-file-in-project)
 
@@ -522,20 +588,26 @@ system-type
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector [default bold shadow italic underline bold bold-italic bold])
- '(ansi-color-names-vector (vector "#eaeaea" "#d54e53" "#b9ca4a" "#e7c547" "#7aa6da" "#c397d8" "#70c0b1" "#000000"))
- '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
- '(custom-safe-themes (quote ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default)))
- '(exec-path (quote ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/bin" "/usr/local/bin")))
- '(fci-rule-color "#2a2a2a")
+ '(ansi-color-names-vector (vector "#c5c8c6" "#cc6666" "#b5bd68" "#f0c674" "#81a2be" "#b294bb" "#8abeb7" "#1d1f21"))
+ '(blink-cursor-mode nil)
+ '(column-number-mode t)
+ '(cua-mode t nil (cua-base))
+ '(custom-enabled-themes (quote (sanityinc-tomorrow-bright)))
+ '(custom-safe-themes (quote ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" default)))
+ '(fci-rule-color "#282a2e")
+ '(show-paren-mode t)
+ '(tool-bar-mode nil)
  '(vc-annotate-background nil)
- '(vc-annotate-color-map (quote ((20 . "#d54e53") (40 . "#e78c45") (60 . "#e7c547") (80 . "#b9ca4a") (100 . "#70c0b1") (120 . "#7aa6da") (140 . "#c397d8") (160 . "#d54e53") (180 . "#e78c45") (200 . "#e7c547") (220 . "#b9ca4a") (240 . "#70c0b1") (260 . "#7aa6da") (280 . "#c397d8") (300 . "#d54e53") (320 . "#e78c45") (340 . "#e7c547") (360 . "#b9ca4a"))))
+ '(vc-annotate-color-map (quote ((20 . "#cc6666") (40 . "#de935f") (60 . "#f0c674") (80 . "#b5bd68") (100 . "#8abeb7") (120 . "#81a2be") (140 . "#b294bb") (160 . "#cc6666") (180 . "#de935f") (200 . "#f0c674") (220 . "#b5bd68") (240 . "#8abeb7") (260 . "#81a2be") (280 . "#b294bb") (300 . "#cc6666") (320 . "#de935f") (340 . "#f0c674") (360 . "#b5bd68"))))
  '(vc-annotate-very-old-color nil))
-
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 98 :width normal)))))
+
+
+
 
 
