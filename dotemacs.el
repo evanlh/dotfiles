@@ -14,6 +14,9 @@
                     (or (buffer-file-name) load-file-name)))
 (add-to-list 'load-path "~/.emacs.d/")
 
+(setq exec-path (quote ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/bin" "/usr/local/bin")))
+(setenv "PATH" (mapconcat 'identity exec-path ":"))
+
 ;; Make sure the path is set up for programs launched
 ;; via Spotlight, the Dock, Finder, &c, by running:
 ;; $ defaults write $HOME/.MacOSX/environment PATH "$PATH"
@@ -46,7 +49,7 @@
 (package-initialize)
 
 ;; this approached is taken from Prelude
-(defvar evanlh-packages '(ac-nrepl projectile helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode clojurescript-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode js2-refactor magit magithub markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein))
+(defvar evanlh-packages '(projectile helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode dired+ elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby twilight-theme undo-tree web-mode yaml-mode ein cider))
 
 (defun evanlh-packages-installed-p ()
   (loop for p in evanlh-packages
@@ -123,7 +126,7 @@
 ;; powerline gives a much aesthetically improved mode line, the look
 ;; of which is stolen from vi.
 (require 'powerline)
-(powerline-default)
+(powerline-default-theme)
 
 ;; I hate the box on the mode-line
 (set-face-attribute 'mode-line nil
@@ -246,16 +249,16 @@
 (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 ;; ac-mode for nrepl for clojure
-(require 'ac-nrepl)
-(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'nrepl-mode))
+;; (require 'ac-nrepl)
+;; (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+;; (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+;; (eval-after-load "auto-complete"
+;;   '(add-to-list 'ac-modes 'nrepl-mode))
 
-(add-hook 'nrepl-mode-hook 'set-auto-complete-as-completion-at-point-function)
-(add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
-(add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
-(define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
+;; (add-hook 'nrepl-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;; (add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;; (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+;; (define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
 
 ;; command-k compile shortcut
 (define-key global-map (kbd "s-k") 'compile)
@@ -319,7 +322,7 @@
 ;; this is needed to prevent ac-nrepl from breaking
 ;; clojure-mode's starting of nrepl-interaction mode
 ;; on nrepl-jack-in
-(setq nrepl-connected-hook (reverse nrepl-connected-hook))
+;; (setq nrepl-connected-hook (reverse nrepl-connected-hook))
 
 ;; disable stack traces outside of repl
 ;;(setq nrepl-popup-stacktraces nil)
@@ -427,6 +430,7 @@
 (setq org-directory "~/writing")
 (setq org-default-notes-file (concat org-directory "/notes.org"))
 
+(add-hook 'org-mode-hook 'visual-line-mode)
 ;; soft wrap lines
 ;;(add-hook 'org-mode-hook 'soft-wrap-lines)
 ;; (defun soft-wrap-lines ()
@@ -491,7 +495,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(exec-path (quote ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/bin" "/usr/local/bin"))))
+ '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
+ '(custom-safe-themes (quote ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
