@@ -162,7 +162,8 @@
 (global-set-key (kbd "<C-s-up>") 'beginning-of-buffer)
 (global-set-key (kbd "<C-s-down>") 'end-of-buffer)
 
-(setq shift-select-mode t) ; shift-select mode
+;; (setq shift-select-mode t) ; shift-select mode
+(setq shift-select-mode nil)
 (setq delete-selection-mode 1)  ; typing after selection kills the region
 
 ;; Mac OS X-style font-size control
