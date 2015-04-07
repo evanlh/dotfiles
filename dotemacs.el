@@ -46,7 +46,7 @@
 (package-initialize)
 
 ;; this approached is taken from Prelude
-(defvar evanlh-packages '(ac-nrepl projectile dired+ helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js js-comint starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein cider))
+(defvar evanlh-packages '(ac-nrepl projectile dired+ helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline restclient ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js js-comint starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein cider))
 
 (defun evanlh-packages-installed-p ()
   (loop for p in evanlh-packages
@@ -84,7 +84,8 @@
 (setq redisplay-dont-pause t)
 
 ;; typeface and spacing
-;;(set-default-font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
+;;(set-default-font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-9-*-*-*-m-0-iso10646-1")
+
 (setq-default line-spacing 3)
 ;;(set-face-attribute 'default nil :font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
 
@@ -211,11 +212,22 @@
 ;; prefer regexp in my backward search, inputrc-compatible binding
 (global-set-key (kbd "^R") 'isearch-backward-regexp)
 
-;; moving between windows, normalize with iTerm2 and (mod'd) tmux
-(global-set-key [M-s-left] 'windmove-left)
-(global-set-key [M-s-right] 'windmove-right)
-(global-set-key [M-s-up] 'windmove-up)
-(global-set-key [M-s-down] 'windmove-down)
+
+;; PLATFORM SPECIFIC CUSTOMIZATIONS
+(if (eq system-type 'darwin)
+    ;; moving between windows, normalize with iTerm2 and (mod'd) tmux
+    (progn (global-set-key [M-s-left] 'windmove-left)
+           (global-set-key [M-s-right] 'windmove-right)
+           (global-set-key [M-s-up] 'windmove-up)
+           (global-set-key [M-s-down] 'windmove-down))
+    (progn (global-set-key (kbd "C-c <left>") 'windmove-left)
+           (global-set-key (kbd "C-c <right>") 'windmove-right)
+           (global-set-key (kbd "C-c <up>") 'windmove-up)
+           (global-set-key (kbd "C-c <down>") 'windmove-down)))
+
+(if (eq system-type 'gnu/linux)
+    (set-default-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1"))
+
 
 ;; enhanced completion library, same as inputrc binding
 (global-set-key (kbd "M-/") 'hippie-expand)
@@ -353,8 +365,9 @@
 (setq inferior-js-program-command "node")
 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(add-hook 'javascript-mode-hook
-          (lambda () (flymake-mode t)))
+(add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
+;; (add-hook 'javascript-mode-hook
+;;           (lambda () (flymake-mode t)))
 (add-hook 'js2-mode-hook
           (lambda ()
             (setq js2-basic-offset 2)
@@ -496,7 +509,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Misc
 
-(setq ffip-patterns '("*.html" "*.org" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" "*.pl" "*.sh" "*.erl" "*.hs" "*.ml" "*.php" "*.html" "*.phtml"))
+(setq ffip-patterns '("*.html" "*.org" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" ".es6" "*.pl" "*.sh" "*.erl" "*.hs" "*.ml" "*.php" "*.html" "*.phtml"))
 (setq ffip-limit 4096)
 (toggle-diredp-find-file-reuse-dir 1)
 (global-auto-revert-mode)
