@@ -170,6 +170,10 @@
 (define-key global-map (kbd "s-+") 'text-scale-increase)
 (define-key global-map (kbd "s--") 'text-scale-decrease)
 
+;; I HATE AUTO-FILL
+(auto-fill-mode -1)
+(remove-hook 'text-mode-hook 'turn-on-auto-fill)
+
 ;; alt-click for mouse-2, command-click for mouse-3
 ;; broken?
 (setq mac-emulate-three-button-mouse t)
@@ -357,20 +361,37 @@ system-type
 
 ;; js2-mode
 (require 'js2-mode)
-(setq-default js2-auto-indent-p t)
+;;(setq-default js2-auto-indent-p t)
 (setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON"))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(add-hook 'javascript-mode-hook
-          (lambda () (flymake-mode t)))
-(add-hook 'js2-mode-hook
-          (lambda ()
-            (setq js2-basic-offset 2)
-            (setq js2-bounce-indent-p t)))
 
-(setq js2-basic-offset 2)
-(setq js-indent-level 2)
-(setq c-basic-offset 2)
+;; (add-hook 'javascript-mode-hook
+;;           (lambda () (flymake-mode t)))
+
+(loop for h in js2-mode-hook
+	  do (remove-hook 'js2-mode-hook h))
+(defun my-js-hook ()
+  (lambda ()
+	(setq js2-basic-offset 4)
+	(setq js-indent-level 4)
+	(setq js2-bounce-indent-p t)))
+
+(add-hook 'js2-mode-hook 'my-js-hook)
+(add-hook 'javascript-mode-hook 'my-js-hook)
+
+(setq js2-basic-offset 4)
+(setq js-indent-level 4)
+(setq c-basic-offset 4)
 (setq indent-tabs-mode nil)
+
+(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+(defadvice web-mode-highlight-part (around tweak-jsx activate)
+  (if (equal web-mode-content-type "jsx")
+      (let ((web-mode-enable-part-face nil))
+        ad-do-it)
+    ad-do-it))
+(require 'jsx-mode)
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . jsx-mode))
 
 ;; skewer mode for browser mind control
 (require 'skewer-mode)
@@ -503,6 +524,22 @@ system-type
 (toggle-diredp-find-file-reuse-dir 1)
 (global-auto-revert-mode)
 (global-set-key (kbd "C-x f") 'find-file-in-project)
+
+;; source: http://steve.yegge.googlepages.com/my-dot-emacs-file
+(defun rename-file-and-buffer (new-name)
+  "Renames both current buffer and file it's visiting to NEW-NAME."
+  (interactive "sNew name: ")
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not filename)
+        (message "Buffer '%s' is not visiting a file!" name)
+      (if (get-buffer new-name)
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn
+          (rename-file name new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Ido
 ;; Display ido results vertically, rather than horizontally
