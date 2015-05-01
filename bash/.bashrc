@@ -48,3 +48,4 @@ log_bash_eternal_history()
 }
 
 PROMPT_COMMAND="log_bash_eternal_history"
+source ~/.fredsh
