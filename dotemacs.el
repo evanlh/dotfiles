@@ -46,7 +46,7 @@
 (package-initialize)
 
 ;; this approached is taken from Prelude
-(defvar evanlh-packages '(ac-nrepl projectile dired+ helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline restclient ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js js-comint starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein cider))
+(defvar evanlh-packages '(ac-nrepl projectile dired+ helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline restclient ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js js-comint starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein cider tern tern-auto-complete jedi))
 
 (defun evanlh-packages-installed-p ()
   (loop for p in evanlh-packages
@@ -372,13 +372,23 @@
           (lambda ()
             (setq js2-basic-offset 2)
             (setq js2-bounce-indent-p t)
+            (tern-mode t)
             (imenu-add-menubar-index)
             (hs-minor-mode t)))
+
+(eval-after-load 'tern
+   '(progn
+      (require 'tern-auto-complete)
+      (tern-ac-setup)))
 
 (setq js2-basic-offset 2)
 (setq js-indent-level 2)
 (setq c-basic-offset 2)
 (setq indent-tabs-mode nil)
+
+;; JEDI for python
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
 
 (global-set-key (kbd "<backtab>") 'hs-hide-all)
 (global-set-key (kbd "C-<tab>") 'hs-toggle-hiding)
