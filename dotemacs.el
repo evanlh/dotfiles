@@ -242,6 +242,26 @@
 ;; delete selected text if you hit backspace or del
 (delete-selection-mode t)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; DEFT MODE for quick notes
+(require 'deft)
+(define-minor-mode deft-note-mode "Deft notes" nil " Deft-Notes" nil)
+(setq deft-text-mode 'deft-note-mode)
+(defun kill-all-deft-notes ()
+  (interactive)
+  (save-excursion
+    (let((count 0))
+      (dolist(buffer (buffer-list))
+        (set-buffer buffer)
+        (when (not (eq nil deft-note-mode))
+          (setq count (1+ count))
+          (kill-buffer buffer)))
+      )))
+(defun deft-or-close () (interactive) (if (or (eq major-mode 'deft-mode) (not (eq nil deft-note-mode)))
+                                          (progn (kill-all-deft-notes) (kill-buffer "*Deft*"))
+                                        (deft)
+                                        ))
+(global-set-key [f5] 'deft-or-close)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PROGRAMMING/LANGUAGES
 
 ;; four space tabs in general
@@ -385,6 +405,31 @@
 (setq js-indent-level 2)
 (setq c-basic-offset 2)
 (setq indent-tabs-mode nil)
+
+;; JSX
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . jsx-mode))
+(require 'flycheck)
+
+(flycheck-define-checker jsxhint-checker
+  "A JSX syntax and style checker based on JSXHint."
+  :command ("jsxhint" source)
+  :error-patterns
+  ((error line-start (1+ nonl) ": line " line ", col " column ", " (message) line-end))
+  :modes (jsx-mode))
+(add-hook 'jsx-mode-hook (lambda ()
+                          (flycheck-select-checker 'jsxhint-checker)
+                          (flycheck-mode)))
+(setq jsx-indent-level 2)
+(setq web-mode-markup-indent-offset 2)
+(setq web-mode-code-indent-offset 2)
+(setq web-mode-css-indent-offset 4)
+
+(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+(defadvice web-mode-highlight-part (around tweak-jsx activate)
+  (if (equal web-mode-content-type "jsx")
+      (let ((web-mode-enable-part-face nil))
+        ad-do-it)
+    ad-do-it))
 
 ;; JEDI for python
 (add-hook 'python-mode-hook 'jedi:setup)
