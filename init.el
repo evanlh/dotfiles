@@ -12,7 +12,7 @@
 
 (setq dotfiles-dir (file-name-directory
                     (or (buffer-file-name) load-file-name)))
-(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/additional/")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PACKAGES
 
@@ -24,7 +24,7 @@
 (package-initialize)
 
 ;; this approached is taken from Prelude
-(defvar evanlh-packages '(ac-nrepl projectile helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js-comint yasnippet js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein))
+(defvar evanlh-packages '(projectile helm-projectile icicles helm ac-slime auto-complete coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project flycheck haml-mode idle-highlight-mode ido-ubiquitous inf-ruby js-comint yasnippet json-mode js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode slime slime-ritz smex  undo-tree yaml-mode tern tern-auto-complete ag))
 
 (defun evanlh-packages-installed-p ()
   (loop for p in evanlh-packages
@@ -48,8 +48,7 @@
 
 ;; use OS X's Spotlight for M-x locate
 ;;(setq locate-make-command-line (lambda (s) `("mdfind" "-name" ,s)))
-
-(if (equal system-type 'windows-nt)
+(if (or (equal system-type 'windows-nt) (equal system-type 'cygwin))
     (progn
       ;; (setq explicit-shell-file-name
       ;;       "C:/Program Files (x86)/Git/bin/sh.exe")
@@ -57,18 +56,18 @@
       ;; (setq explicit-sh.exe-args '("--login" "-i"))
       ;; (setenv "SHELL" shell-file-name)
       ;; (add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
-      (setq url-proxy-services
-            '(("http"     . "adm-wp.hq.itginc.com:8080")
-              ("ftp"      . "adm-wp.hq.itginc.com:8080")
-              ("https"    . "adm-wp.hq.itginc.com:8080")
-              ("no_proxy" . "^.*example.com")))
-      (setenv "PATH"
-              (concat
-               "C:/cygwin64/usr/local/bin" ";"
-               "C:/cygwin64/usr/bin" ";"
-               "C:/cygwin64/bin" ";"
-               (getenv "PATH")
-               ))
+      ;; (setq url-proxy-services
+      ;;       '(("http"     . "adm-wp.hq.itginc.com:8080")
+      ;;         ("ftp"      . "adm-wp.hq.itginc.com:8080")
+      ;;         ("https"    . "adm-wp.hq.itginc.com:8080")
+      ;;         ("no_proxy" . "^.*example.com")))
+      ;; (setenv "PATH"
+      ;;         (concat
+      ;;          "C:/cygwin64/usr/local/bin" ";"
+      ;;          "C:/cygwin64/usr/bin" ";"
+      ;;          "C:/cygwin64/bin" ";"
+      ;;          (getenv "PATH")
+      ;;          ))
       ;; keys for windows
       (setq w32-pass-lwindow-to-system nil
             w32-pass-rwindow-to-system nil
@@ -76,20 +75,26 @@
             w32-lwindow-modifier 'super ; Left Windows key
             w32-rwindow-modifier 'super ; Right Windows key
             w32-apps-modifier 'hyper)
-      (add-to-list 'exec-path "C:/cygwin64/bin")
-      (add-to-list 'exec-path "C:/cygwin64/usr/bin")
-      (add-to-list 'exec-path "C:/cygwin64/usr/local/bin")
+
+      (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+      (add-to-list 'exec-path "C:/cygwin/bin")
+      (add-to-list 'exec-path "C:/cygwin/usr/bin")
+      (add-to-list 'exec-path "C:/cygwin/usr/local/bin")
       (setq shell-file-name "bash")
-      (setq explicit-sh.exe-args '("--login" "-i"))
-      (setq explicit-shell-file-name shell-file-name)
+      ;; (setq explicit-sh.exe-args '("--login" "-i"))
+      ;; (setq explicit-shell-file-name shell-file-name)
 
       ;; Mouse wheel behavior
       (global-set-key [C-wheel-up] 'text-scale-increase)
       (global-set-key [C-wheel-down] 'text-scale-decrease)
       (global-set-key [C-down-mouse-2] 'text-scale-normal-size)
 
-      ;; automatically copy text when mouse drag. Similar to Linux X11 behavior
-      (setq mouse-drag-copy-region t)
+      ;; font - to get this on w32 type (w32-select-font) followed by
+      ;; M-x eval-print-last-sexp
+      ;;(set-face-attribute 'default nil :font "DejaVu Sans Mono-11")
+      (set-face-attribute 'default nil :font "Source Code Pro Semibold-11")
+
+      (setq mouse-drag-copy-region nil)
       ;; when pasting with linux x11 middle click, set to paste at cursor position, not at click position
       (setq mouse-yank-at-point t)
       (cua-mode t)
@@ -97,11 +102,14 @@
       (global-set-key (kbd "<M-down>") 'end-of-buffer)
 
       (add-to-list 'load-path "~/lintnode")
-      (require 'flymake-jslint)
+      ;; (require 'flymake-jslint)
       ;; Make sure we can find the lintnode executable
       (setq lintnode-location "~/lintnode")
       ;; JSLint can be... opinionated
       (setq lintnode-jslint-excludes (list 'nomen 'undef 'plusplus 'onevar 'white))
+
+      ;; try to imrpove slowness
+      (setq w32-get-true-file-attributes nil)
 
       (setq inferior-js-program-command "node")
       (setq inferior-js-mode-hook
@@ -114,9 +122,10 @@
                        (replace-regexp-in-string ".*1G\.\.\..*5G" "..."
                      (replace-regexp-in-string ".*1G.*3G" "&gt;" output))))
         ))
-      (require 'windata)
-      (require 'dirtree)
+      ;; (require 'windata)
+      ;;(require 'dirtree)
       ))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; INPUT MAPPING
 
@@ -133,7 +142,7 @@
 (global-set-key (kbd "<C-s-up>") 'beginning-of-buffer)
 (global-set-key (kbd "<C-s-down>") 'end-of-buffer)
 
-(setq shift-select-mode t) ; shift-select mode
+(setq shift-select-mode nil) ; shift-select mode
 (setq delete-selection-mode 1)  ; typing after selection kills the region
 
  ;; Mac OS X-style font-size control
@@ -143,6 +152,23 @@
 ;; alt-click for mouse-2, command-click for mouse-3
 ;; broken?
 (setq mac-emulate-three-button-mouse t)
+
+;; C-f C-f to fuzzy match on filename
+(global-set-key (kbd "C-S-f") 'projectile-find-file)
+
+;; rectangular selection
+(global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
+(global-set-key (kbd "C-x r C-x") 'rm-exchange-point-and-mark)
+(global-set-key (kbd "C-x r C-w") 'rm-kill-region)
+(global-set-key (kbd "C-x r M-w") 'rm-kill-ring-save)
+(autoload 'rm-set-mark "rect-mark"
+  "Set mark for rectangle." t)
+(autoload 'rm-exchange-point-and-mark "rect-mark"
+  "Exchange point and mark for rectangle." t)
+(autoload 'rm-kill-region "rect-mark"
+  "Kill a rectangular region and save it in the kill ring." t)
+(autoload 'rm-kill-ring-save "rect-mark"
+  "Copy a rectangular region to the kill ring." t)
 
 ;; Smoother scrolling
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -166,6 +192,10 @@
 (global-set-key (kbd "s-f") 'isearch-forward)
 ;; command-r, forward-replace
 (global-set-key (kbd "s-r") 'query-replace-regexp)
+
+;; substitute delete indentation with replace-regexp
+(global-set-key (kbd "M-^") nil)
+(global-set-key (kbd "M-^") 'replace-regexp)
 
 ;; OS X Lion fullscreen mode command-return
 (global-set-key (kbd "<s-return>") 'ns-toggle-fullscreen)
@@ -230,9 +260,17 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; APPEARANCE
 
+;; close and kill buffer
+(defun my-close-and-kill ()
+  (interactive)
+  (kill-buffer (buffer-name))
+  (delete-window))
+(global-set-key (kbd "C-x 9") 'my-close-and-kill)
+(global-set-key (kbd "C-x c") 'delete-window)
+
 ;; split new windows horizontal
 ;; (http://stackoverflow.com/questions/2081577/setting-emacs-split-to-horizontal)
-(setq split-height-threshold nil)
+(setq split-height-threshold 0)
 (setq split-width-threshold nil)
 
 ;; disable autofill mode
@@ -254,9 +292,7 @@
 (setq redisplay-dont-pause t)
 
 ;; typeface and spacing
-;;(set-default-font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
 (setq-default line-spacing 3)
-;;(set-face-attribute 'default nil :font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
 
 ;; Show me empty lines after buffer end
 (set-default 'indicate-empty-lines t)
@@ -287,9 +323,12 @@
 ;; no highlight on the current line, nor word highlight on page
 (remove-hook 'prog-mode-hook 'idle-highlight-mode)
 (global-hl-line-mode -1)
+;; turn off the accursed auto-fill
+(remove-hook 'prog-mode-hook 'esk-local-comment-auto-fill)
 
 ;; bring on the color theme
-(color-theme-sanityinc-tomorrow-night)
+(setq custom-safe-themes)
+(color-theme-sanityinc-tomorrow-bright)
 
 ;; powerline gives a much aesthetically improved mode line, the look
 ;; of which is stolen from vi.
@@ -304,9 +343,9 @@
                     :box nil
                     :background "#000040")
 
-(setq backup-directory-alist `(("." . "~/.saves")))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
+(setq backup-directory-alist `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms `((".*", temporary-file-directory)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PROGRAMMING/LANGUAGES
 
@@ -331,15 +370,15 @@
 (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 ;; ac-mode for nrepl for clojure
-(require 'ac-nrepl)
-(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'nrepl-mode))
+;; (require 'ac-nrepl)
+;; (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+;; (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+;; (eval-after-load "auto-complete"
+;;   '(add-to-list 'ac-modes 'nrepl-mode))
 
-(add-hook 'nrepl-mode-hook 'set-auto-complete-as-completion-at-point-function)
-(add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
-(add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode) 
+;; (add-hook 'nrepl-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;; (add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;; (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode) 
 ;;(define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
 
 ;; command-k compile shortcut
@@ -404,7 +443,7 @@
 ;; this is needed to prevent ac-nrepl from breaking
 ;; clojure-mode's starting of nrepl-interaction mode
 ;; on nrepl-jack-in
-(setq nrepl-connected-hook (reverse nrepl-connected-hook))
+;; (setq nrepl-connected-hook (reverse nrepl-connected-hook))
 
 ;; disable stack traces outside of repl
 ;;(setq nrepl-popup-stacktraces nil)
@@ -424,35 +463,86 @@
 
 ;; js2-mode
 (require 'js2-mode)
-(setq-default js2-auto-indent-p t)
-(setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON"))
+(setq-default js2-auto-indent-p nil)
+(setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "define"))
 (add-to-list 'auto-mode-alist '("\\.js" . js2-mode))
 
-(add-hook 'javascript-mode-hook
-          (lambda () (flymake-mode t)))
+;; from http://mihai.bazon.net/projects/editing-javascript-with-emacs-js2-mode
+(defun my-js2-indent-function ()
+  (interactive)
+  (save-restriction
+    (widen)
+    (let* ((inhibit-point-motion-hooks t)
+           (parse-status (save-excursion (syntax-ppss (point-at-bol))))
+           (offset (- (current-column) (current-indentation)))
+           (indentation (js--proper-indentation parse-status))
+           node)
+
+      (save-excursion
+
+        ;; I like to indent case and labels to half of the tab width
+        (back-to-indentation)
+        (if (looking-at "case\\s-")
+            (setq indentation (+ indentation (/ espresso-indent-level 2))))
+
+        ;; consecutive declarations in a var statement are nice if
+        ;; properly aligned, i.e:
+        ;;
+        ;; var foo = "bar",
+        ;;     bar = "foo";
+        (setq node (js2-node-at-point))
+        (when (and node
+                   (= js2-NAME (js2-node-type node))
+                   (= js2-VAR (js2-node-type (js2-node-parent node))))
+          (setq indentation (+ 4 indentation))))
+
+      (indent-line-to indentation)
+      (when (> offset 0) (forward-char offset)))))
+
+;; (add-hook 'javascript-mode-hook
+;;           (lambda () (flymake-mode t)))
+
+(setq js2-mode-hook nil)
 (add-hook 'js2-mode-hook
           (lambda ()
-            (setq js2-basic-offset 2)
-            (setq js2-bounce-indent-p t)))
+            ;; also from http://mihai.bazon.net/projects/editing-javascript-with-emacs-js2-mode
+            ;;(c-toggle-auto-newline 0)
+            ;;(c-toggle-hungry-state 1)
+            ;;(set (make-local-variable 'indent-line-function) 'my-js2-indent-function)
+            ;;(define-key js2-mode-map [(return)] 'newline-and-indent)
+            ;;(define-key js2-mode-map [(backspace)] 'c-electric-backspace)
+            ;;(define-key js2-mode-map [(control d)] 'c-electric-delete-forward)
+            ;; (if (featurep 'js2-highlight-vars)
+            ;;     (js2-highlight-vars-mode))
+            ;; TODO -- add environment switch for home/work 2/4 space tabs
+            (setq js2-basic-offset 4)
+            (setq js-indent-level 4)
+            (setq js2-bounce-indent-p t)
+            ;;(tern-mode t)
+            (setq c-basic-offset 4)
 
-(setq js2-basic-offset 2)
-(setq js-indent-level 2)
-(setq c-basic-offset 2)
-(setq indent-tabs-mode nil)
+            (setq indent-tabs-mode nil)
+            (define-key js2-mode-map (kbd "C-c C-f") nil)
+            (define-key js2-mode-map (kbd "<backtab>") 'js2-mode-toggle-element)
+            (define-key js2-mode-map (kbd "C-x <tab>") 'js2-mode-toggle-hide-functions)))
+
+(eval-after-load 'tern
+   '(progn
+      (require 'tern-auto-complete)
+      (tern-ac-setup)))
 
 ;; skewer mode for browser mind control
-(require 'skewer-mode)
-(require 'skewer-repl)
-(require 'skewer-html)
-(require 'skewer-css)
-(defun skewer-start ()
-  (interactive)
-  (let ((httpd-port 8023))
-    (httpd-start)
-    (message "Ready to skewer the browser. Now jack in with the bookmarklet.")))
+;; (require 'skewer-mode)
+;; (require 'skewer-repl)
+;; (require 'skewer-html)
+;; (require 'skewer-css)
+;; (defun skewer-start ()
+;;   (interactive)
+;;   (let ((httpd-port 8023))
+;;     (httpd-start)
+;;     (message "Ready to skewer the browser. Now jack in with the bookmarklet.")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PROSE AND NOTES
-
 (autoload 'markdown-mode "markdown-mode" "Mode for editing Markdown documents" t)
 (setq auto-mode-alist
       (cons '("\\.\\(md\\|markdown\\)$" . markdown-mode) auto-mode-alist))
@@ -461,11 +551,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; MODULES I DEPEND ON
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ack-and-a-half
+(require 'ack-and-a-half)
 (defalias 'ack 'ack-and-a-half)
 (defalias 'ack-same 'ack-and-a-half-same)
 (defalias 'ack-find-file 'ack-and-a-half-find-file)
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
-(global-set-key (kbd "C-a") 'ack)
+
+;;;;;;;;;;;;; ack too close for missiles, switching to guns
+(setq ag-reuse-buffers 't)
+(global-set-key (kbd "C-x C-a") 'ag)
 
 ;; Icicles (got sick of em)
 (icy-mode 0)
@@ -481,7 +575,8 @@
 ;; (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 
 (add-to-list 'auto-mode-alist '("\\.php" . php-mode))
-
+(add-to-list 'auto-mode-alist '("\\.json" . json-mode))
+(add-to-list 'auto-mode-alist '("\\.bml" . xml-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Projectile
 (projectile-global-mode t)
@@ -550,7 +645,8 @@
 (setq org-refile-use-outline-path t)
 ; Targets complete directly with IDO
 (setq org-outline-path-complete-in-steps nil)
-; Allow refile to create parent tasks with confirmation
+                                        ; Allow refile to create parent tasks with confirmation
+
 (setq org-refile-allow-creating-parent-nodes (quote confirm))
 ; Use IDO for both buffer and file completion and ido-everywhere to t
 (setq org-completion-use-ido t)
@@ -580,34 +676,20 @@
 (add-hook 'ido-setup-hook 'ido-define-keys)
 (setq ido-enable-flex-matching t)
 
-;;;;;;;;;;;;;;; DO NOT TOUCH ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;; DO NOT TOUCH ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector [default bold shadow italic underline bold bold-italic bold])
- '(ansi-color-names-vector (vector "#c5c8c6" "#cc6666" "#b5bd68" "#f0c674" "#81a2be" "#b294bb" "#8abeb7" "#1d1f21"))
- '(blink-cursor-mode nil)
- '(column-number-mode t)
- '(cua-mode t nil (cua-base))
  '(custom-enabled-themes (quote (sanityinc-tomorrow-bright)))
- '(custom-safe-themes (quote ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" default)))
- '(fci-rule-color "#282a2e")
- '(show-paren-mode t)
- '(tool-bar-mode nil)
- '(vc-annotate-background nil)
- '(vc-annotate-color-map (quote ((20 . "#cc6666") (40 . "#de935f") (60 . "#f0c674") (80 . "#b5bd68") (100 . "#8abeb7") (120 . "#81a2be") (140 . "#b294bb") (160 . "#cc6666") (180 . "#de935f") (200 . "#f0c674") (220 . "#b5bd68") (240 . "#8abeb7") (260 . "#81a2be") (280 . "#b294bb") (300 . "#cc6666") (320 . "#de935f") (340 . "#f0c674") (360 . "#b5bd68"))))
- '(vc-annotate-very-old-color nil))
+ '(custom-safe-themes
+   (quote
+    ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 98 :width normal)))))
-
-
-
-
-
+ )
