@@ -12,8 +12,7 @@
 
 (setq dotfiles-dir (file-name-directory
                     (or (buffer-file-name) load-file-name)))
-(add-to-list 'load-path "~/.emacs.d/")
-
+(add-to-list 'load-path "~/.emacs.d/additional")
 ;; Make sure the path is set up for programs launched
 ;; via Spotlight, the Dock, Finder, &c, by running:
 ;; $ defaults write $HOME/.MacOSX/environment PATH "$PATH"
@@ -41,12 +40,15 @@
 ;; more (and more up-to-date) packages than plain ELPA
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/")
+             '("melpa" . "http://melpa.milkbox.net/packages/"))
+
+(add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/"))
+
 (package-initialize)
 
 ;; this approached is taken from Prelude
-(defvar evanlh-packages '(ac-nrepl projectile dired+ helm-projectile icicles helm ack-and-a-half ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline restclient ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js js-comint starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein cider tern tern-auto-complete jedi))
+(defvar evanlh-packages '(projectile dired+ helm-projectile icicles helm ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-ubiquitous inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline restclient ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex starter-kit starter-kit-eshell starter-kit-js js-comint starter-kit-lisp starter-kit-ruby twilight-theme undo-tree yaml-mode ein cider tern tern-auto-complete jedi flycheck))
 
 (defun evanlh-packages-installed-p ()
   (loop for p in evanlh-packages
@@ -57,6 +59,7 @@
   (message "%s" "Emacs is now refreshing its package database...")
   (package-refresh-contents)
   (message "%s" " done.")
+
   ;; install the missing packages
   (dolist (p evanlh-packages)
     (when (not (package-installed-p p))
@@ -84,10 +87,8 @@
 (setq redisplay-dont-pause t)
 
 ;; typeface and spacing
-;;(set-default-font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-9-*-*-*-m-0-iso10646-1")
 
 (setq-default line-spacing 3)
-;;(set-face-attribute 'default nil :font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
 
 ;; Show me empty lines after buffer end
 (set-default 'indicate-empty-lines t)
@@ -119,8 +120,6 @@
 (remove-hook 'prog-mode-hook 'idle-highlight-mode)
 (global-hl-line-mode -1)
 
-;; bring on the color theme
-(color-theme-sanityinc-tomorrow-bright)
 
 ;; powerline gives a much aesthetically improved mode line, the look
 ;; of which is stolen from vi.
@@ -212,6 +211,9 @@
 ;; prefer regexp in my backward search, inputrc-compatible binding
 (global-set-key (kbd "^R") 'isearch-backward-regexp)
 
+;; bring on the color theme
+(color-theme-sanityinc-tomorrow-bright)
+;;(enable-theme 'sanityinc-tomorrow-bright)
 
 ;; PLATFORM SPECIFIC CUSTOMIZATIONS
 (if (eq system-type 'darwin)
@@ -223,10 +225,13 @@
     (progn (global-set-key (kbd "C-c <left>") 'windmove-left)
            (global-set-key (kbd "C-c <right>") 'windmove-right)
            (global-set-key (kbd "C-c <up>") 'windmove-up)
-           (global-set-key (kbd "C-c <down>") 'windmove-down)))
+           (global-set-key (kbd "C-c <down>") 'windmove-down))
+    (set-default-font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-9-*-*-*-m-0-iso10646-1")
+    (set-face-attribute 'default nil :font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1"))
+
 
 (if (eq system-type 'gnu/linux)
-    (set-default-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-12-*-*-*-m-0-iso10646-1"))
+    (set-default-font "-adobe-Source Code Pro-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1"))
 
 
 ;; enhanced completion library, same as inputrc binding
@@ -244,24 +249,24 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; DEFT MODE for quick notes
-(require 'deft)
-(define-minor-mode deft-note-mode "Deft notes" nil " Deft-Notes" nil)
-(setq deft-text-mode 'deft-note-mode)
-(defun kill-all-deft-notes ()
-  (interactive)
-  (save-excursion
-    (let((count 0))
-      (dolist(buffer (buffer-list))
-        (set-buffer buffer)
-        (when (not (eq nil deft-note-mode))
-          (setq count (1+ count))
-          (kill-buffer buffer)))
-      )))
-(defun deft-or-close () (interactive) (if (or (eq major-mode 'deft-mode) (not (eq nil deft-note-mode)))
-                                          (progn (kill-all-deft-notes) (kill-buffer "*Deft*"))
-                                        (deft)
-                                        ))
-(global-set-key [f5] 'deft-or-close)
+;;(require 'deft)
+;;(define-minor-mode deft-note-mode "Deft notes" nil " Deft-Notes" nil)
+;;(setq deft-text-mode 'deft-note-mode)
+;; (defun kill-all-deft-notes ()
+;;   (interactive)
+;;   (save-excursion
+;;     (let((count 0))
+;;       (dolist(buffer (buffer-list))
+;;         (set-buffer buffer)
+;;         (when (not (eq nil deft-note-mode))
+;;           (setq count (1+ count))
+;;           (kill-buffer buffer)))
+;;       )))
+;; (defun deft-or-close () (interactive) (if (or (eq major-mode 'deft-mode) (not (eq nil deft-note-mode)))
+;;                                           (progn (kill-all-deft-notes) (kill-buffer "*Deft*"))
+;;                                         (deft)
+;;                                         ))
+;; (global-set-key [f5] 'deft-or-close)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PROGRAMMING/LANGUAGES
 
 ;; four space tabs in general
@@ -269,20 +274,20 @@
 (setq c-basic-offset 4)
 
 ;; auto-complete-mode - popup help
-(require 'auto-complete)
-(require 'auto-complete-config)
-(global-auto-complete-mode t)
-(setq ac-use-quick-help t)
-(setq ac-auto-show-menu 0.)
-(setq ac-quick-help-delay 0.3)
-(ac-config-default)
-(ac-flyspell-workaround)
-(define-key ac-complete-mode-map [tab] 'ac-expand)
-(define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
-;; hook AC into completion-at-point
-(defun set-auto-complete-as-completion-at-point-function ()
-  (setq completion-at-point-functions '(auto-complete)))
-(add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;; (require 'auto-complete)
+;; (require 'auto-complete-config)
+;; (global-auto-complete-mode t)
+;; (setq ac-use-quick-help t)
+;; (setq ac-auto-show-menu 0.)
+;; (setq ac-quick-help-delay 0.3)
+;; (ac-config-default)
+;; (ac-flyspell-workaround)
+;; (define-key ac-complete-mode-map [tab] 'ac-expand)
+;; (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+;; ;; hook AC into completion-at-point
+;; (defun set-auto-complete-as-completion-at-point-function ()
+;;   (setq completion-at-point-functions '(auto-complete)))
+;; (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 ;; ac-mode for nrepl for clojure
 ;;(require 'ac-nrepl)
@@ -392,7 +397,7 @@
           (lambda ()
             (setq js2-basic-offset 2)
             (setq js2-bounce-indent-p t)
-            (tern-mode t)
+            ;;(tern-mode t)
             (imenu-add-menubar-index)
             (hs-minor-mode t)))
 
@@ -432,8 +437,8 @@
     ad-do-it))
 
 ;; JEDI for python
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
+;; (add-hook 'python-mode-hook 'jedi:setup)
+;; (setq jedi:complete-on-dot t)
 
 (global-set-key (kbd "<backtab>") 'hs-hide-all)
 (global-set-key (kbd "C-<tab>") 'hs-toggle-hiding)
@@ -460,6 +465,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; MODULES I DEPEND ON
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ack-and-a-half
+(require 'ack-and-a-half)
 (defalias 'ack 'ack-and-a-half)
 (defalias 'ack-same 'ack-and-a-half-same)
 (defalias 'ack-find-file 'ack-and-a-half-find-file)
@@ -492,10 +498,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EIN
 (setq ein:use-auto-complete t)
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; php-mode
-
 ;; from http://www.emacswiki.org/emacs/PhpMode
 (add-hook 'php-mode-hook (lambda ()
     (defun ywb-php-lineup-arglist-intro (langelem)
@@ -581,23 +584,32 @@
 (add-hook 'ido-setup-hook 'ido-define-keys)
 (setq ido-enable-flex-matching t)
 
-;;;;;;;;;;;;;;; DO NOT TOUCH ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; C++
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point] 'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol] 'irony-completion-at-point-async))
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
+
+;;;;;;;;;;;;;;; DO NOT TOUCH ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (sanityinc-tomorrow-bright)))
- '(custom-safe-themes (quote ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default)))
- '(exec-path (quote ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/bin" "/usr/local/bin" "/home/vagrant/bin"))))
+ '(custom-safe-themes
+   (quote
+    ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-
 
 
