@@ -248,8 +248,8 @@ system-type
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PROGRAMMING/LANGUAGES
 
 ;; four space tabs in general
-(setq-default tab-width 4)
-(setq c-basic-offset 4)
+(setq tab-width 2)
+(setq c-basic-offset 2)
 
 ;; auto-complete-mode - popup help
 (require 'auto-complete)
@@ -372,16 +372,17 @@ system-type
 	  do (remove-hook 'js2-mode-hook h))
 (defun my-js-hook ()
   (lambda ()
-	(setq js2-basic-offset 4)
-	(setq js-indent-level 4)
+	(setq c-basic-offset 2)
+	(setq js2-basic-offset 2)
+	(setq js-indent-level 2)
 	(setq js2-bounce-indent-p t)))
 
 (add-hook 'js2-mode-hook 'my-js-hook)
 (add-hook 'javascript-mode-hook 'my-js-hook)
 
-(setq js2-basic-offset 4)
-(setq js-indent-level 4)
-(setq c-basic-offset 4)
+(setq js2-basic-offset 2)
+(setq js-indent-level 2)
+(setq c-basic-offset 2)
 (setq indent-tabs-mode nil)
 
 (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
@@ -403,6 +404,11 @@ system-type
   (let ((httpd-port 8023))
     (httpd-start)
     (message "Ready to skewer the browser. Now jack in with the bookmarklet.")))
+
+
+;; (add-hook 'python-mode-hook 'jedi:setup)
+;; (setq jedi:setup-keys t)
+;; (setq jedi:complete-on-dot t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PROSE AND NOTES
 
