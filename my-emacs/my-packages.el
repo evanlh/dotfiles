@@ -131,7 +131,7 @@
   )
 
 ;; web-mode
-(eval-after-load 'web-mode
+(when (require 'web-mode nil 'noerror)
   (add-to-list 'auto-mode-alist '("\\.php" . php-mode))
   (add-to-list 'auto-mode-alist '("\\.json" . json-mode))
   (add-to-list 'auto-mode-alist '("\\.bml" . xml-mode))
