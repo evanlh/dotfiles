@@ -180,7 +180,7 @@
   )
 
 ;; Find file in project
-(when (require 'ffip nil 'noerror)
+(when (require 'find-file-in-project nil 'noerror)
   (progn
     (setq ffip-patterns '("*.html" "*.org" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" "*.pl" "*.sh" "*.erl" "*.hs" "*.ml" "*.php" "*.html" "*.phtml"))
     (setq ffip-limit 4096)
