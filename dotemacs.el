@@ -14,6 +14,11 @@
                     (or (buffer-file-name) load-file-name)))
 (add-to-list 'load-path "~/.emacs.d/additional")
 (add-to-list 'load-path "~/.emacs.d/my-emacs")
+;; makes zsh work properly
+;; contents of ~/bin/shell:
+;; #!/bin/sh
+;; TERM=emacs exec zsh
+(setenv "ESHELL" (expand-file-name "~/bin/eshell"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PACKAGES
 
