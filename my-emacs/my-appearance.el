@@ -51,7 +51,8 @@
               keyboard-quit mwheel-scroll down up next-line previous-line
               backward-char forward-char))
     (ding)))
-(setq ring-bell-function 'my-bell-function)
+(setq ring-bell-function 'ignore)
+(setq visible-bell nil)
 
 ;; some general look and feel things
 (setq font-lock-maximum-decoration t
