@@ -47,6 +47,8 @@
 (require 'my-appearance)
 (require 'my-packages)
 
+(global-auto-revert-mode t)
+
 ;; I'll be sending files from the command line
 (server-start)
 (setq backup-directory-alist `((".*" . ,temporary-file-directory)))
