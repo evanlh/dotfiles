@@ -51,6 +51,7 @@
       (package-install p))))
 
 (setq MY-JS-INDENT 2)
+(setq MY-ORG-DIRECTORY "~/writing")
 (require 'my-darwin)
 (require 'my-windows)
 (require 'my-linux)
