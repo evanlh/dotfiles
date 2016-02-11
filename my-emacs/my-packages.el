@@ -268,7 +268,6 @@
 
   (setq-default js2-auto-indent-p nil)
   (setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "define"))
-. js2-mode))
   (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
 
   ;; from http://mihai.bazon.net/projects/editing-javascript-with-emacs-js2-mode
