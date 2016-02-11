@@ -44,21 +44,21 @@
   )
 
 ;; autcomplete-mode
-(when (require 'auto-complete nil 'noerror)
-  (require 'auto-complete-config)
-  (global-auto-complete-mode t)
-  (setq ac-use-quick-help t)
-  (setq ac-auto-show-menu 0.5)
-  (setq ac-quick-help-delay 0.5)
-  (ac-config-default)
-  (ac-flyspell-workaround)
-  (define-key ac-complete-mode-map [tab] 'ac-expand)
-  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
-  ;; hook AC into completion-at-point
-  (defun set-auto-complete-as-completion-at-point-function ()
-    (setq completion-at-point-functions '(auto-complete)))
-  (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
-  )
+;; (when (require 'auto-complete nil 'noerror)
+;;   (require 'auto-complete-config)
+;;   (global-auto-complete-mode t)
+;;   (setq ac-use-quick-help t)
+;;   (setq ac-auto-show-menu 0.5)
+;;   (setq ac-quick-help-delay 0.5)
+;;   (ac-config-default)
+;;   (ac-flyspell-workaround)
+;;   (define-key ac-complete-mode-map [tab] 'ac-expand)
+;;   (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+;;   ;; hook AC into completion-at-point
+;;   (defun set-auto-complete-as-completion-at-point-function ()
+;;     (setq completion-at-point-functions '(auto-complete)))
+;;   (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;;   )
 
 ;; ac-nrepl for clojure
 (when (require 'ac-nrepl nil 'noerror)

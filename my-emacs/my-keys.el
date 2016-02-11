@@ -99,6 +99,10 @@
 (global-set-key (kbd "C-x 9") 'my-close-and-kill)
 (global-set-key (kbd "C-x c") 'delete-window)
 
+;; search for thing at point
+(defun my-search-at-point (begin end)
+  (interactive)
+  (thing-at-point 'string))
 
 ;; command-k compile shortcut
 (define-key global-map (kbd "s-k") 'compile)

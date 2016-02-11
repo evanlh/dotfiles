@@ -23,7 +23,7 @@
 (package-initialize)
 
 ;; this approached is taken from Prelude
-(defvar evanlh-packages '(projectile helm-projectile icicles helm ac-slime auto-complete coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project flycheck haml-mode idle-highlight-mode ido-ubiquitous inf-ruby js-comint yasnippet json-mode js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode slime slime-ritz smex  undo-tree yaml-mode tern tern-auto-complete ag))
+(defvar evanlh-packages '(projectile helm-projectile icicles helm ac-slime  coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project flycheck haml-mode idle-highlight-mode ido-ubiquitous inf-ruby js-comint yasnippet json-mode js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode slime slime-ritz smex  undo-tree yaml-mode tern ag))
 
 (defun evanlh-packages-installed-p ()
   (loop for p in evanlh-packages

@@ -102,3 +102,8 @@
             (font-lock-add-keywords
              nil
              '(("\\<\\(XXX\\|BUG\\)" 1 font-lock-warning-face prepend)))))
+
+
+;; BEHAVIOR
+(global-auto-revert-mode t)
+(setq revert-without-query '(".*"))
