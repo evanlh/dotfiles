@@ -206,56 +206,57 @@
   (global-set-key (kbd "C-<tab>") 'hs-toggle-hiding))
 
 ;; ORG-MODE
-(when (require 'org-mode nil 'noerror)
+(when (require 'org nil 'noerror)
   (progn
+    (if (not (boundp 'MY-ORG-DIRECTORY)) (setq MY-ORG-DIRECTORY "~/writing"))
+
     (global-set-key (kbd "C-c l") 'org-store-link)
     (global-set-key (kbd "C-c c") 'org-capture)
-    (global-set-key "\C-ca" 'org-agenda)
-    (global-set-key "\C-cb" 'org-iswitchb)
+    (global-set-key (kbd "C-c a") 'org-agenda)
+    (global-set-key (kbd "C-c b") 'org-iswitchb)
     (setq org-startup-indented 1)
     (setq org-support-shift-select 1)
     (setq org-pretty-entities 1)
     ;; (setq org-todo-keywords
     ;;       '((sequence "TODO" "IN-PROGRESS" "|" "DONE" "DEFERRED")))
 
-    ;;(setq org-directory "~/writing")
-    ;;(setq org-default-notes-file (concat org-directory "/notes.org"))
+    (setq org-directory MY-ORG-DIRECTORY)
+    (setq org-default-notes-file (concat org-directory "/notes.org"))
     ;; soft wrap lines
-    ;;(add-hook 'org-mode-hook 'soft-wrap-lines)
-    ;; (defun soft-wrap-lines ()
-    ;;   "Make lines wrap at window edge and on word boundary, in current buffer."
-    ;;   (interactive)
-    ;;   (setq truncate-lines nil)
-    ;;   (setq word-wrap t))
+    (defun soft-wrap-lines ()
+      "Make lines wrap at window edge and on word boundary, in current buffer."
+      (interactive)
+      (setq truncate-lines nil)
+      (setq word-wrap t))
+    (add-hook 'org-mode-hook 'soft-wrap-lines)
 
     ;; capture templates
     (setq org-capture-templates
-          '(("t" "Todo" entry (file+headline "~/writing/dailytodo.org" "UNASSIGNED")
+          '(("t" "Todo" entry (file+headline (concat org-directory "/dailytodo.org") "UNASSIGNED")
              "** TODO %?\n  %i\n")
-            ("d" "Draft" entry (file+datetree "~/writing/drafts.org")
+            ("d" "Draft" entry (file+datetree (concat org-directory "/drafts.org"))
              "* Entered on %U\n  %i\n")))
     ;; agenda files
-    (setq org-agenda-files (quote ("~/writing/entropy.org" "~/writing/ideas.org" "~/writing/projects.org" "~/writing/dailytodo.org")))
+    ;; (setq org-agenda-files (quote ("~/writing/entropy.org" "~/writing/ideas.org" "~/writing/projects.org" "~/writing/dailytodo.org")))
 
     ;; long lines mode instead
     (add-hook 'org-mode-hook 'longlines-mode)
-
-                                        ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
+    ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
     (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                      (org-agenda-files :maxlevel . 9))))
-                                        ; Use full outline paths for refile targets - we file directly with IDO
+    ; Use full outline paths for refile targets - we file directly with IDO
     (setq org-refile-use-outline-path t)
-                                        ; Targets complete directly with IDO
+    ; Targets complete directly with IDO
     (setq org-outline-path-complete-in-steps nil)
-                                        ; Allow refile to create parent tasks with confirmation
+    ; Allow refile to create parent tasks with confirmation
 
     (setq org-refile-allow-creating-parent-nodes (quote confirm))
-                                        ; Use IDO for both buffer and file completion and ido-everywhere to t
+    ; Use IDO for both buffer and file completion and ido-everywhere to t
     (setq org-completion-use-ido t)
 
     ;; mobileorg
     ;; Set to the name of the file where new notes will be stored
-    (setq org-mobile-inbox-for-pull "~/writing/flagged.org")
+    (setq org-mobile-inbox-for-pull (concat org-directory "/flagged.org"))
     ;; Set to <your Dropbox root directory>/MobileOrg.
     (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg"))
   )
@@ -267,7 +268,6 @@
 
   (setq-default js2-auto-indent-p nil)
   (setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "define"))
-  (add-to-list 'auto-mode-alist '("\\.js" . js2-mode))
   (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
 
   ;; from http://mihai.bazon.net/projects/editing-javascript-with-emacs-js2-mode
