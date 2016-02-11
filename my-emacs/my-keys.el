@@ -96,7 +96,9 @@
   (interactive)
   (kill-buffer (buffer-name))
   (delete-window))
+;; C-x 9 is harder to reach so I prefer to bind it to a combined close/kill
 (global-set-key (kbd "C-x 9") 'my-close-and-kill)
+;; one handed close window
 (global-set-key (kbd "C-x c") 'delete-window)
 
 
