@@ -1,3 +1,4 @@
+(provide 'callstack)
 ;; (defvar callstack-string-at-point nil)
 ;; (defun callstack-interactive ()
 ;;   (interactive)
@@ -66,14 +67,6 @@
     (message "Please select the target org-mode buffer first")
     ))
 
-(concat "test" (str 1))
-(setq cl-current-org-buffer nil)
-
-
 (global-set-key (kbd "C-c C-.") 'cl-set-current-org-buffer)
-(global-set-key (kbd "C-c >") 'cl-copy-region-to-org-code-block)
+(global-set-key (kbd "ESC >") 'cl-copy-region-to-org-code-block)
 
-
-
-
-(this-command-keys-vector)
