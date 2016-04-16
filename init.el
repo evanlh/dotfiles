@@ -14,7 +14,7 @@
 (add-to-list 'load-path "~/.emacs.d/my-emacs")
 
 (setq gc-cons-threshold 8000000)
-(setq garbage-collection-messages t)
+;;(setq garbage-collection-messages t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PACKAGES
 
@@ -27,7 +27,7 @@
 
 ;; this approached is taken from Prelude
 ;; (defvar evanlh-packages '(projectile helm-projectile icicles helm ac-slime  coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project flycheck haml-mode idle-highlight-mode ido-ubiquitous inf-ruby js-comint yasnippet json-mode js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline ruby-block ruby-end ruby-mode slime slime-ritz  undo-tree yaml-mode tern ag))
-(defvar evanlh-packages '(projectile color-theme-sanityinc-tomorrow find-file-in-project ido-ubiquitous org json-mode js2-mode js2-refactor magit paredit popup powerline undo-tree ag))
+(setq evanlh-packages '(projectile color-theme-sanityinc-tomorrow find-file-in-project ido-ubiquitous smex org json-mode js2-mode js2-refactor magit paredit popup powerline undo-tree ag toolkit-tramp))
 
 (defun evanlh-packages-installed-p ()
   (loop for p in evanlh-packages
@@ -51,6 +51,8 @@
 (require 'my-appearance)
 (require 'my-packages)
 
+;;(require 'tramp)
+;;(require 'toolkit-tramp)
 ;; hoping to fix random windows freezes http://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
 ;; (defun my-minibuffer-setup-hook ()
 ;;   (setq gc-cons-threshold most-positive-fixnum))
@@ -69,7 +71,8 @@
 (setq auto-save-file-name-transforms `((".*", temporary-file-directory)))
 
 
-(setq gc-cons-threshold 40000)
+(setq gc-cons-threshold 4000)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -1,8 +1,17 @@
 (provide 'my-packages)
 
+(require 'callstack)
+
 ;; expand-region is super handy while editing code
 (when (require 'expand-region nil 'noerror)
   (global-set-key (kbd "C-=") 'er/expand-region))
+
+;; popwin for temporary buffers!
+(when (require 'popwin nil 'noerror)
+  (popwin-mode 1)
+  (push "*ag search*" popwin:special-display-config)
+  (global-set-key (kbd "C-x p") 'popwin:display-last-buffer)
+  )
 
 ;; rectangular selection
 (when (require 'rect-mark nil 'noerror)
@@ -188,16 +197,27 @@
   )
 
 ;; IDO
-(when (require 'ido nil 'noerror)
-  ;; Display ido results vertically, rather than horizontally
-  (setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
-  (defun ido-disable-line-truncation () (set (make-local-variable 'truncate-lines) nil))
-  (add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
-  (defun ido-define-keys () ;; C-n/p is more intuitive in vertical layout
-    (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
-    (define-key ido-completion-map (kbd "C-p") 'ido-prev-match))
-  (add-hook 'ido-setup-hook 'ido-define-keys)
-  (setq ido-enable-flex-matching t)
+(when (require 'ido-ubiquitous nil 'noerror)
+  (progn
+	;;(require 'flx-ido)
+	(require 'smex)
+	(smex-initialize)
+	(ido-ubiquitous-mode 1)
+	(ido-everywhere 1)
+	(setq ido-enable-flex-matching t)
+	(setq ido-everywhere t)
+	(ido-mode 1)
+
+	;; Display ido results vertically, rather than horizontally
+	(setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
+	(defun ido-disable-line-truncation () (set (make-local-variable 'truncate-lines) nil))
+	(add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
+	(defun ido-define-keys () ;; C-n/p is more intuitive in vertical layout
+	  (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
+	  (define-key ido-completion-map (kbd "C-p") 'ido-prev-match))
+	(add-hook 'ido-setup-hook 'ido-define-keys)
+	(setq ido-enable-flex-matching t)
+	(setq ido-use-faces nil))
   )
 
 ;; hideshow mode
@@ -222,6 +242,8 @@
 
     (setq org-directory MY-ORG-DIRECTORY)
     (setq org-default-notes-file (concat org-directory "/notes.org"))
+
+	(setq org-src-fontify-natively t)
     ;; soft wrap lines
     (defun soft-wrap-lines ()
       "Make lines wrap at window edge and on word boundary, in current buffer."
@@ -329,6 +351,14 @@
               (define-key js2-mode-map (kbd "C-x <tab>") 'js2-mode-toggle-hide-functions)))
   )
 
+(add-hook 'js-mode-hook (lambda ()
+						  (setq js-indent-level MY-JS-INDENT)
+						  (setq c-basic-offset MY-JS-INDENT)
+						  (setq indent-tabs-mode nil)
+						  (show-paren-mode 1)
+						  (message "JSMODEEEE")
+						  ;;(tern-mode t)
+						  ))
 
 ;; slime-mode
 (when (require 'slime-mode nil 'noerror)

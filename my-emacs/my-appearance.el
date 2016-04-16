@@ -20,6 +20,9 @@
 (remove-hook 'text-mode-hook #'turn-on-auto-fill)
 (remove-hook 'js2-mode-hook #'turn-on-auto-fill)
 
+;; restore window state with C-c <left>
+(winner-mode 1)
+
 ; show menu
 (menu-bar-mode 1)
 ;; turn off splash screen messages
@@ -27,8 +30,9 @@
       inhibit-startup-screen t)
 
 ;; drop window chrome
-(setq tool-bar-mode -1
-      fringe-mode -1)
+(tool-bar-mode -1)
+(fringe-mode -1)
+(scroll-bar-mode -1)
 
 ;; speed up screen re-paint
 (setq redisplay-dont-pause t)
