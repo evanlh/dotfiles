@@ -12,6 +12,7 @@
                     (or (buffer-file-name) load-file-name)))
 (add-to-list 'load-path "~/.emacs.d/additional/")
 (add-to-list 'load-path "~/.emacs.d/my-emacs")
+(add-to-list  'exec-path "/usr/local/bin")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PACKAGES
 
