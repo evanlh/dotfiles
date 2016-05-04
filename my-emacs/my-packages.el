@@ -165,6 +165,29 @@
   (setq nrepl-hide-special-buffers t)
   )
 
+;; Ocaml
+(when (require 'utop nil 'noerror)
+  ;; https://opam.ocaml.org/blog/turn-your-editor-into-an-ocaml-ide/
+  ;; https://opam.ocaml.org/blog/about-utop/
+  ;; Add the opam lisp dir to the emacs load path
+  (add-to-list
+   'load-path
+   (replace-regexp-in-string
+    "\n" "/share/emacs/site-lisp"
+    (shell-command-to-string "opam config var prefix")))
+  ;; Automatically load utop.el
+  (autoload 'utop "utop" "Toplevel for OCaml" t)
+  ;; Use the opam installed utop
+  (setq utop-command "opam config exec -- utop -emacs")
+  (setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
+  (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+  (require 'ocp-indent)
+  (require 'merlin)
+  (setq merlin-ac-setup 'easy)
+  (add-to-list 'auto-mode-alist '("\\.ml\\'" . merlin-mode))
+  )
+
+
 ;; projectile
 (when (require 'projectile nil 'noerror)
   (projectile-global-mode t)
