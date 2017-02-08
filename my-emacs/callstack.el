@@ -68,5 +68,6 @@
     ))
 
 (global-set-key (kbd "C-c C-.") 'cl-set-current-org-buffer)
+(global-set-key (kbd "ESC .") 'cl-set-current-org-buffer)
 (global-set-key (kbd "ESC >") 'cl-copy-region-to-org-code-block)
 

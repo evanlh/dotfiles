@@ -224,12 +224,18 @@
   (progn
 	;;(require 'flx-ido)
 	(require 'smex)
+	;; ido-mode is like magic pixie dust!
+	(ido-mode t)
+	(ido-ubiquitous t)
+	(setq ido-enable-prefix nil
+      ido-enable-flex-matching t
+      ido-auto-merge-work-directories-length nil
+      ido-create-new-buffer 'always
+      ido-use-filename-at-point 'guess
+      ido-use-virtual-buffers t
+      ido-handle-duplicate-virtual-buffers 2
+      ido-max-prospects 10)
 	(smex-initialize)
-	(ido-ubiquitous-mode 1)
-	(ido-everywhere 1)
-	(setq ido-enable-flex-matching t)
-	(setq ido-everywhere t)
-	(ido-mode 1)
 
 	;; Display ido results vertically, rather than horizontally
 	(setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
@@ -265,6 +271,7 @@
 
     (setq org-directory MY-ORG-DIRECTORY)
     (setq org-default-notes-file (concat org-directory "/notes.org"))
+	(setq org-export-with-sub-superscripts nil)
 
 	(setq org-src-fontify-natively t)
     ;; soft wrap lines
@@ -275,6 +282,8 @@
       (setq word-wrap t))
     (add-hook 'org-mode-hook 'soft-wrap-lines)
 
+	(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "open")
     ;; capture templates
     (setq org-capture-templates
           '(("t" "Todo" entry (file+headline (concat org-directory "/dailytodo.org") "UNASSIGNED")
@@ -304,6 +313,9 @@
     (setq org-mobile-inbox-for-pull (concat org-directory "/flagged.org"))
     ;; Set to <your Dropbox root directory>/MobileOrg.
     (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg"))
+
+    (setq org-todo-keywords
+		'((sequence "TODO" "IN-PROGRESS" "BLOCKED" "DONE")))
   )
 
 
@@ -368,6 +380,8 @@
               ;;(tern-mode t)
               (setq c-basic-offset MY-JS-INDENT)
 
+              (flycheck-mode t)
+
               (setq indent-tabs-mode nil)
               (define-key js2-mode-map (kbd "C-c C-f") nil)
               (define-key js2-mode-map (kbd "<backtab>") 'js2-mode-toggle-element)
@@ -380,6 +394,7 @@
 						  (setq indent-tabs-mode nil)
 						  (show-paren-mode 1)
 						  (message "JSMODEEEE")
+                          (flycheck-mode t)
 						  ;;(tern-mode t)
 						  ))
 
@@ -441,3 +456,20 @@
                                           ))
   (global-set-key [f5] 'deft-or-close)
   )
+
+(when (require 'flow-types nil 'noerror)
+  )
+
+(defun format-wped ()
+  (interactive)
+  (save-excursion
+    (beginning-of-buffer)
+    (replace-string "&quot;" "\"")
+    (json-pretty-print-buffer)))
+
+(defun drqsify ()
+  (interactive)
+  (save-excursion
+	(beginning-of-buffer)
+    (replace-regexp "\\(DRQS [0-9]+\\)" "{\\1<Go>}")
+    ))

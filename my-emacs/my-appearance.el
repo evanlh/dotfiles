@@ -67,6 +67,10 @@
 (setq linum-format " %5i ")
 (global-linum-mode 0)
 
+
+;; Highlight matching parentheses when the point is on them.
+(show-paren-mode 1)
+
 ;; no highlight on the current line, nor word highlight on page
 (remove-hook 'prog-mode-hook 'idle-highlight-mode)
 (global-hl-line-mode -1)
