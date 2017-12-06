@@ -78,7 +78,6 @@
 (remove-hook 'prog-mode-hook 'esk-local-comment-auto-fill)
 
 ;; bring on the color theme
-(setq custom-safe-themes)
 (color-theme-sanityinc-tomorrow-bright)
 
 ;; powerline gives a much aesthetically improved mode line, the look
