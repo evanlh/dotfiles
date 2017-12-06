@@ -82,11 +82,6 @@
   (define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 
 
-;; markdown-mode
-(when (require 'markdown-mode nil 'noerror)
-  (setq auto-mode-alist
-        (cons '("\\.\\(md\\|markdown\\)$" . markdown-mode) auto-mode-alist))
-  )
 
 ;; Tern for JS
 (eval-after-load 'tern
@@ -144,8 +139,10 @@
   (add-to-list 'auto-mode-alist '("\\.php" . php-mode))
   (add-to-list 'auto-mode-alist '("\\.json" . json-mode))
   (add-to-list 'auto-mode-alist '("\\.bml" . xml-mode))
-  )
+)
 
+
+(add-to-list 'auto-mode-alist '("\\.bml" . xml-mode))
 
 ;; skewer-mode for browser mind control
 (when (require 'skewer-mode nil 'noerror)
@@ -210,6 +207,11 @@
   (progn
     (setq ein:use-auto-complete t))
   )
+
+(when (require 'org-jira nil 'noerror)
+  (progn
+	(setq jiralib-url "https://jira3.prod.bloomberg.com/")
+	))
 
 ;; Find file in project
 (when (require 'find-file-in-project nil 'noerror)
@@ -282,6 +284,7 @@
       (setq word-wrap t))
     (add-hook 'org-mode-hook 'soft-wrap-lines)
 
+	(setq org-startup-truncated nil)
 	(setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "open")
     ;; capture templates
@@ -294,7 +297,7 @@
     ;; (setq org-agenda-files (quote ("~/writing/entropy.org" "~/writing/ideas.org" "~/writing/projects.org" "~/writing/dailytodo.org")))
 
     ;; long lines mode instead
-    (add-hook 'org-mode-hook 'longlines-mode)
+    ;;(add-hook 'org-mode-hook 'longlines-mode)
     ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
     (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                      (org-agenda-files :maxlevel . 9))))
@@ -457,8 +460,19 @@
   (global-set-key [f5] 'deft-or-close)
   )
 
-(when (require 'flow-types nil 'noerror)
+;; markdown-mode
+(when (require 'markdown-mode nil 'noerror)
+  (setq auto-mode-alist
+        (cons '("\\.\\(md\\|markdown\\)$" . markdown-mode) auto-mode-alist))
+  (defun my-markdown-mode-hook ()
+	(setq markdown-header-scaling t)
+	(setq markdown-asymmetric-header t)
+	(setq markdown-header-scaling-values (list 3.8 2.4 1.6 1.0 1.0 1.0))
+	)
+  (add-hook 'gfm-mode-hook 'my-markdown--mode-hook)
+  (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
   )
+
 
 (defun format-wped ()
   (interactive)

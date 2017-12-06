@@ -60,10 +60,12 @@
 (require 'my-packages)
 
 
+;;temporary-file-directory
 ;; I'll be sending files from the command line
 (server-start)
-(setq backup-directory-alist `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms `((".*", temporary-file-directory)))
+(setq backup-directory-alist `(("*" .  "/Users/elawrencehur/backups")))
+(setq auto-save-file-name-transforms `(("*", "/Users/elawrencehur/backups" t)))
+(setq auto-save-interval 20)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

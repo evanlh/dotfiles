@@ -15,6 +15,7 @@
 
       ;; Mac OS X-style font-size control
       (define-key global-map (kbd "s-+") 'text-scale-increase)
+	  (define-key global-map (kbd "s-=") 'text-scale-increase)
       (define-key global-map (kbd "s--") 'text-scale-decrease)
 
       ;; alt-click for mouse-2, command-click for mouse-3
