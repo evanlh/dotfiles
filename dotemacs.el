@@ -8,6 +8,7 @@
 
 (require 'cl) ;; Common Lisp functions
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PATHS
 
 (setq dotfiles-dir (file-name-directory
@@ -20,10 +21,26 @@
 ;; TERM=emacs exec zsh
 (setenv "ESHELL" (expand-file-name "~/bin/eshell"))
 
-(setq url-proxy-services
-      '(("no_proxy" . "^\\(localhost\\|10.*\\)")
-        ("http" . "proxy.inet.bloomberg.com:81")
-        ("https" . "proxy.inet.bloomberg.com:81")))
+
+(if (string= (system-name) "Evans-MacBook-Pro.local")
+    ;; home machine
+    (progn
+      (setq MY-JS-INDENT 2)
+
+      )
+  ;; work machine
+  (progn
+    (setq MY-JS-INDENT 4)
+    (setq backup-directory-alist `(("*" .  "/Users/elawrencehur/backups")))
+    (setq auto-save-file-name-transforms `(("*", "/Users/elawrencehur/backups" t)))
+    (setq url-proxy-services
+          '(("no_proxy" . "^\\(localhost\\|10.*\\)")
+            ("http" . "proxy.inet.bloomberg.com:81")
+            ("https" . "proxy.inet.bloomberg.com:81")))
+
+    )
+  )
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PACKAGES
 
@@ -55,7 +72,7 @@
     (when (not (package-installed-p p))
       (package-install p))))
 
-(setq MY-JS-INDENT 4)
+
 (setq MY-ORG-DIRECTORY "~/writing")
 (require 'my-darwin)
 (require 'my-windows)
@@ -68,8 +85,7 @@
 ;;temporary-file-directory
 ;; I'll be sending files from the command line
 (server-start)
-(setq backup-directory-alist `(("*" .  "/Users/elawrencehur/backups")))
-(setq auto-save-file-name-transforms `(("*", "/Users/elawrencehur/backups" t)))
+
 (setq auto-save-interval 20)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

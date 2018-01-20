@@ -8,6 +8,7 @@ brew analytics off
 brew tap caskroom/cask
 brew doctor
 
+brew cask install emacs
 brew cask install iterm2
 brew cask install vlc
 brew cask install slate
