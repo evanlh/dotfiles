@@ -89,3 +89,5 @@ HISTSIZE=1000
 SAVEHIST=1000
 # End of lines configured by zsh-newuser-install
 bindkey '^R' history-incremental-search-backward
+
+alias ec='emacsclient -n'
