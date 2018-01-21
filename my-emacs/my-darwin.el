@@ -13,7 +13,7 @@
       ;; (set-default-font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-9-*-*-*-m-0-iso10646-1")
       ;; (set-face-attribute 'default nil :font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
 
-      (set-default-font "-*-Source Code Pro-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
+      ;;(set-default-font "-*-Source Code Pro-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
       ;; Mac OS X-style font-size control
       (define-key global-map (kbd "s-+") 'text-scale-increase)
 	  (define-key global-map (kbd "s-=") 'text-scale-increase)
