@@ -86,6 +86,10 @@ export GOPATH=/Users/elh/gocode
 
 export ANSIBLE_INVENTORY=~/ansible_hosts
 
-alias ec='emacsclient -n'
+alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
+alias genpass="openssl rand -base64 32 |head -c 8;echo;"
+
+alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
+alias ec='/usr/local/bin/emacsclient -n'
 
 
