@@ -16,3 +16,9 @@
 [submodule "vim/.vim/bundle/vim-fugitive"]
 	path = vim/.vim/bundle/vim-fugitive
 	url = git://github.com/tpope/vim-fugitive.git
+[submodule "vim/.vim/bundle/vim-flake8"]
+	path = vim/.vim/bundle/vim-flake8
+	url = https://github.com/nvie/vim-flake8.git
+[submodule "vim/.vim/bundle/python-mode"]
+	path = vim/.vim/bundle/python-mode
+	url = https://github.com/klen/python-mode.git
