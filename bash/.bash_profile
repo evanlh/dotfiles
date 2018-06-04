@@ -6,7 +6,7 @@ function git_branch_for_cwd() { 2>&0; b=$(git symbolic-ref HEAD 2>/dev/null); [ 
 PS1="\w \$(git_branch_for_cwd)\$ "
 
 alias ls='ls -F'
-alias vi='mvim -v'
+#alias vi='mvim -v'
 alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw"
 EDITOR='/usr/bin/mvim -v'
