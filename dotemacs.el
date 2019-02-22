@@ -60,15 +60,15 @@
         when (not (package-installed-p p)) do (return nil)
         finally (return t)))
 
-(unless (evanlh-packages-installed-p)
-  (message "%s" "Emacs is now refreshing its package database...")
-  (package-refresh-contents)
-  (message "%s" " done.")
+;;(unless (evanlh-packages-installed-p)
+;;  (message "%s" "Emacs is now refreshing its package database...")
+;;  (package-refresh-contents)
+;;  (message "%s" " done.")
 
   ;; install the missing packages
-  (dolist (p evanlh-packages)
-    (when (not (package-installed-p p))
-      (package-install p))))
+;;  (dolist (p evanlh-packages)
+;;    (when (not (package-installed-p p))
+;;      (package-install p))))
 
 (setq MY-ORG-DIRECTORY "~/writing")
 (require 'my-darwin)
@@ -96,4 +96,10 @@
     ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default)))
  '(package-selected-packages
    (quote
-    (irony company-tern company-lsp lsp-javascript-typescript lsp-mode yaml-mode utop twilight-theme tuareg tern-auto-complete smex slime-ritz skewer-mode sicp ruby-end ruby-block restclient rect-mark powerline paredit org-jira ocp-indent molokai-theme merlin markdown-mode+ magit jsx-mode json-mode js2-refactor js-comint jedi inf-ruby ido-ubiquitous idle-highlight-mode icicles helm-projectile haskell-mode haml-mode go-mode geiser flycheck find-file-in-project expand-region exec-path-from-shell evil elisp-slime-nav ein-mumamo dired+ color-theme-sanityinc-tomorrow coffee-mode cider aggressive-fill-paragraph ag ac-slime))))
+    (rust-mode irony company-tern company-lsp lsp-javascript-typescript lsp-mode yaml-mode utop twilight-theme tuareg tern-auto-complete smex slime-ritz skewer-mode sicp ruby-end ruby-block restclient rect-mark powerline paredit org-jira ocp-indent molokai-theme merlin markdown-mode+ magit jsx-mode json-mode js2-refactor js-comint jedi inf-ruby ido-ubiquitous idle-highlight-mode icicles helm-projectile haskell-mode haml-mode go-mode geiser flycheck find-file-in-project expand-region exec-path-from-shell evil elisp-slime-nav ein-mumamo dired+ color-theme-sanityinc-tomorrow coffee-mode cider aggressive-fill-paragraph ag ac-slime))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

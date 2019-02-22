@@ -24,3 +24,6 @@ brew list --versions > ~/Dropbox/$HOSTNAME-brew.txt
 JAVA_HOME=/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
 export JAVA_HOME
 export PATH=$PATH:$JAVA_HOME/bin
+export PATH="$PATH:/usr/local/share/dotnet"
+
+export PATH="$HOME/.cargo/bin:$PATH"
