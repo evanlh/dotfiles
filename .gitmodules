@@ -6,7 +6,7 @@
 	url = https://github.com/mileszs/ack.vim.git
 [submodule "vim/.vim/bundle/solarized"]
 	path = vim/.vim/bundle/solarized
-	url = git://github.com/altercation/vim-colors-solarized.git
+	url = https://github.com/altercation/vim-colors-solarized.git
 [submodule "vim/.vim/bundle/checksyntax_vim"]
 	path = vim/.vim/bundle/checksyntax_vim
 	url = https://github.com/tomtom/checksyntax_vim.git
@@ -15,4 +15,10 @@
 	url = https://github.com/kien/ctrlp.vim.git
 [submodule "vim/.vim/bundle/vim-fugitive"]
 	path = vim/.vim/bundle/vim-fugitive
-	url = git://github.com/tpope/vim-fugitive.git
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule "vim/.vim/bundle/vim-flake8"]
+	path = vim/.vim/bundle/vim-flake8
+	url = https://github.com/nvie/vim-flake8.git
+[submodule "vim/.vim/bundle/python-mode"]
+	path = vim/.vim/bundle/python-mode
+	url = https://github.com/klen/python-mode.git

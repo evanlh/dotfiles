@@ -1,3 +1,5 @@
+execute pathogen#infect()
+
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
@@ -20,6 +22,7 @@ set autoindent smartindent
 syntax on
 highlight BadWhitespace ctermbg=red guibg=red
 
+autocmd FileType python map <buffer> <F4> :call Flake8()<CR>
 let python_highlight_all=1
 
 set mouse=a
@@ -42,12 +45,12 @@ if has("gui_running")
     set gfn=Andale\ Mono:h14
 endif
 
-set background=dark
-let g:solarized_termtrans=1
-let g:solarized_termcolors=256
-let g:solarized_contrast="high"
-let g:solarized_visibility="high"
-colorscheme solarized
+"set background=dark
+"let g:solarized_termtrans=1
+"let g:solarized_termcolors=256
+"let g:solarized_contrast="high"
+"let g:solarized_visibility="high"
+"colorscheme solarized
 
 set backupdir=/tmp
 set noswapfile
@@ -57,3 +60,20 @@ set statusline+=%{fugitive#statusline()}\
 set statusline+=\ [%l\/%L]\ 
 
 set backupskip=/tmp/*,/private/tmp/*
+
+syntax on
+filetype plugin indent on
+
+"Information on the following setting can be found with
+":help set
+set shiftwidth=4  "this is the level of autoindent, adjust to taste
+set ruler
+set backspace=indent,eol,start
+set visualbell
+nmap <F7> :tabp<CR>
+nmap <F8> :tabn<CR>
+set backspace=2
+set t_kb=
+set t_kD=[3~
+" Uncomment below to make screen not flash on error
+" set vb t_vb=""

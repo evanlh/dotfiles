@@ -56,7 +56,7 @@
 (defvar evanlh-packages '(projectile dired+ helm-projectile icicles helm ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-completing-read+ inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline restclient ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex js-comint twilight-theme undo-tree yaml-mode ein cider tern tern-auto-complete jedi flycheck utop ocp-indent merlin lsp-mode company-tern company-lsp))
 
 (defun evanlh-packages-installed-p ()
-  (loop for p in evanlh-packages
+  (cl-loop for p in evanlh-packages
         when (not (package-installed-p p)) do (return nil)
         finally (return t)))
 
