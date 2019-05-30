@@ -478,6 +478,9 @@
   (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
   )
 
+(when (require 'rust-mode nil 'noerror)
+  (define-key rust-mode-map (kbd "C-x C-e") 'rust-compile)
+  )
 
 (when (file-directory-p "/Users/elawrencehur/.emacs.d/elpa/lsp-mode-20171205.1957")
   ;; lsp-mode https://github.com/emacs-lsp/lsp-mode

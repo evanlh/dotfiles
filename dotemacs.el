@@ -60,15 +60,15 @@
         when (not (package-installed-p p)) do (return nil)
         finally (return t)))
 
-(unless (evanlh-packages-installed-p)
-  (message "%s" "Emacs is now refreshing its package database...")
-  (package-refresh-contents)
-  (message "%s" " done.")
+;;(unless (evanlh-packages-installed-p)
+;;  (message "%s" "Emacs is now refreshing its package database...")
+;;  (package-refresh-contents)
+;;  (message "%s" " done.")
 
   ;; install the missing packages
-  (dolist (p evanlh-packages)
-    (when (not (package-installed-p p))
-      (package-install p))))
+;;  (dolist (p evanlh-packages)
+;;    (when (not (package-installed-p p))
+;;      (package-install p))))
 
 (setq MY-ORG-DIRECTORY "~/writing")
 (require 'my-darwin)

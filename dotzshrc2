@@ -54,7 +54,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/local/opt/php54/bin:/Users/elh/bin:/usr/local/sbin:/Users/elh/.rvm/bin:/usr/local/share/npm/bin:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/bin"
+export PATH="$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/local/opt/php54/bin:/Users/elh/bin:/usr/local/sbin:/Users/elh/.rvm/bin:/usr/local/share/npm/bin:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/bin"
 export PATH="/Users/elh/code/depot_tools:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -82,7 +82,8 @@ setopt IGNORE_EOF
 . /Users/elh/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 # GOPATHA
-export GOPATH=/Users/elh/gocode
+export GOPATH=/Users/elh/code/gocode
+export PATH=$PATH:$GOPATH/bin
 
 export ANSIBLE_INVENTORY=~/ansible_hosts
 
@@ -92,4 +93,13 @@ alias genpass="openssl rand -base64 32 |head -c 8;echo;"
 alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
 alias ec='/usr/local/bin/emacsclient -n'
 
+alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
+alias chrome-headless='chrome --headless --disable-gpu --remote-debugging-port=9222'
 
+# ANTLR
+export CLASSPATH=".:/usr/local/lib/antlr-4.7.1-complete.jar:$CLASSPATH"
+alias antlr4='java -Xmx500M -cp "/usr/local/lib/antlr-4.7.1-complete.jar:$CLASSPATH" org.antlr.v4.Tool'
+alias grun='java org.antlr.v4.gui.TestRig'
+
+# Rust
+export PATH="$HOME/.cargo/bin:$PATH"
