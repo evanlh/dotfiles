@@ -113,20 +113,33 @@ pills() {
 alias sshdev="ssh -tt v5dev inline"
 alias sshprod="ssh -tt v5prod inline"
 
+#proxies  -- these are probably unnecessary with nodeproxy
 alias dev_proxy='http_proxy=http://bproxy.tdmz1.bloomberg.com:80 https_proxy=http://bproxy.tdmz1.bloomberg.com:80'
 alias ext_proxy='http_proxy=http://proxy.bloomberg.com:77 https_proxy=http://proxy.bloomberg.com:77'
 
-
-export PATH="$HOME/.nenv/bin:$PATH"
+#node nenv
+export PATH="$HOME/.nenv/bin:$HOME/.nenv/shims:$PATH"
 eval "$(nenv init -)"
 
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
 
+#go
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
 alias jira='/usr/local/opt/go/bin/jira'
 alias j='/usr/local/opt/go/bin/jira'
+
+# rust
+export RUSTUP_USE_REQWEST=1
 
 ## Misc R+ related
 export SRC_DIR=/Users/elawrencehur/shared/code/rp2-tree
 export RPPATH=/Users/elawrencehur/code/btarseval
 export PATH="$HOME/.nenv/bin:$PATH"
 eval "$(nenv init -)"
+
+# nodeproxy
+#/Users/elawrencehur/.nenv/versions/8.2.1/bin/bb-nodeproxy --wpadUrl=http://wpad.bloomberg.com/wpad-la.dat &
+#export HTTP_PROXY="http://127.0.0.1:8888/"
+#export http_proxy="http://127.0.0.1:8888/"
+#export HTTPS_PROXY="http://127.0.0.1:8888/"
+#export https_proxy="http://127.0.0.1:8888/"
+
