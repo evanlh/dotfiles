@@ -1,0 +1,40 @@
+// Place your key bindings in this file to overwrite the defaults
+[
+    {
+        "key": "ctrl+x 2",
+        "command": "workbench.action.splitEditorDown"
+    },
+    {
+        "key": "ctrl+x 3",
+        "command": "-workbench.action.toggleEditorGroupLayout"
+    },
+    {
+        "key": "ctrl+x 3",
+        "command": "workbench.action.splitEditor"
+    },
+    {
+        "key": "ctrl+x 2",
+        "command": "-workbench.action.splitEditor"
+    },
+    {
+        "key": "alt+g alt+g",
+        "command": "workbench.action.gotoLine"
+    },
+    {
+        "key": "alt+g g",
+        "command": "-workbench.action.gotoLine"
+    },
+    {
+        "key": "ctrl+alt+space",
+        "command": "-workbench.action.toggleSidebarVisibility"
+    },
+    {
+        "key": "ctrl+x ctrl+a",
+        "command": "-workbench.action.findInFiles",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+x ctrl+a",
+        "command": "-workbench.action.findInFiles"
+    }
+]
