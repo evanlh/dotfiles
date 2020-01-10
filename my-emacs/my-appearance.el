@@ -21,7 +21,7 @@
 (remove-hook 'js2-mode-hook #'turn-on-auto-fill)
 
 ;; restore window state with C-c <left>
-(winner-mode 1)
+;; (winner-mode 1)
 
 ; show menu
 (menu-bar-mode 1)
