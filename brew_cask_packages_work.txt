@@ -1,0 +1,7 @@
+emacs
+inkscape
+osxfuse
+parallels
+supercollider
+visual-studio-code
+wireshark-chmodbpf

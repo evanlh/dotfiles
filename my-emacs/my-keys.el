@@ -4,10 +4,8 @@
 (global-set-key (kbd "<end>") 'move-end-of-line)
 (global-set-key (kbd "<s-left>") 'move-beginning-of-line)
 (global-set-key (kbd "<s-right>") 'move-end-of-line)
-
-;; I prefer C-s-up and C-s-down so I don't do it accidentally
-(global-set-key (kbd "<C-s-up>") 'beginning-of-buffer)
-(global-set-key (kbd "<C-s-down>") 'end-of-buffer)
+(global-set-key (kbd "<s-up>") 'beginning-of-buffer)
+(global-set-key (kbd "<s-down>") 'end-of-buffer)
 
 (global-set-key (kbd "<s-mouse-1>") 'mouse-major-mode-menu)
 
@@ -23,6 +21,12 @@
        (global-set-key (kbd "C-c <up>") 'windmove-up)
        (global-set-key (kbd "C-c <down>") 'windmove-down))
 
+;; resize windows
+(global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
+(global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "S-C-<down>") 'shrink-window)
+(global-set-key (kbd "S-C-<up>") 'enlarge-window)
+
 ;; Smoother scrolling
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed 1) ;; accelerate scrolling
@@ -34,9 +38,9 @@
 (define-key global-map (kbd "<M-kp-delete>") 'paredit-forward-kill-word)
 
 ;; undo-tree-mode with aliases that match OS X undo/redo
-(require 'undo-tree)
-(global-undo-tree-mode 1)
-(defalias 'redo 'undo-tree-redo)
+;;(require 'undo-tree)
+;;(global-undo-tree-mode 1)
+;;(defalias 'redo 'undo-tree-redo)
 
 (global-set-key (kbd "s-z") 'undo) ; command+z
 (global-set-key (kbd "s-Z") 'redo) ; shift+command+z

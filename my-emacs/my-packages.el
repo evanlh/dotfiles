@@ -213,6 +213,11 @@
     (setq ein:use-auto-complete t))
   )
 
+(when (require 'elpy)
+  (elpy-enable)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
 (when (require 'org-jira nil 'noerror)
   (progn
 	(setq jiralib-url "https://jira3.prod.bloomberg.com/")

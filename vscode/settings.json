@@ -1,0 +1,23 @@
+// Place your settings in this file to overwrite the default settings
+{
+    "window.zoomLevel": 1,
+    "editor.multiCursorModifier": "ctrlCmd",
+    "workbench.activityBar.visible": false,
+    "breadcrumbs.enabled": true,
+    "editor.minimap.enabled": false,
+    "editor.renderWhitespace": "none",
+    "editor.lineNumbers": "off",
+    "editor.glyphMargin": false,
+    "editor.folding": false,
+    "org.todoKeywords": [
+        "TODO",
+        "DONE",
+        "IN-PROGRESS",
+        "DEFERRED"
+    ],
+    "eslint.options": {
+        "configFile": "/Users/elawrencehur/.nenv/versions/10.11.0/lib/node_modules/@ib-apps/eslint-config-ib/index.js"
+    },
+    "http.proxy": "http://proxy.bloomberg.com:81",
+    "http.proxyStrictSSL": false
+}
