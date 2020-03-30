@@ -26,3 +26,5 @@
   helper = osxkeychain
 [core]
 	excludesfile = /Users/elawrencehur/.gitignore_global
+[url "bbgithub:"]
+    insteadOf = https://bbgithub.dev.bloomberg.com
