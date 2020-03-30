@@ -1,3 +1,4 @@
 emacs
 supercollider
 xquartz
+aerial
