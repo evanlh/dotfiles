@@ -1,5 +1,6 @@
 (provide 'my-keys)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; INPUT MAPPING
+;; hints: "S" = shift, "s" = command, "C" = control, "M" = alt
 (global-set-key (kbd "<home>") 'move-beginning-of-line)
 (global-set-key (kbd "<end>") 'move-end-of-line)
 (global-set-key (kbd "<s-left>") 'move-beginning-of-line)
