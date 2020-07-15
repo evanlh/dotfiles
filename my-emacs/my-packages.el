@@ -226,7 +226,7 @@
 ;; Find file in project
 (when (require 'find-file-in-project nil 'noerror)
   (progn
-    (setq ffip-patterns '("*.html" "*.org" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" "*.pl" "*.sh" "*.erl" "*.hs" "*.ml" "*.php" "*.html" "*.phtml"))
+    (setq ffip-patterns '("*.html" "*.org" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" "*.pl" "*.sh" "*.erl" "*.hs" "*.ml" "*.php" "*.html" "*.phtml" "*.cpp" "*.h" "*.hpp" "*.txt" "*.conf"))
     (setq ffip-limit 4096)
     (global-set-key (kbd "C-x f") 'find-file-in-project))
   )
@@ -248,6 +248,9 @@
       ido-handle-duplicate-virtual-buffers 2
       ido-max-prospects 10)
 	(smex-initialize)
+
+    (global-set-key (kbd "M-x") 'smex)
+    (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
 	;; Display ido results vertically, rather than horizontally
 	(setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
@@ -277,7 +280,7 @@
     (global-set-key (kbd "C-c b") 'org-iswitchb)
     (setq org-startup-indented 1)
     (setq org-support-shift-select 1)
-    (setq org-pretty-entities 1)
+    (setq org-pretty-entities 1) 
     ;; (setq org-todo-keywords
     ;;       '((sequence "TODO" "IN-PROGRESS" "|" "DONE" "DEFERRED")))
 
@@ -328,7 +331,7 @@
     (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg"))
 
     (setq org-todo-keywords
-		'((sequence "TODO" "IN-PROGRESS" "BLOCKED" "DONE")))
+		'((sequence "TODO" "IN-PROGRESS"  "DEFERRED" "DONE")))
   )
 
 

@@ -39,9 +39,9 @@
 (define-key global-map (kbd "<M-kp-delete>") 'paredit-forward-kill-word)
 
 ;; undo-tree-mode with aliases that match OS X undo/redo
-;;(require 'undo-tree)
-;;(global-undo-tree-mode 1)
-;;(defalias 'redo 'undo-tree-redo)
+(require 'undo-tree)
+(global-undo-tree-mode 1)
+(defalias 'redo 'undo-tree-redo)
 
 (global-set-key (kbd "s-z") 'undo) ; command+z
 (global-set-key (kbd "s-Z") 'redo) ; shift+command+z
