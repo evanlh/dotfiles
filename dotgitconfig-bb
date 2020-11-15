@@ -4,6 +4,8 @@
 
 [alias]
   co = checkout
+  dc = checkout
+  decolonize = checkout
   ci = commit
   st = status
   br = branch

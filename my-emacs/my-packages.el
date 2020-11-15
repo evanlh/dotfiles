@@ -226,8 +226,8 @@
 ;; Find file in project
 (when (require 'find-file-in-project nil 'noerror)
   (progn
-    (setq ffip-patterns '("*.html" "*.org" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" "*.pl" "*.sh" "*.erl" "*.hs" "*.ml" "*.php" "*.html" "*.phtml" "*.cpp" "*.h" "*.hpp" "*.txt" "*.conf"))
-    (setq ffip-limit 4096)
+    (setq ffip-patterns '("*.html" "*.org" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" "*.ts" "*.pl" "*.sh" "*.erl" "*.hs" "*.ml" "*.php" "*.html" "*.rs" "*.phtml" "*.cpp" "*.h" "*.hpp" "*.txt" "*.conf" ".bml" ".xml"))
+    (setq ffip-limit 65536)
     (global-set-key (kbd "C-x f") 'find-file-in-project))
   )
 
@@ -550,6 +550,34 @@
 ;; (setq company-lsp-enable-snippet t)
 ;; (push 'company-lsp company-backends)
 
+(when (require 'tide nil 'noerrr)
+  (defun setup-tide-mode ()
+    (interactive)
+    (tide-setup)
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    (tide-hl-identifier-mode +1)
+    ;; company is an optional dependency. You have to
+    ;; install it separately via package-install
+    ;; `M-x package-install [ret] company`
+    (company-mode +1))
+
+  ;; aligns annotation to the right hand side
+  (setq company-tooltip-align-annotations t)
+
+  ;; formats the buffer before saving
+  (add-hook 'before-save-hook 'tide-format-before-save)
+  (add-hook 'typescript-mode-hook #'setup-tide-mode))
+
+;; from https://emacs.wordpress.com/2007/01/17/eval-and-replace-anywhere/
+(defun fc-eval-and-replace ()
+  "Replace the preceding sexp with its value."
+  (interactive)
+  (backward-kill-sexp)
+  (prin1 (eval (read (current-kill 0)))
+         (current-buffer)))
+(global-set-key (kbd "C-c e") 'fc-eval-and-replace)
 
 (defun format-wped ()
   (interactive)
@@ -571,3 +599,4 @@
 	(beginning-of-buffer)
 	(replace-regexp "\t" "    ")
 	))
+

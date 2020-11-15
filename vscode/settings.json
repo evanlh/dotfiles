@@ -1,5 +1,5 @@
 {
-    "window.zoomLevel": 1,
+    "window.zoomLevel": 0,
     "editor.multiCursorModifier": "ctrlCmd",
     "workbench.activityBar.visible": false,
     "breadcrumbs.enabled": true,
@@ -33,5 +33,6 @@
     "liveshare.allowedDomains": [
         "bloomberg.com"
     ],
-    "telemetry.enableTelemetry": false
+    "telemetry.enableTelemetry": false,
+    "files.autoSave": "afterDelay"
 }
