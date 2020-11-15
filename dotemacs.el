@@ -18,8 +18,9 @@
 ;; TERM=emacs exec zsh
 (setenv "ESHELL" (expand-file-name "~/bin/eshell"))
 
-(+ 1 1)
-(if (string= (system-name) "Evans-MacBook-Pro.local")
+(defun is-home-machine () (string= (system-name) "Evans-MacBook-Pro.local"))
+
+(if (is-home-machine)
     ;; home machine
     (progn
       (setq MY-JS-INDENT 2)
@@ -57,13 +58,14 @@
 (package-initialize)
 
 ;; this approached is taken from Prelude
-(defvar evanlh-packages '(undo-tree projectile helm-projectile helm ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-completing-read+ inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline restclient ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex js-comint twilight-theme undo-tree yaml-mode ein cider tern tern-auto-complete jedi flycheck utop ocp-indent merlin lsp-mode company-tern company-lsp))
+(defvar evanlh-packages '(undo-tree projectile helm-projectile helm ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-completing-read+ inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline restclient ruby-block ruby-end ruby-mode skewer-mode slime slime-ritz smex js-comint twilight-theme undo-tree yaml-mode ein cider tern tern-auto-complete jedi flycheck utop ocp-indent merlin lsp-mode company-tern company-lsp elpy))
 
 (defun evanlh-packages-installed-p ()
   (cl-loop for p in evanlh-packages
         when (not (package-installed-p p)) do (cl-return t)
         finally (cl-return t)))
 
+;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (unless (evanlh-packages-installed-p)
  (message "%s" "Emacs is now refreshing its package database...")
  (package-refresh-contents)
