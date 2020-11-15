@@ -1,4 +1,3 @@
-// Place your settings in this file to overwrite the default settings
 {
     "window.zoomLevel": 1,
     "editor.multiCursorModifier": "ctrlCmd",
@@ -15,9 +14,24 @@
         "IN-PROGRESS",
         "DEFERRED"
     ],
-    "eslint.options": {
-        "configFile": "/Users/elawrencehur/.nenv/versions/10.11.0/lib/node_modules/@ib-apps/eslint-config-ib/index.js"
-    },
     "http.proxy": "http://proxy.bloomberg.com:81",
-    "http.proxyStrictSSL": false
+    "http.proxyStrictSSL": false,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.options": {
+        "extensions": [
+            ".js",
+            ".ts"
+        ]
+    },
+    "eslint.quiet": true,
+    "liveshare.connectionMode": "relay",
+    "liveshare.anonymousGuestApproval": "reject",
+    "extensions.autoUpdate": false,
+    "liveshare.allowedDomains": [
+        "bloomberg.com"
+    ],
+    "telemetry.enableTelemetry": false
 }

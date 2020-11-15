@@ -49,14 +49,14 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git nvm)
 
 # User configuration
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="$PATH:/Users/elawrencehur/code/mactoolkit"
 export PATH="$PATH:$HOME/bin"
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home"
+#export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 alias ec='emacsclient -n '
@@ -118,9 +118,22 @@ alias dev_proxy='http_proxy=http://bproxy.tdmz1.bloomberg.com:80 https_proxy=htt
 alias ext_proxy='http_proxy=http://proxy.bloomberg.com:77 https_proxy=http://proxy.bloomberg.com:77'
 
 #node nenv
-export PATH="$HOME/.nenv/bin:$HOME/.nenv/shims:$PATH"
-eval "$(nenv init -)"
+##export PATH="$HOME/.nenv/bin:$HOME/.nenv/shims:$PATH"
+#eval "$(nenv init -)"
 
+# nvm
+# place this after nvm initialization!
+autoload -U add-zsh-hook
+load-nvmrc() {
+  if [[ -f .nvmrc && -r .nvmrc ]]; then
+    nvm use
+  elif [[ $(nvm version) != $(nvm version default)  ]]; then
+    echo "Reverting to nvm default version"
+    nvm use default
+  fi
+}
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
 
 #go
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
@@ -133,8 +146,6 @@ export RUSTUP_USE_REQWEST=1
 ## Misc R+ related
 export SRC_DIR=/Users/elawrencehur/shared/code/rp2-tree
 export RPPATH=/Users/elawrencehur/code/btarseval
-export PATH="$HOME/.nenv/bin:$PATH"
-eval "$(nenv init -)"
 
 # nodeproxy
 #/Users/elawrencehur/.nenv/versions/8.2.1/bin/bb-nodeproxy --wpadUrl=http://wpad.bloomberg.com/wpad-la.dat &
@@ -143,3 +154,12 @@ eval "$(nenv init -)"
 #export HTTPS_PROXY="http://127.0.0.1:8888/"
 #export https_proxy="http://127.0.0.1:8888/"
 
+# protoc
+export PATH=$PATH:~/protoc-3/bin
+
+# work jenkins instance
+export JENKINS_URL=https://cc.jaas.dev.bloomberg.com
+export JENKINS_AUTH_TOKEN=`cat ~/etc/JENKINS_AUTH_TOKEN`
+# auth token generated from https://cc.jaas.dev.bloomberg.com//me/configure
+alias jenkins-cli='java -jar ~/bin/jenkins-cli.jar -auth elawrencehur:$JENKINS_AUTH_TOKEN'
+source ~/.bash_profile

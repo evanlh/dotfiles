@@ -17,6 +17,7 @@
 ;; #!/bin/sh
 ;; TERM=emacs exec zsh
 (setenv "ESHELL" (expand-file-name "~/bin/eshell"))
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 (defun is-home-machine () (string= (system-name) "Evans-MacBook-Pro.local"))
 
@@ -103,7 +104,7 @@
     ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default)))
  '(package-selected-packages
    (quote
-    (tide pep8 flycheck-pyflakes py-autopep8 elpy jedi-direx popwin rust-mode impatient-mode irony company-tern company-lsp lsp-javascript-typescript lsp-mode yaml-mode utop twilight-theme tuareg tern-auto-complete smex slime-ritz skewer-mode sicp ruby-end ruby-block restclient rect-mark powerline paredit org-jira ocp-indent molokai-theme merlin markdown-mode+ magit jsx-mode json-mode js2-refactor js-comint jedi inf-ruby ido-ubiquitous idle-highlight-mode icicles helm-projectile haskell-mode haml-mode go-mode geiser flycheck find-file-in-project expand-region exec-path-from-shell evil elisp-slime-nav ein-mumamo color-theme-sanityinc-tomorrow coffee-mode cider aggressive-fill-paragraph ag ac-slime))))
+    (ox-rst groovy-mode tide pep8 flycheck-pyflakes py-autopep8 elpy jedi-direx popwin rust-mode impatient-mode irony company-tern company-lsp lsp-javascript-typescript lsp-mode yaml-mode utop twilight-theme tuareg tern-auto-complete smex slime-ritz skewer-mode sicp ruby-end ruby-block restclient rect-mark powerline paredit org-jira ocp-indent molokai-theme merlin markdown-mode+ magit jsx-mode json-mode js2-refactor js-comint jedi inf-ruby ido-ubiquitous idle-highlight-mode icicles helm-projectile haskell-mode haml-mode go-mode geiser flycheck find-file-in-project expand-region exec-path-from-shell evil elisp-slime-nav ein-mumamo color-theme-sanityinc-tomorrow coffee-mode cider aggressive-fill-paragraph ag ac-slime))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -83,7 +83,6 @@ ossp-uuid
 p11-kit
 pango
 pcre
-php@7.1
 pixman
 pkg-config
 plantuml
@@ -102,6 +101,5 @@ wireshark
 wxmac
 x264
 xvid
-xz
 zsh
 zsh-completions
