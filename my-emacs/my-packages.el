@@ -213,7 +213,7 @@
     (setq ein:use-auto-complete t))
   )
 
-(when (require 'elpy)
+(when (and (not (is-home-machine)) (require 'elpy))
   (elpy-enable)
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
   (add-hook 'elpy-mode-hook 'flycheck-mode))
