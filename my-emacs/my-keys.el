@@ -7,7 +7,6 @@
 (global-set-key (kbd "<s-right>") 'move-end-of-line)
 (global-set-key (kbd "<s-up>") 'beginning-of-buffer)
 (global-set-key (kbd "<s-down>") 'end-of-buffer)
-
 (global-set-key (kbd "<s-mouse-1>") 'mouse-major-mode-menu)
 
 (setq shift-select-mode nil) ; shift-select mode
@@ -15,6 +14,12 @@
 
 ;; C-f C-f to fuzzy match on filename
 (global-set-key (kbd "C-S-f") 'projectile-find-file)
+
+;; make text increase/decrease apply to all buffers
+(defadvice text-scale-increase (around all-buffers (arg) activate)
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      ad-do-it)))
 
 ;; move between windows
 (progn (global-set-key (kbd "C-c <left>") 'windmove-left)

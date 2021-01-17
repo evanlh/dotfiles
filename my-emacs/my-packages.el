@@ -57,6 +57,11 @@
   (global-set-key (kbd "M-}") 'paredit-close-curly-and-newline)
   )
 
+(when (require 'geiser nil 'noerror)
+  (setq geiser-chez-binary "/usr/local/bin/chez")
+  (setq geiser-active-implementations '(chez))
+  (setq geiser-default-implementation 'chez))
+
 ;; autocomplete-mode
 (when (require 'auto-complete nil 'noerror)
   (require 'auto-complete-config)
@@ -268,6 +273,10 @@
 (when (require 'hideshow nil 'noerror)
   (global-set-key (kbd "<backtab>") 'hs-hide-all)
   (global-set-key (kbd "C-<tab>") 'hs-toggle-hiding))
+
+;; org-mode github flavored markdown exporg
+(eval-after-load "org"
+  '(require 'ox-gfm nil t))
 
 ;; ORG-MODE
 (when (require 'org nil 'noerror)
