@@ -245,7 +245,7 @@
 (when (require 'ido nil 'noerror)
   (progn
 	;;(require 'flx-ido)
-	(require 'smex)
+
 	;; ido-mode is like magic pixie dust!
 	(ido-mode t)
 	;; (ido-ubiquitous t)
@@ -257,10 +257,11 @@
       ido-use-virtual-buffers t
       ido-handle-duplicate-virtual-buffers 2
       ido-max-prospects 10)
-	(smex-initialize)
 
-    (global-set-key (kbd "M-x") 'smex)
-    (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+    (when (require 'smex nil 'noerror)
+      (smex-initialize)
+      (global-set-key (kbd "M-x") 'smex)
+      (global-set-key (kbd "M-X") 'smex-major-mode-commands))
 
 	;; Display ido results vertically, rather than horizontally
 	(setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
@@ -549,8 +550,8 @@
 (when (require 'company nil 'noerror)
   (add-hook 'after-init-hook 'global-company-mode)
   (setq company-backends ())
-  (require 'company-tern)
-  (add-to-list 'company-backends 'company-tern)
+  (when (require 'company-tern nil 'noerror)
+    (add-to-list 'company-backends 'company-tern))
   (add-hook 'js2-mode-hook 'company-mode)
   ;; Key to force trigger company-complete
   (define-key company-mode-map [(control .)] 'company-complete)
