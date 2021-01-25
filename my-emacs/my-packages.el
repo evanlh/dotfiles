@@ -240,7 +240,7 @@
 (when (require 'ido nil 'noerror)
   (progn
 	;;(require 'flx-ido)
-	(require 'smex)
+
 	;; ido-mode is like magic pixie dust!
 	(ido-mode t)
 	;; (ido-ubiquitous t)
@@ -252,10 +252,11 @@
       ido-use-virtual-buffers t
       ido-handle-duplicate-virtual-buffers 2
       ido-max-prospects 10)
-	(smex-initialize)
 
-    (global-set-key (kbd "M-x") 'smex)
-    (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+    (when (require 'smex nil 'noerror)
+      (smex-initialize)
+      (global-set-key (kbd "M-x") 'smex)
+      (global-set-key (kbd "M-X") 'smex-major-mode-commands))
 
 	;; Display ido results vertically, rather than horizontally
 	(setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))

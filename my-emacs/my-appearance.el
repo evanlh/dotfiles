@@ -78,11 +78,12 @@
 (remove-hook 'prog-mode-hook 'esk-local-comment-auto-fill)
 
 ;; bring on the color theme
-(color-theme-sanityinc-tomorrow-bright)
+(if (boundp 'color-theme-sanityinc-tomorrow-bright)
+    (color-theme-sanityinc-tomorrow-bright))
 
 ;; powerline gives a much aesthetically improved mode line, the look
 ;; of which is stolen from vi.
-(require 'powerline)
+(when (require 'powerline nil 'noerror))
 ;;(powerline-default)
 
 ;; I hate the box on the mode-line
