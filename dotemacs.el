@@ -45,10 +45,8 @@
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PACKAGES
-;;(package--download-one-archive '("melpa" . "http://melpa.milkbox.net/packages/") "archive-contents" nil)
 
 ;; more (and more up-to-date) packages than plain ELPA
-
 (require 'package)
 
 ;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
