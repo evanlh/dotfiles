@@ -545,8 +545,8 @@
 (when (require 'company nil 'noerror)
   (add-hook 'after-init-hook 'global-company-mode)
   (setq company-backends ())
-  (require 'company-tern)
-  (add-to-list 'company-backends 'company-tern)
+  (when (require 'company-tern nil 'noerror)
+    (add-to-list 'company-backends 'company-tern))
   (add-hook 'js2-mode-hook 'company-mode)
   ;; Key to force trigger company-complete
   (define-key company-mode-map [(control .)] 'company-complete)
