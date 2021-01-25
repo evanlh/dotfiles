@@ -7,8 +7,8 @@
 ;; X and bash, to which end I've customized all three.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PATHS
-(with-eval-after-load 'gnutls
-  (add-to-list 'gnutls-trustfiles "/usr/local/etc/libressl/cert.pem"))
+;; (with-eval-after-load 'gnutls
+;;   (add-to-list 'gnutls-trustfiles "/usr/local/etc/libressl/cert.pem"))
 
 (setq dotfiles-dir (file-name-directory
                     (or (buffer-file-name) load-file-name)))
@@ -47,9 +47,10 @@
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PACKAGES
+;;(package--download-one-archive '("melpa" . "http://melpa.milkbox.net/packages/") "archive-contents" nil)
 
 ;; more (and more up-to-date) packages than plain ELPA
-(require 'package)
+;;(require 'package)
 ;; (add-to-list 'package-archives
 ;;              '("melpa" . "https://melpa.milkbox.net/packages/"))
 
@@ -63,15 +64,21 @@
 (setq gnutls-log-level 5)
 (setq gnutls-verify-error t)
 (setq gnutls-trustfiles '("/usr/local/etc/libressl/cert.pem"))
-;; (setq network-security-protocol-checks nil)
-;;(gnutls-macs)
-;;(gnutls-ciphers)
+(setq network-security-protocol-checks nil)
+
+(setq network-stream-use-client-certificates t)
+
+(gnutls-macs)
+(setq url-debug 1)
+(gnutls-ciphers)
+;; (url-retrieve-synchronously "https://stable.melpa.org/packages/archive-contents")
+;; (url-retrieve-synchronously "http://evanlh.com")
 
 (require 'package)
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
+;; (add-to-list 'package-archives
+;;              '("melpa" . "https://melpa.milkbox.net/packages/"))
 ;; (add-to-list 'package-archives
 ;;              '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 ;; (add-to-list 'package-archives

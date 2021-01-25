@@ -27,3 +27,4 @@ export PATH=$PATH:$JAVA_HOME/bin
 export PATH="$PATH:/usr/local/share/dotnet"
 
 export PATH="$HOME/.cargo/bin:$PATH"
+if [ -e /Users/elh/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/elh/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

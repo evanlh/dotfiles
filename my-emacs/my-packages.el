@@ -4,6 +4,11 @@
 
 (require 'cl) ;; Common Lisp functions
 
+(setq Info-default-directory-list
+      (cons "~/writing/sicp" Info-default-directory-list))
+
+;; (setq Info-directory-list (cons "~/writing/sicp" Info-directory-list))
+
 ;; always use spaces
 (setq-default indent-tabs-mode nil)
 

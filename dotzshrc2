@@ -103,3 +103,4 @@ alias grun='java org.antlr.v4.gui.TestRig'
 
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
+if [ -e /Users/elh/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/elh/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

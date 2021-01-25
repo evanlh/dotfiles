@@ -16,10 +16,11 @@
 (global-set-key (kbd "C-S-f") 'projectile-find-file)
 
 ;; make text increase/decrease apply to all buffers
-(defadvice text-scale-increase (around all-buffers (arg) activate)
-  (dolist (buffer (buffer-list))
-    (with-current-buffer buffer
-      ad-do-it)))
+;; new files don't get inited properly??
+;; (defadvice text-scale-increase (around all-buffers (arg) activate)
+;;   (dolist (buffer (buffer-list))
+;;     (with-current-buffer buffer
+;;       ad-do-it)))
 
 ;; move between windows
 (progn (global-set-key (kbd "C-c <left>") 'windmove-left)
