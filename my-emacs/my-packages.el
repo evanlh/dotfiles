@@ -40,28 +40,6 @@
   )
 
 
-;; PAREDIT
-(when (require 'paredit nil 'noerror)
-  ;; adjust paredit's key bindings so they don't override
-  ;; my preferred navigation keys, plus add some brace
-  ;; matching sugar across all modes
-  ;; fights with my preferred navigation keys
-  (dolist (binding (list (kbd "M-<up>") (kbd "M-<down>") (kbd "C-M-<left>") (kbd "C-M-<right>")))
-    (define-key paredit-mode-map binding nil))
-
-  ;; not just in lisp mode(s)
-  (global-set-key (kbd "C-M-<left>") 'backward-sexp)
-  (global-set-key (kbd "C-M-<right>") 'forward-sexp)
-
-  (global-set-key (kbd "M-(") 'paredit-wrap-round)
-  (global-set-key (kbd "M-[") 'paredit-wrap-square)
-  (global-set-key (kbd "M-{") 'paredit-wrap-curly)
-
-  (global-set-key (kbd "M-)") 'paredit-close-round-and-newline)
-  (global-set-key (kbd "M-]") 'paredit-close-square-and-newline)
-  (global-set-key (kbd "M-}") 'paredit-close-curly-and-newline)
-  )
-
 (when (require 'geiser nil 'noerror)
   (setq geiser-chez-binary "/usr/local/bin/chez")
   (setq geiser-active-implementations '(chez))
@@ -96,6 +74,33 @@
   (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode) 
   (define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 
+
+;; PAREDIT
+(when (require 'paredit nil 'noerror)
+  ;; adjust paredit's key bindings so they don't override
+  ;; my preferred navigation keys, plus add some brace
+  ;; matching sugar across all modes
+  ;; fights with my preferred navigation keys
+  (dolist (binding (list (kbd "M-<up>") (kbd "M-<down>") (kbd "C-M-<left>") (kbd "C-M-<right>")))
+    (define-key paredit-mode-map binding nil))
+
+  ;; not just in lisp mode(s)
+  (global-set-key (kbd "M-S-<left>") 'backward-sexp)
+  (global-set-key (kbd "M-S-<right>") 'forward-sexp)
+
+  (global-set-key (kbd "M-(") 'paredit-wrap-round)
+  (global-set-key (kbd "M-[") 'paredit-wrap-square)
+  (global-set-key (kbd "M-{") 'paredit-wrap-curly)
+
+  (global-set-key (kbd "M-)") 'paredit-close-round-and-newline)
+  (global-set-key (kbd "M-]") 'paredit-close-square-and-newline)
+  (global-set-key (kbd "M-}") 'paredit-close-curly-and-newline)
+  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+  (add-hook 'nrepl-mode-hook 'paredit-mode)
+)
+
+(when (require 'rainbow-delimiters nil 'noerror)
+  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
 
 
 ;; Tern for JS
@@ -185,6 +190,7 @@
   ;; hide special buffers
   (setq nrepl-hide-special-buffers t)
   )
+
 
 ;; Ocaml
 (when (require 'utop nil 'noerror)
