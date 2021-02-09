@@ -40,11 +40,6 @@
   )
 
 
-(when (require 'geiser nil 'noerror)
-  (setq geiser-chez-binary "/usr/local/bin/chez")
-  (setq geiser-active-implementations '(chez))
-  (setq geiser-default-implementation 'chez))
-
 ;; autocomplete-mode
 (when (require 'auto-complete nil 'noerror)
   (require 'auto-complete-config)
@@ -61,6 +56,19 @@
     (setq completion-at-point-functions '(auto-complete)))
   (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
   )
+
+;; slime-mode
+(when (require 'slime-mode nil 'noerror)
+  ;; no need to highlight trailing whitepsace in the repl
+  (add-hook 'slime-repl-mode-hook (lambda () (setq show-trailing-whitespace nil)))
+  ;; add auto-completion for slime
+  (add-hook 'slime-mode-hook 'set-up-slime-ac)
+  )
+
+(when (require 'geiser nil 'noerror)
+  (setq geiser-chez-binary "/usr/local/bin/chez")
+  (setq geiser-active-implementations '(chez))
+  (setq geiser-default-implementation 'chez))
 
 ;; ac-nrepl for clojure
 (when (require 'ac-nrepl nil 'noerror)
@@ -96,11 +104,14 @@
   (global-set-key (kbd "M-]") 'paredit-close-square-and-newline)
   (global-set-key (kbd "M-}") 'paredit-close-curly-and-newline)
   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-  (add-hook 'nrepl-mode-hook 'paredit-mode)
+  (add-hook 'clojure-mode-hook 'paredit-mode)
+  (add-hook 'slime-mode-hook 'paredit-mode)
 )
 
 (when (require 'rainbow-delimiters nil 'noerror)
-  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
+  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+  (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+  (add-hook 'slime-mode-hook 'rainbow-delimiters-mode))
 
 
 ;; Tern for JS
@@ -434,14 +445,6 @@
                           (flycheck-mode t)
 						  (tern-mode t)
 						  ))
-
-;; slime-mode
-(when (require 'slime-mode nil 'noerror)
-  ;; no need to highlight trailing whitepsace in the repl
-  (add-hook 'slime-repl-mode-hook (lambda () (setq show-trailing-whitespace nil)))
-  ;; add auto-completion for slime
-  (add-hook 'slime-mode-hook 'set-up-slime-ac)
-  )
 
 ;; php-mode
 (when (require 'php-mode nil 'noerror)
