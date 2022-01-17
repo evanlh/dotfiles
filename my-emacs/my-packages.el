@@ -103,6 +103,8 @@
   (global-set-key (kbd "M-)") 'paredit-close-round-and-newline)
   (global-set-key (kbd "M-]") 'paredit-close-square-and-newline)
   (global-set-key (kbd "M-}") 'paredit-close-curly-and-newline)
+  (global-set-key (kbd "C-M-.") 'paredit-forward-slurp-sexp)
+  (global-set-key (kbd "C-M-,") 'paredit-forward-barf-sexp)
   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
   (add-hook 'clojure-mode-hook 'paredit-mode)
   (add-hook 'slime-mode-hook 'paredit-mode)
@@ -250,6 +252,8 @@
 	(setq jiralib-url "https://jira3.prod.bloomberg.com/")
 	))
 
+(require 'ox-tufte nil 'noerror)
+
 ;; Find file in project
 (when (require 'find-file-in-project nil 'noerror)
   (progn
@@ -301,10 +305,14 @@
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
 
+(with-eval-after-load 'ox
+  (require 'ox-hugo))
+
 ;; ORG-MODE
 (when (require 'org nil 'noerror)
   (progn
-    (if (not (boundp 'MY-ORG-DIRECTORY)) (setq MY-ORG-DIRECTORY "~/writing"))
+    (if (not (boundp 'MY-ORG-DIRECTORY)) (setq MY-ORG-DIRECTORY "/Users/elh/writing"))
+    (setq org-directory MY-ORG-DIRECTORY)
 
     (global-set-key (kbd "C-c l") 'org-store-link)
     (global-set-key (kbd "C-c c") 'org-capture)
@@ -312,14 +320,12 @@
     (global-set-key (kbd "C-c b") 'org-iswitchb)
     (setq org-startup-indented 1)
     (setq org-support-shift-select 1)
-    (setq org-pretty-entities 1) 
+    (setq org-pretty-entities 1)
     ;; (setq org-todo-keywords
     ;;       '((sequence "TODO" "IN-PROGRESS" "|" "DONE" "DEFERRED")))
 
-    (setq org-directory MY-ORG-DIRECTORY)
     (setq org-default-notes-file (concat org-directory "/notes.org"))
 	(setq org-export-with-sub-superscripts nil)
-
 	(setq org-src-fontify-natively t)
     ;; soft wrap lines
     (defun soft-wrap-lines ()
@@ -334,12 +340,12 @@
       browse-url-generic-program "open")
     ;; capture templates
     (setq org-capture-templates
-          '(("t" "Todo" entry (file+headline (concat org-directory "/dailytodo.org") "UNASSIGNED")
+          `(("t" "Todo" entry (file+headline ,(concat org-directory "/dailytodo.org") "UNASSIGNED")
              "** TODO %?\n  %i\n")
-            ("d" "Draft" entry (file+datetree (concat org-directory "/drafts.org"))
+            ("d" "Draft" entry (file+datetree ,(concat org-directory "/drafts.org"))
              "* Entered on %U\n  %i\n")))
     ;; agenda files
-    ;; (setq org-agenda-files (quote ("~/writing/entropy.org" "~/writing/ideas.org" "~/writing/projects.org" "~/writing/dailytodo.org")))
+    (setq org-agenda-files (quote ("~/writing/entropy.org" "~/writing/ideas.org" "~/writing/projects/index.org" "~/writing/dailytodo.org" "~/writing/notation.org")))
 
     ;; long lines mode instead
     ;;(add-hook 'org-mode-hook 'longlines-mode)
