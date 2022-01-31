@@ -19,37 +19,36 @@
 (setenv "ESHELL" (expand-file-name "~/bin/eshell"))
 
 (defun is-home-machine () (string= (system-name) "Evans-MacBook-Pro.local"))
+(defun is-work-machine () (string= (system-name) "C02YG1G6JHD2"))
 
 (if (is-home-machine)
-    ;; home machine
-    (progn
-      (setq MY-JS-INDENT 2)
-      (setq backup-directory-alist `(("*" .  "/Users/elh/backups")))
+   ;; home machine
+   (progn
+     (setq MY-JS-INDENT 2)
+     (setq backup-directory-alist `(("*" .  "/Users/elh/backups")))
 
-      ;;(set-default-font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
-      (set-frame-font "-*-Source Code Pro-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
-      ;; (setq url-proxy-services
+     ;;(set-default-font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
+     (set-frame-font "-*-Source Code Pro-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
+     ;; (setq url-proxy-services
 	  ;;   '(("no_proxy" . "^\\(localhost\\|10.*\\)")
 	  ;;     ("http" . "")
 	  ;;     ("https" . "")))
-      )
-  ;; work machine
-  (progn
-    (set-default-font "-*-Source Code Pro-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
-    (setq MY-JS-INDENT 4)
-    (setq backup-directory-alist `(("*" .  "/Users/elawrencehur/backups")))
-    (setq auto-save-file-name-transforms `(("*", "/Users/elawrencehur/backups" t)))
-    (setq url-proxy-services
-          '(("no_proxy" . "^\\(localhost\\|10.*\\)")
-           ("http" . "proxy.inet.bloomberg.com:81")
-           ("https" . "proxy.inet.bloomberg.com:81")))
-    )
-  )
+     ))
+(if (is-work-machine)
+ ;; work machine
+ (progn
+   (set-frame-font "-*-Source Code Pro-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
+   (setq MY-JS-INDENT 4)
+   (setq backup-directory-alist `(("*" .  "/Users/elawrencehur/backups")))
+   (setq auto-save-file-name-transforms `(("*", "/Users/elawrencehur/backups" t)))
+   (setq url-proxy-services
+         '(("no_proxy" . "^\\(localhost\\|10.*\\)")
+          ("http" . "proxy.inet.bloomberg.com:81")
+          ("https" . "proxy.inet.bloomberg.com:81")))
+   )
+ )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PACKAGES
-
-;; more (and more up-to-date) packages than plain ELPA
-(require 'package)
 
 ;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 ;; (setq package-check-signature nil)
@@ -57,8 +56,8 @@
 ;; (setq gnutls-verify-error t)
 ;; (setq gnutls-trustfiles '("/usr/local/etc/libressl/cert.pem"))
 ;; (setq network-security-protocol-checks nil)
-;;(gnutls-macs)
-;;(gnutls-ciphers)
+;; (gnutls-macs)
+;; (gnutls-ciphers)
 
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
