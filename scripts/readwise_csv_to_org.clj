@@ -34,7 +34,8 @@
   (format "* %s - %s\n" (book-title k) (book-author k)))
 
 (defn highlight-str [l]
-  (format "** Location %s - %s\n%s\n" (highlight-location l) (highlighted-at l) (highlight l)))
+  (format "** [[shell:open 'kindle://book?action=open&asin=%s&location=%s'][Location %s]] - %s\n%s\n"
+          (book-id l) (highlight-location l) (highlight-location l) (highlighted-at l) (highlight l)))
 
 (defn highlight-loc-num [r] (bigdec (highlight-location r)))
 
@@ -43,5 +44,4 @@
 (def book-title-keys (sort #(compare (title-str %1) (title-str %2)) (keys book-to-highlights-map)))
 (def output (reduce str (map #(str (title-str %) (highlights-str %)) book-title-keys)))
 
-(spit "output.org" output)
-
+(spit *out*  output)
