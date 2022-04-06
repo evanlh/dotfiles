@@ -325,7 +325,6 @@
     ;; (setq org-todo-keywords
     ;;       '((sequence "TODO" "IN-PROGRESS" "|" "DONE" "DEFERRED")))
 
-    (setq org-default-notes-file (concat org-directory "/notes.org"))
 	(setq org-export-with-sub-superscripts nil)
 	(setq org-src-fontify-natively t)
     ;; soft wrap lines
@@ -343,16 +342,32 @@
     (setq org-capture-templates
           `(("t" "Todo" entry (file+headline ,(concat org-directory "/dailytodo.org") "UNASSIGNED")
              "** TODO %?\n  %i\n")
-            ("d" "Draft" entry (file+datetree ,(concat org-directory "/drafts.org"))
-             "* Entered on %U\n  %i\n")))
+            ("d" "Draft" entry (file+datetree ,(concat org-directory "/capture/drafts.org"))
+             "* Entered on %U\n  %i\n")
+            ("j" "Journal" entry (file+headline ,(concat org-directory "/topics/journal.org") "Journal") "** %u\n %i\n")
+            ))
+
+    ;; we use capture templates instead
+    ;; (setq org-default-notes-file (concat org-directory "/notes.org"))
+
     ;; agenda files
-    (setq org-agenda-files (quote ("~/writing/entropy.org" "~/writing/ideas.org" "~/writing/projects/index.org" "~/writing/dailytodo.org" "~/writing/notation.org")))
+    (setq org-agenda-files (quote ("~/writing/projects/index.org" "~/writing/dailytodo.org" "~/writing/notation.org")))
 
     ;; long lines mode instead
     ;;(add-hook 'org-mode-hook 'longlines-mode)
+
     ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
-    (setq org-refile-targets (quote ((nil :maxlevel . 9)
-                                     (org-agenda-files :maxlevel . 9))))
+    ;; (setq org-refile-targets (quote ((nil :maxlevel . 3)
+    ;;                                  (org-agenda-files :maxlevel . 3))))
+    ;; Include only org mode files from these directories in our refile headers
+    (defun my-org-refile-targets-fn ()
+      (let ((my-org-topics (directory-files (concat org-directory "/topics/") nil ".*\.org$"))
+            (my-org-projects (directory-files (concat org-directory "/projects") nil ".*\.org$")))
+        (append my-org-topics my-org-projects)))
+    (setq org-refile-targets `( ;; uncomment to include current buffer (nil :maxlevel . 3)
+                               ;;(,@my-org-projects  :maxlevel . 3)
+                               (my-org-refile-targets-fn :maxlevel . 3)))
+
     ; Use full outline paths for refile targets - we file directly with IDO
     (setq org-refile-use-outline-path t)
     ; Targets complete directly with IDO
@@ -365,9 +380,10 @@
 
     ;; mobileorg
     ;; Set to the name of the file where new notes will be stored
-    (setq org-mobile-inbox-for-pull (concat org-directory "/flagged.org"))
+    ;; (setq org-mobile-inbox-for-pull (concat org-directory "/flagged.org"))
     ;; Set to <your Dropbox root directory>/MobileOrg.
-    (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg"))
+    ;; (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+    )
 
     (setq org-todo-keywords
 		'((sequence "TODO" "IN-PROGRESS"  "DEFERRED" "DONE")))
@@ -523,6 +539,7 @@
 
 (when (require 'lsp-mode nil 'noerror)
   ;; config lsp
+  (setq lsp-lens-enable t)
   )
 
 (add-to-list 'load-path "/usr/local/lib/node_modules/tern/emacs/")
