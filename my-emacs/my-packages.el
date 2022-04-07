@@ -340,11 +340,14 @@
       browse-url-generic-program "open")
     ;; capture templates
     (setq org-capture-templates
-          `(("t" "Todo" entry (file+headline ,(concat org-directory "/dailytodo.org") "UNASSIGNED")
-             "** TODO %?\n  %i\n")
-            ("d" "Draft" entry (file+datetree ,(concat org-directory "/capture/drafts.org"))
+          `(("t" "Todo" plain (file ,(concat org-directory "/dailytodo.org"))
+             "*** TODO %?\n  %i\n")
+            ("d" "Draft" entry (file+olp+datetree ,(concat org-directory "/capture/drafts.org"))
              "* Entered on %U\n  %i\n")
-            ("j" "Journal" entry (file+headline ,(concat org-directory "/topics/journal.org") "Journal") "** %u\n %i\n")
+            ("j" "Journal" entry (file+headline ,(concat org-directory "/topics/journal.org") "Journal")
+             "** %u\n %i\n")
+            ("r" "Recipe" entry (file ,(concat org-directory "/topics/recipes.org"))
+             "* Recipe\n1. %i\n")
             ))
 
     ;; we use capture templates instead
@@ -361,8 +364,8 @@
     ;;                                  (org-agenda-files :maxlevel . 3))))
     ;; Include only org mode files from these directories in our refile headers
     (defun my-org-refile-targets-fn ()
-      (let ((my-org-topics (directory-files (concat org-directory "/topics/") nil ".*\.org$"))
-            (my-org-projects (directory-files (concat org-directory "/projects") nil ".*\.org$")))
+      (let ((my-org-topics (directory-files (concat org-directory "/topics") 'full ".*\.org$"))
+            (my-org-projects (directory-files (concat org-directory "/projects") 'full ".*\.org$")))
         (append my-org-topics my-org-projects)))
     (setq org-refile-targets `( ;; uncomment to include current buffer (nil :maxlevel . 3)
                                ;;(,@my-org-projects  :maxlevel . 3)
