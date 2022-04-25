@@ -6,6 +6,7 @@
                     (doall
                      (csv/read-csv reader))))
 
+
 (defn csv-data->maps [csv-data]
   (map zipmap
        (->> (first csv-data) ;; First row is the header
@@ -35,7 +36,7 @@
 
 (defn highlight-str [l]
   (format "** [[shell:open 'kindle://book?action=open&asin=%s&location=%s'][Location %s]] - %s\n%s\n"
-          (book-id l) (highlight-location l) (highlight-location l) (highlighted-at l) (highlight l)))
+          (book-id l) (highlight-location l) (highlight-location l) (subs (highlighted-at l) 0 10) (highlight l)))
 
 (defn highlight-loc-num [r] (bigdec (highlight-location r)))
 
