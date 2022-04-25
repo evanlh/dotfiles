@@ -23,7 +23,10 @@
   (global-set-key (kbd "C-x p") 'popwin:display-last-buffer)
   )
 
-;; rectangular selection
+(describe-mode)
+
+
+;; Rectangular selection
 (when (require 'rect-mark nil 'noerror)
   (global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
   (global-set-key (kbd "C-x r C-x") 'rm-exchange-point-and-mark)
@@ -308,6 +311,10 @@
 (with-eval-after-load 'ox
   (require 'ox-hugo))
 
+;; (setq debug-on-error t)
+;; ;; (setq debug-on-message "cl-remove: Wrong type argument: listp, key")
+;; (setq debug-on-message "Wrong type argument: stringp, nil")
+
 ;; ORG-MODE
 (when (require 'org nil 'noerror)
   (progn
@@ -341,13 +348,13 @@
     ;; capture templates
     (setq org-capture-templates
           `(("t" "Todo" plain (file ,(concat org-directory "/dailytodo.org"))
-             "*** TODO %?\n  %i\n")
-            ("d" "Draft" entry (file+olp+datetree ,(concat org-directory "/capture/drafts.org"))
-             "* Entered on %U\n  %i\n")
+             "*** TODO %?\n%i\n")
+            ("d" "Draft" plain (file ,(concat org-directory "/capture/drafts.org"))
+             "** Entered on %U\n%i\n")
             ("j" "Journal" entry (file+headline ,(concat org-directory "/topics/journal.org") "Journal")
-             "** %u\n %i\n")
+             "** %u\n%i\n")
             ("r" "Recipe" entry (file ,(concat org-directory "/topics/recipes.org"))
-             "* Recipe\n1. %i\n")
+             "* Recipe %?\n1.%i\n")
             ))
 
     ;; we use capture templates instead

@@ -26,13 +26,7 @@
    (progn
      (setq MY-JS-INDENT 2)
      (setq backup-directory-alist `(("*" .  "/Users/elh/backups")))
-
-     ;;(set-default-font "-apple-DejaVu_Sans_Mono-medium-normal-normal-*-13-*-*-*-m-0-iso10646-1")
      (set-frame-font "-*-Source Code Pro-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
-     ;; (setq url-proxy-services
-	  ;;   '(("no_proxy" . "^\\(localhost\\|10.*\\)")
-	  ;;     ("http" . "")
-	  ;;     ("https" . "")))
      ))
 (if (is-work-machine)
  ;; work machine
@@ -71,7 +65,7 @@
 (package-initialize)
 
 ;; this approached is taken from Prelude
-(setq evanlh-packages '(undo-tree projectile helm-projectile helm ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-completing-read+ inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline restclient ruby-end ruby-mode skewer-mode slime smex js-comint twilight-theme undo-tree yaml-mode ein cider tern tern-auto-complete jedi flycheck utop ocp-indent merlin lsp-mode company-lsp elpy ox-gfm))
+(setq evanlh-packages '(undo-tree projectile helm-projectile helm ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-completing-read+ inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline restclient ruby-end ruby-mode skewer-mode slime smex js-comint twilight-theme undo-tree yaml-mode ein cider tern tern-auto-complete jedi flycheck utop ocp-indent merlin lsp-mode company-lsp elpy ox-gfm org-protocol))
 
 (defun evanlh-packages-installed-p ()
   (cl-loop for p in evanlh-packages
@@ -112,8 +106,9 @@
  '(custom-enabled-themes '(sanityinc-tomorrow-bright))
  '(custom-safe-themes
    '("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default))
+ '(org-agenda-files '("~/writing/projects/index.org" "~/writing/dailytodo.org"))
  '(package-selected-packages
-   '(ox-tufte ox-hugo ox-gfm rainbow-delimiters tern ein markdown-mode js2-mode ido-completing-read+ clojure-mode projectile undo-tree "cider" ox-rst groovy-mode tide pep8 flycheck-pyflakes py-autopep8 elpy jedi-direx popwin rust-mode impatient-mode irony company-tern company-lsp lsp-javascript-typescript lsp-mode yaml-mode utop twilight-theme tuareg tern-auto-complete smex slime-ritz skewer-mode sicp ruby-end ruby-block restclient rect-mark powerline paredit org-jira ocp-indent molokai-theme merlin markdown-mode+ magit jsx-mode json-mode js2-refactor js-comint jedi inf-ruby ido-ubiquitous idle-highlight-mode icicles helm-projectile haskell-mode haml-mode go-mode geiser flycheck find-file-in-project expand-region exec-path-from-shell evil elisp-slime-nav ein-mumamo color-theme-sanityinc-tomorrow coffee-mode cider aggressive-fill-paragraph ag ac-slime)))
+   '(org-protocol-jekyll notmuch ox-tufte ox-hugo ox-gfm rainbow-delimiters tern ein markdown-mode js2-mode ido-completing-read+ clojure-mode projectile undo-tree "cider" ox-rst groovy-mode tide pep8 flycheck-pyflakes py-autopep8 elpy jedi-direx popwin rust-mode impatient-mode irony company-tern company-lsp lsp-javascript-typescript lsp-mode yaml-mode utop twilight-theme tuareg tern-auto-complete smex slime-ritz skewer-mode sicp ruby-end ruby-block restclient rect-mark powerline paredit org-jira ocp-indent molokai-theme merlin markdown-mode+ magit jsx-mode json-mode js2-refactor js-comint jedi inf-ruby ido-ubiquitous idle-highlight-mode icicles helm-projectile haskell-mode haml-mode go-mode geiser flycheck find-file-in-project expand-region exec-path-from-shell evil elisp-slime-nav ein-mumamo color-theme-sanityinc-tomorrow coffee-mode cider aggressive-fill-paragraph ag ac-slime)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

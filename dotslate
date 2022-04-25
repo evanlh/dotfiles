@@ -17,8 +17,8 @@ alias bottomright corner bottom-right resize:screenSizeX/2;screenSizeY/2
 
 bind h:${hyper} ${lefthalf}
 bind l:${hyper} ${righthalf}
-bind k:${hyper} ${bottomhalf}
-bind j:${hyper} ${tophalf}
+# bind k:${hyper} ${bottomhalf}
+# bind j:${hyper} ${tophalf}
 bind [:${hyper} ${topleft}
 bind ]:${hyper} ${topright}
 bind ;:${hyper} ${bottomleft}
