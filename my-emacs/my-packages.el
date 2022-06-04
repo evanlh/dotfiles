@@ -228,6 +228,7 @@
   (require 'merlin)
   (setq merlin-ac-setup 'easy)
   (add-to-list 'auto-mode-alist '("\\.ml\\'" . merlin-mode))
+  (add-to-list 'auto-mode-alist '("\\.ml\\'" . tuareg-mode))
   )
 
 
