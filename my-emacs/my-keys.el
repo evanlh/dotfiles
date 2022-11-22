@@ -26,7 +26,18 @@
 (progn (global-set-key (kbd "C-c <left>") 'windmove-left)
        (global-set-key (kbd "C-c <right>") 'windmove-right)
        (global-set-key (kbd "C-c <up>") 'windmove-up)
-       (global-set-key (kbd "C-c <down>") 'windmove-down))
+       (global-set-key (kbd "C-c <down>") 'windmove-down)
+
+       ;; moving between windows, normalize with iTerm2 and (mod'd) tmux
+       (global-set-key [M-s-left] 'windmove-left)
+       (global-set-key [M-s-right] 'windmove-right)
+       (global-set-key [M-s-up] 'windmove-up)
+       (global-set-key [M-s-down] 'windmove-down)
+       ;; same as above accounting for lack of arrow keys on ergodox
+       (global-set-key (kbd "M-s-j") 'windmove-left)
+       (global-set-key (kbd "M-s-l") 'windmove-right)
+       (global-set-key (kbd "M-s-i") 'windmove-up)
+       (global-set-key (kbd "M-s-k") 'windmove-down))
 
 ;; resize windows
 (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
@@ -62,7 +73,7 @@
 (global-set-key (kbd "M-^") 'replace-regexp)
 
 ;; OS X Lion fullscreen mode command-return
-(global-set-key (kbd "<s-return>") 'ns-toggle-fullscreen)
+;; (global-set-key (kbd "<s-return>") 'ns-toggle-fullscreen)
 
 ;;;; Normalize with the shell
 ;; make M-up and M-down the same as C-up and C-down
@@ -86,12 +97,6 @@
 
 ;; prefer regexp in my backward search, inputrc-compatible binding
 (global-set-key (kbd "^R") 'isearch-backward-regexp)
-
-;; moving between windows, normalize with iTerm2 and (mod'd) tmux
-(global-set-key [M-s-left] 'windmove-left)
-(global-set-key [M-s-right] 'windmove-right)
-(global-set-key [M-s-up] 'windmove-up)
-(global-set-key [M-s-down] 'windmove-down)
 
 ;; enhanced completion library, same as inputrc binding
 (global-set-key (kbd "M-/") 'hippie-expand)

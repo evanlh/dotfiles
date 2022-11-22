@@ -14,7 +14,8 @@
 
 ;; expand-region is super handy while editing code
 (when (require 'expand-region nil 'noerror)
-  (global-set-key (kbd "C-=") 'er/expand-region))
+  (global-set-key (kbd "s-+") 'er/expand-region)
+  (global-set-key (kbd "s-_") 'er/contract-region))
 
 ;; popwin for temporary buffers!
 (when (require 'popwin nil 'noerror)
@@ -23,8 +24,11 @@
   (global-set-key (kbd "C-x p") 'popwin:display-last-buffer)
   )
 
-(describe-mode)
+;; (describe-mode)
 
+;; use SBCL w/ SLIME
+;; (setq inferior-lisp-program "/usr/local//bin/sbcl")
+(setq inferior-lisp-program "/usr/local/bin/ccl64")
 
 ;; Rectangular selection
 (when (require 'rect-mark nil 'noerror)
@@ -41,6 +45,8 @@
   (autoload 'rm-kill-ring-save "rect-mark"
     "Copy a rectangular region to the kill ring." t)
   )
+
+
 
 
 ;; autocomplete-mode
@@ -66,7 +72,11 @@
   (add-hook 'slime-repl-mode-hook (lambda () (setq show-trailing-whitespace nil)))
   ;; add auto-completion for slime
   (add-hook 'slime-mode-hook 'set-up-slime-ac)
-  )
+  (eval-after-load 'slime
+    '(define-key slime-mode-map (kbd "<s-return>") 'slime-eval-defun)))
+
+(eval-after-load 'emacs-lisp
+  (define-key emacs-lisp-mode-map (kbd "<s-return>") 'eval-defun))
 
 (when (require 'geiser nil 'noerror)
   (setq geiser-chez-binary "/usr/local/bin/chez")
@@ -96,8 +106,11 @@
     (define-key paredit-mode-map binding nil))
 
   ;; not just in lisp mode(s)
-  (global-set-key (kbd "M-S-<left>") 'backward-sexp)
-  (global-set-key (kbd "M-S-<right>") 'forward-sexp)
+  (global-set-key (kbd "C-s-<left>") 'backward-sexp)
+  (global-set-key (kbd "C-s-<right>") 'forward-sexp)
+  ;; saving myself some work on the ergodox
+  (global-set-key (kbd "C-s-j") 'backward-sexp)
+  (global-set-key (kbd "C-s-l") 'forward-sexp)
 
   (global-set-key (kbd "M-(") 'paredit-wrap-round)
   (global-set-key (kbd "M-[") 'paredit-wrap-square)
@@ -108,10 +121,15 @@
   (global-set-key (kbd "M-}") 'paredit-close-curly-and-newline)
   (global-set-key (kbd "C-M-.") 'paredit-forward-slurp-sexp)
   (global-set-key (kbd "C-M-,") 'paredit-forward-barf-sexp)
+  ;; adding these because SLIME as ^ bound
+  (global-set-key (kbd "C->") 'paredit-forward-slurp-sexp)
+  (global-set-key (kbd "C-<") 'paredit-forward-barf-sexp)
+  (global-set-key (kbd "C-s-c") 'paredit-copy-as-kill)
+
   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
   (add-hook 'clojure-mode-hook 'paredit-mode)
-  (add-hook 'slime-mode-hook 'paredit-mode)
-)
+  (add-hook 'slime-mode-hook 'paredit-mode))
+
 
 (when (require 'rainbow-delimiters nil 'noerror)
   (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
@@ -205,8 +223,24 @@
   (add-hook 'nrepl-mode-hook 'rainbow-delimiters-mode)
   ;; hide special buffers
   (setq nrepl-hide-special-buffers t)
+  ;; NextJournal's Clerk
+  (defun clerk-show ()
+    (interactive)
+    (save-buffer)
+    (let
+        ((filename
+          (buffer-file-name)))
+      (when filename
+        (cider-interactive-eval
+         (concat "(nextjournal.clerk/show! \"" filename "\")")))))
+  (define-key clojure-mode-map (kbd "<M-return>") 'clerk-show)
+
   )
 
+
+;; sayid debugger for clojure
+;; (eval-after-load 'clojure-mode
+;;   '(sayid-setup-package))
 
 ;; Ocaml
 (when (require 'utop nil 'noerror)
@@ -397,7 +431,12 @@
     )
 
     (setq org-todo-keywords
-		'((sequence "TODO" "IN-PROGRESS"  "DEFERRED" "DONE")))
+		  '((sequence "TODO" "IN-PROGRESS"  "DEFERRED" "DONE")))
+
+    ;; ORG-ROAM
+    (when (require 'org-roam nil 'noerror)
+      (setq org-roam-directory (file-truename "~/writing"))
+      (org-roam-db-autosync-mode))
   )
 
 
@@ -593,9 +632,21 @@
   (add-hook 'before-save-hook 'tide-format-before-save)
   (add-hook 'typescript-mode-hook #'setup-tide-mode))
 
+(when (require 'yafolding nil 'noerror)
+  (define-key yafolding-mode-map (kbd "<C-S-return>") nil)
+  (define-key yafolding-mode-map (kbd "<C-M-return>") nil)
+  (define-key yafolding-mode-map (kbd "<C-return>") nil)
+  (define-key yafolding-mode-map (kbd "<S-tab>") 'yafolding-toggle-all)
+  (define-key yafolding-mode-map (kbd "<C-S-tab>") 'yafolding-hide-parent-element)
+  (define-key yafolding-mode-map (kbd "<C-tab>") 'yafolding-toggle-element)
+  (add-hook 'prog-mode-hook
+            (lambda () (yafolding-mode))))
+
+
+
 ;; from https://emacs.wordpress.com/2007/01/17/eval-and-replace-anywhere/
 (defun fc-eval-and-replace ()
-  "Replace the preceding sexp with its value."
+  "Replace the preceding sexp with its value."q
   (interactive)
   (backward-kill-sexp)
   (prin1 (eval (read (current-kill 0)))
