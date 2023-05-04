@@ -127,6 +127,8 @@
 
 ;; C-; to comment/un-comment, mnemonic is Lisp comment char
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
+;; Also add the more common binding
+(global-set-key (kbd "s-/") 'comment-or-uncomment-region)
 
 ;; delete on backspace
 (delete-selection-mode t)

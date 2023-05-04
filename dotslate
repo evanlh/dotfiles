@@ -8,6 +8,7 @@ config resizePercentOf screenSize
 alias full move screenOriginX;screenOriginY screenSizeX;screenSizeY
 alias lefthalf move screenOriginX;screenOriginY screenSizeX/2;screenSizeY
 alias righthalf move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY
+alias middlehalf move screenOriginX+screenSizeX/4;screenOriginY screenSizeX/2;screenSizeY
 alias tophalf move screenOriginX;screenOriginY/2 screenSizeX;screenSizeY/2
 alias bottomhalf move screenOriginX;screenOriginY+screenSizeY/2 screenSizeX;screenSizeY/2
 alias topleft corner top-left resize:screenSizeX/2;screenSizeY/2
@@ -24,6 +25,7 @@ bind ]:${hyper} ${topright}
 bind ;:${hyper} ${bottomleft}
 bind ':${hyper} ${bottomright}
 bind space:${hyper} ${full}
+bind c:${hyper} ${middlehalf}
 
 # Window focus using arrow keys
 bind    up:${hyper} focus up

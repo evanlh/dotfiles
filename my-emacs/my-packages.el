@@ -28,6 +28,7 @@
 
 ;; use SBCL w/ SLIME
 ;; (setq inferior-lisp-program "/usr/local//bin/sbcl")
+;; ;; use CCL w/ slime
 (setq inferior-lisp-program "/usr/local/bin/ccl64")
 
 ;; Rectangular selection
@@ -67,16 +68,20 @@
   )
 
 ;; slime-mode
-(when (require 'slime-mode nil 'noerror)
+(when (require 'slime nil 'noerror)
   ;; no need to highlight trailing whitepsace in the repl
   (add-hook 'slime-repl-mode-hook (lambda () (setq show-trailing-whitespace nil)))
   ;; add auto-completion for slime
-  (add-hook 'slime-mode-hook 'set-up-slime-ac)
-  (eval-after-load 'slime
-    '(define-key slime-mode-map (kbd "<s-return>") 'slime-eval-defun)))
+  ;; (add-hook 'slime-mode-hook 'set-up-slime-ac)
+  (define-key slime-mode-map (kbd "<s-return>") 'slime-eval-defun)
+  (print "configured slime"))
+
+;;slime-mode-hook
+;;(remove-hook 'slime-mode-hook 'set-up-slime-ac)
 
 (eval-after-load 'emacs-lisp
   (define-key emacs-lisp-mode-map (kbd "<s-return>") 'eval-defun))
+
 
 (when (require 'geiser nil 'noerror)
   (setq geiser-chez-binary "/usr/local/bin/chez")
@@ -106,12 +111,18 @@
     (define-key paredit-mode-map binding nil))
 
   ;; not just in lisp mode(s)
-  (global-set-key (kbd "C-s-<left>") 'backward-sexp)
-  (global-set-key (kbd "C-s-<right>") 'forward-sexp)
+  ;; (global-set-key (kbd "C-s-<left>") 'backward-sexp)
+  ;; (global-set-key (kbd "C-s-<right>") 'forward-sexp)
+  (global-set-key (kbd "C-s-<left>") 'paredit-backward)
+  (global-set-key (kbd "C-s-<right>") 'paredit-forward)
   ;; saving myself some work on the ergodox
-  (global-set-key (kbd "C-s-j") 'backward-sexp)
-  (global-set-key (kbd "C-s-l") 'forward-sexp)
+  ;; (global-set-key (kbd "C-s-j") 'backward-sexp)
+  ;; (global-set-key (kbd "C-s-l") 'forward-sexp)
+  (global-set-key (kbd "C-s-j") 'paredit-backward)
+  (global-set-key (kbd "C-s-l") 'paredit-forward)
 
+
+  (global-set-key (kbd "C-s-<backspace>") 'paredit-backward-kill-word)
   (global-set-key (kbd "M-(") 'paredit-wrap-round)
   (global-set-key (kbd "M-[") 'paredit-wrap-square)
   (global-set-key (kbd "M-{") 'paredit-wrap-curly)

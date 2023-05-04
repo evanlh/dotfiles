@@ -73,7 +73,9 @@ export PATH="/Users/elh/code/depot_tools:$PATH"
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
-export FRED_API_KEY="38e4fe2a54e13de9fc541e94acc2ca13"
+export FRED_API_KEY=`cat ~/dotfiles/keys/fredapi.txt`
+
+export OPENAI_API_KEY=`cat ~/dotfiles/keys/openai.txt`
 
 # disable EOF for python
 setopt IGNORE_EOF
