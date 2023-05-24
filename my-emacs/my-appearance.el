@@ -96,7 +96,8 @@
 
 ;; tell me about my whitespace
 (setq-default show-trailing-whitespace t)
-(whitespace-mode)
+;;(whitespace-mode)
+
 ;; but not during eshell sessions
 (add-hook 'eshell-mode-hook (lambda () (setq show-trailing-whitespace nil)))
 
@@ -115,3 +116,6 @@
 ;; BEHAVIOR
 (global-auto-revert-mode t)
 (setq revert-without-query '(".*"))
+
+;; save buffer state
+(desktop-save-mode 1)

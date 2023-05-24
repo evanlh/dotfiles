@@ -446,7 +446,7 @@
 
     ;; ORG-ROAM
     (when (require 'org-roam nil 'noerror)
-      (setq org-roam-directory (file-truename "~/writing"))
+      (setq org-roam-directory (file-truename "~/writing/capture/org-roam/"))
       (org-roam-db-autosync-mode))
   )
 

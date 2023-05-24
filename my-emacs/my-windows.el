@@ -9,7 +9,6 @@
             w32-rwindow-modifier 'super ; Right Windows key
             w32-apps-modifier 'hyper)
 
-      (desktop-save-mode 1)
       (cua-mode t)
 
       (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
