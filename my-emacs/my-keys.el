@@ -23,11 +23,7 @@
 ;;       ad-do-it)))
 
 ;; move between windows
-(progn (global-set-key (kbd "C-c <left>") 'windmove-left)
-       (global-set-key (kbd "C-c <right>") 'windmove-right)
-       (global-set-key (kbd "C-c <up>") 'windmove-up)
-       (global-set-key (kbd "C-c <down>") 'windmove-down)
-
+(progn
        ;; moving between windows, normalize with iTerm2 and (mod'd) tmux
        (global-set-key [M-s-left] 'windmove-left)
        (global-set-key [M-s-right] 'windmove-right)

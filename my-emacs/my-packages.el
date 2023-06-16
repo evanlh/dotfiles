@@ -244,8 +244,10 @@
       (when filename
         (cider-interactive-eval
          (concat "(nextjournal.clerk/show! \"" filename "\")")))))
-  (define-key clojure-mode-map (kbd "<M-return>") 'clerk-show)
 
+  (eval-after-load 'clojure-mode
+    (define-key clojure-mode-map (kbd "<M-return>") 'clerk-show)
+    (define-key clojure-mode-map (kbd "<s-return>") 'cider-eval-last-sexp))
   )
 
 
@@ -407,7 +409,9 @@
     ;; (setq org-default-notes-file (concat org-directory "/notes.org"))
 
     ;; agenda files
-    (setq org-agenda-files (quote ("~/writing/projects/index.org" "~/writing/dailytodo.org" "~/writing/notation.org")))
+    (setq org-agenda-files (quote ("~/writing/dailytodo.org" "~/writing/capture/" "~/writing/projects/" "~/writing/topics" "~/writing/blog")))
+    (setq org-agenda-restore-windows-after-quit t)
+
 
     ;; long lines mode instead
     ;;(add-hook 'org-mode-hook 'longlines-mode)
@@ -434,6 +438,7 @@
     ; Use IDO for both buffer and file completion and ido-everywhere to t
     (setq org-completion-use-ido t)
 
+    (setq org-id-link-to-org-use-id t)
     ;; mobileorg
     ;; Set to the name of the file where new notes will be stored
     ;; (setq org-mobile-inbox-for-pull (concat org-directory "/flagged.org"))
@@ -444,12 +449,15 @@
     (setq org-todo-keywords
 		  '((sequence "TODO" "IN-PROGRESS"  "DEFERRED" "DONE")))
 
+    (setq org-tag-alist '(("tft" . ?t) ("quote" . ?q) ("design" . ?d) ("meetingnotes" . ?m) ("essayideas" . ?e) ("projectideas" . ?p) ("important" . ?i) ("condensedideas" . ?c)))
+
     ;; ORG-ROAM
     (when (require 'org-roam nil 'noerror)
       (setq org-roam-directory (file-truename "~/writing/capture/org-roam/"))
       (org-roam-db-autosync-mode))
   )
 
+(when (require 'org-capture-pop-frame nil 'noerror))
 
 ;; js2-mode
 (when (require 'js2-mode nil 'noerror)
