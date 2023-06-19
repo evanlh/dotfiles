@@ -16,8 +16,6 @@
 
 (def readwisemap (csv-data->maps readwise-seq))
 
-
-
 (def book-id (keyword "Amazon Book ID"))
 (def book-title (keyword "Book Title"))
 (def book-author (keyword "Book Author"))
