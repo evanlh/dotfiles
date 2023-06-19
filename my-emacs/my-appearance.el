@@ -121,4 +121,5 @@
 (desktop-save-mode 1)
 
 ;; wrap long lines visually but not in file
-(visual-line-mode t)
+;; (visual-line-mode t)
+

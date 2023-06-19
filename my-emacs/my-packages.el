@@ -234,6 +234,10 @@
   (add-hook 'nrepl-mode-hook 'rainbow-delimiters-mode)
   ;; hide special buffers
   (setq nrepl-hide-special-buffers t)
+)
+
+;; Clojure CIDER. I think this supersedes nrepl?
+(when (require 'cider nil 'noerror)
   ;; NextJournal's Clerk
   (defun clerk-show ()
     (interactive)
@@ -244,12 +248,13 @@
       (when filename
         (cider-interactive-eval
          (concat "(nextjournal.clerk/show! \"" filename "\")")))))
-
-  (eval-after-load 'clojure-mode
-    (define-key clojure-mode-map (kbd "<M-return>") 'clerk-show)
-    (define-key clojure-mode-map (kbd "<s-return>") 'cider-eval-last-sexp))
+  (add-hook 'clojure-mode-hook (lambda  ()
+                                 (define-key clojure-mode-map (kbd "<M-return>") 'clerk-show)
+                                 (define-key clojure-mode-map (kbd "<s-return>") 'cider-eval-last-sexp)
+                                 ;; I like to unify the help keybinding between HyperSpec & Clojureweb
+                                 (define-key clojure-mode-map (kbd "C-c C-d h") 'cider-clojuredocs-web)
+                                 ))
   )
-
 
 ;; sayid debugger for clojure
 ;; (eval-after-load 'clojure-mode
@@ -410,8 +415,8 @@
 
     ;; agenda files
     (setq org-agenda-files (quote ("~/writing/dailytodo.org" "~/writing/capture/" "~/writing/projects/" "~/writing/topics" "~/writing/blog")))
-    (setq org-agenda-restore-windows-after-quit t)
-
+    ;; (setq org-agenda-restore-windows-after-quit t)
+    (setq org-agenda-sticky t)
 
     ;; long lines mode instead
     ;;(add-hook 'org-mode-hook 'longlines-mode)
