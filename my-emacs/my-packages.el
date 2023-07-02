@@ -132,10 +132,15 @@
   (global-set-key (kbd "M-}") 'paredit-close-curly-and-newline)
   (global-set-key (kbd "C-M-.") 'paredit-forward-slurp-sexp)
   (global-set-key (kbd "C-M-,") 'paredit-forward-barf-sexp)
+  (global-set-key (kbd "C-s-.") 'paredit-forward-slurp-sexp)
+  (global-set-key (kbd "C-s-,") 'paredit-forward-barf-sexp)
+
   ;; adding these because SLIME as ^ bound
   (global-set-key (kbd "C->") 'paredit-forward-slurp-sexp)
   (global-set-key (kbd "C-<") 'paredit-forward-barf-sexp)
   (global-set-key (kbd "C-s-c") 'paredit-copy-as-kill)
+  ;; not technically paredit but works here, rebinding since Slate conflicts
+  (global-set-key (kbd "C-s-k") 'kill-sexp)
 
   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
   (add-hook 'clojure-mode-hook 'paredit-mode)
@@ -375,6 +380,7 @@
     (setq org-directory MY-ORG-DIRECTORY)
 
     (global-set-key (kbd "C-c l") 'org-store-link)
+    (global-set-key (kbd "C-c i") 'org-id-get-create)
     (global-set-key (kbd "C-c c") 'org-capture)
     (global-set-key (kbd "C-c a") 'org-agenda)
     (global-set-key (kbd "C-c b") 'org-iswitchb)
@@ -454,7 +460,7 @@
     (setq org-todo-keywords
 		  '((sequence "TODO" "IN-PROGRESS"  "DEFERRED" "DONE")))
 
-    (setq org-tag-alist '(("tft" . ?t) ("quote" . ?q) ("design" . ?d) ("meetingnotes" . ?m) ("essayideas" . ?e) ("projectideas" . ?p) ("important" . ?i) ("condensedideas" . ?c)))
+    (setq org-tag-alist '(("tft" . ?t) ("quote" . ?q) ("excerpt" . ?x) ("design" . ?d) ("meetingnotes" . ?m) ("essayideas" . ?e) ("projectideas" . ?p) ("important" . ?i) ("condensedideas" . ?c)))
 
     ;; ORG-ROAM
     (when (require 'org-roam nil 'noerror)
