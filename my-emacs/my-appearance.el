@@ -65,7 +65,7 @@
 
 ;; global line numbering
 (setq linum-format " %5i ")
-(global-linum-mode 0)
+;; (global-linum-mode 0)
 
 
 ;; Highlight matching parentheses when the point is on them.

@@ -27,9 +27,16 @@
 ;; (describe-mode)
 
 ;; use SBCL w/ SLIME
-;; (setq inferior-lisp-program "/usr/local//bin/sbcl")
+
+
+
+(cond ((file-exists-p "/usr/local/bin/sbcl")
+       (setq inferior-lisp-program "/usr/local/bin/sbcl"))
+      ((file-exists-p "/opt/homebrew/bin/sbcl")
+       (setq inferior-lisp-program "/opt/homebrew/bin/sbcl")))
+
 ;; ;; use CCL w/ slime
-(setq inferior-lisp-program "/usr/local/bin/ccl64")
+;; (setq inferior-lisp-program "/usr/local/bin/ccl64")
 
 ;; Rectangular selection
 (when (require 'rect-mark nil 'noerror)
@@ -270,23 +277,23 @@
   ;; https://opam.ocaml.org/blog/turn-your-editor-into-an-ocaml-ide/
   ;; https://opam.ocaml.org/blog/about-utop/
   ;; Add the opam lisp dir to the emacs load path
-  (add-to-list
-   'load-path
-   (replace-regexp-in-string
-    "\n" "/share/emacs/site-lisp"
-    (shell-command-to-string "opam config var prefix")))
-  ;; Automatically load utop.el
-  (autoload 'utop "utop" "Toplevel for OCaml" t)
-  ;; Use the opam installed utop
-  (setq utop-command "opam config exec -- utop -emacs")
-  (setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
-  (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-  (require 'ocp-indent)
-  (require 'merlin)
-  (setq merlin-ac-setup 'easy)
-  (add-to-list 'auto-mode-alist '("\\.ml\\'" . merlin-mode))
-  (add-to-list 'auto-mode-alist '("\\.ml\\'" . tuareg-mode))
-  )
+  ;; (add-to-list
+   ;; 'load-path
+   ;; (replace-regexp-in-string
+   ;;  "\n" "/share/emacs/site-lisp"
+   ;;  (shell-command-to-string "opam config var prefix")))
+   ;; Automatically load utop.el
+   (autoload 'utop "utop" "Toplevel for OCaml" t)
+   ;; Use the opam installed utop
+   (setq utop-command "opam config exec -- utop -emacs")
+   (setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
+   (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+   (require 'ocp-indent)
+   (require 'merlin)
+   (setq merlin-ac-setup 'easy)
+   (add-to-list 'auto-mode-alist '("\\.ml\\'" . merlin-mode))
+   (add-to-list 'auto-mode-alist '("\\.ml\\'" . tuareg-mode))
+   )
 
 
 ;; projectile
@@ -295,6 +302,7 @@
   (setq projectile-completion-system 'ido)
   (global-set-key (kbd "C-c h") 'helm-projectile)
   (global-set-key (kbd "C-c t") 'helm-cmd-t)
+  (global-set-key (kbd "C-x f") 'projectile-find-file)
   )
 
 ;; EIN for Python
@@ -316,12 +324,12 @@
 (require 'ox-tufte nil 'noerror)
 
 ;; Find file in project
-(when (require 'find-file-in-project nil 'noerror)
-  (progn
-    (setq ffip-patterns '("*.html" "*.org" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" "*.ts" "*.pl" "*.sh" "*.erl" "*.hs" "*.ml" "*.php" "*.html" "*.rs" "*.phtml" "*.cpp" "*.h" "*.hpp" "*.txt" "*.conf" ".bml" ".xml"))
-    (setq ffip-limit 65536)
-    (global-set-key (kbd "C-x f") 'find-file-in-project))
-  )
+;; (when (require 'find-file-in-project nil 'noerror)
+;;   (progn
+;;     (setq ffip-patterns '("*.html" "*.org" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" "*.ts" "*.pl" "*.sh" "*.erl" "*.hs" "*.ml" "*.php" "*.html" "*.rs" "*.phtml" "*.cpp" "*.h" "*.hpp" "*.txt" "*.conf" ".bml" ".xml"))
+;;     (setq ffip-limit 65536)
+;;     (global-set-key (kbd "C-x f") 'find-file-in-project))
+;;   )
 
 ;; IDO
 (when (require 'ido nil 'noerror)
@@ -401,6 +409,8 @@
       (setq word-wrap t))
     (add-hook 'org-mode-hook 'soft-wrap-lines)
 
+    (setq org-image-actual-width 600)
+    (setq org-image-actual-height 600)
 	(setq org-startup-truncated nil)
 	(setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "open")
@@ -642,25 +652,25 @@
 ;; (setq company-lsp-enable-snippet t)
 ;; (push 'company-lsp company-backends)
 
-(when (require 'tide nil 'noerrr)
-  (defun setup-tide-mode ()
-    (interactive)
-    (tide-setup)
-    (flycheck-mode +1)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (eldoc-mode +1)
-    (tide-hl-identifier-mode +1)
-    ;; company is an optional dependency. You have to
-    ;; install it separately via package-install
-    ;; `M-x package-install [ret] company`
-    (company-mode +1))
+;; (when (require 'tide nil 'noerrr)
+;;   (defun setup-tide-mode ()
+;;     (interactive)
+;;     (tide-setup)
+;;     (flycheck-mode +1)
+;;     (setq flycheck-check-syntax-automatically '(save mode-enabled))
+;;     (eldoc-mode +1)
+;;     (tide-hl-identifier-mode +1)
+;;     ;; company is an optional dependency. You have to
+;;     ;; install it separately via package-install
+;;     ;; `M-x package-install [ret] company`
+;;     (company-mode +1))
 
-  ;; aligns annotation to the right hand side
-  (setq company-tooltip-align-annotations t)
+;;   ;; aligns annotation to the right hand side
+;;   (setq company-tooltip-align-annotations t)
 
-  ;; formats the buffer before saving
-  (add-hook 'before-save-hook 'tide-format-before-save)
-  (add-hook 'typescript-mode-hook #'setup-tide-mode))
+;;   ;; formats the buffer before saving
+;;   (add-hook 'before-save-hook 'tide-format-before-save)
+;;   (add-hook 'typescript-mode-hook #'setup-tide-mode))
 
 (when (require 'yafolding nil 'noerror)
   (define-key yafolding-mode-map (kbd "<C-S-return>") nil)
@@ -704,3 +714,5 @@
 	(replace-regexp "\t" "    ")
 	))
 
+
+(require 'dyalog-apl-input)
