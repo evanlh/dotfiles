@@ -22,7 +22,6 @@
 
 ;; restore window state with C-c <left>
 (winner-mode t)
-
 ; show menu
 (menu-bar-mode 1)
 ;; turn off splash screen messages
@@ -33,6 +32,7 @@
 (tool-bar-mode -1)
 (fringe-mode -1)
 (scroll-bar-mode -1)
+(menu-bar-mode -1)
 
 ;; speed up screen re-paint
 (setq redisplay-dont-pause t)

@@ -9,11 +9,37 @@
 (global-set-key (kbd "<s-down>") 'end-of-buffer)
 (global-set-key (kbd "<s-mouse-1>") 'mouse-major-mode-menu)
 
+;; copy & paste (kill & yank) via cmd
+(global-set-key (kbd "s-x") 'kill-region)
+(global-set-key (kbd "s-v") 'yank)
+
+;; save
+(global-set-key (kbd "s-s") 'save-buffer)
+
 (setq shift-select-mode nil) ; shift-select mode
 (setq delete-selection-mode t)  ; typing after selection kills the region
 
 ;; C-f C-f to fuzzy match on filename
 (global-set-key (kbd "C-S-f") 'projectile-find-file)
+
+;; moving between windows, normalize with iTerm2 and (mod'd) tmux
+(progn (global-set-key [M-s-left] 'windmove-left)
+       (global-set-key [M-s-right] 'windmove-right)
+       (global-set-key [M-s-up] 'windmove-up)
+       (global-set-key [M-s-down] 'windmove-down))
+(progn (global-set-key (kbd "C-c <left>") 'windmove-left)
+       (global-set-key (kbd "C-c <right>") 'windmove-right)
+       (global-set-key (kbd "C-c <up>") 'windmove-up)
+       (global-set-key (kbd "C-c <down>") 'windmove-down))
+
+;;(set-default-font "-*-Source Code Pro-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
+
+;; Mac OS X-style font-size control
+(define-key global-map (kbd "s-+") 'text-scale-increase)
+(define-key global-map (kbd "s-=") 'text-scale-increase)
+(define-key global-map (kbd "s--") 'text-scale-decrease)
+(text-scale-set 0)
+(setq text-scale-mode-step 1.2)
 
 ;; make text increase/decrease apply to all buffers
 ;; new files don't get inited properly??
@@ -23,17 +49,17 @@
 ;;       ad-do-it)))
 
 ;; move between windows
-(progn
-       ;; moving between windows, normalize with iTerm2 and (mod'd) tmux
-       (global-set-key [M-s-left] 'windmove-left)
-       (global-set-key [M-s-right] 'windmove-right)
-       (global-set-key [M-s-up] 'windmove-up)
-       (global-set-key [M-s-down] 'windmove-down)
-       ;; same as above accounting for lack of arrow keys on ergodox
-       (global-set-key (kbd "M-s-j") 'windmove-left)
-       (global-set-key (kbd "M-s-l") 'windmove-right)
-       (global-set-key (kbd "M-s-i") 'windmove-up)
-       (global-set-key (kbd "M-s-k") 'windmove-down))
+
+;; moving between windows, normalize with iTerm2 and (mod'd) tmux
+(global-set-key [M-s-left] 'windmove-left)
+(global-set-key [M-s-right] 'windmove-right)
+(global-set-key [M-s-up] 'windmove-up)
+(global-set-key [M-s-down] 'windmove-down)
+;; same as above accounting for lack of arrow keys on ergodox
+(global-set-key (kbd "M-s-j") 'windmove-left)
+(global-set-key (kbd "M-s-l") 'windmove-right)
+(global-set-key (kbd "M-s-i") 'windmove-up)
+(global-set-key (kbd "M-s-k") 'windmove-down)
 
 ;; resize windows
 (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
@@ -82,7 +108,7 @@
 (global-set-key (kbd "C-d") 'delete-forward-char)
 
 ;; normalize with inputrc's C-w, use Mac-style command-X for cut region
-(global-set-key (kbd "C-w") 'backward-kill-word)
+;; (global-set-key (kbd "C-w") 'backward-kill-word)
 
 ;; add readline's backward-kill-line
 (defun backward-kill-line ()
