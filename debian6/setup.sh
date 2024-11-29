@@ -1,13 +1,21 @@
 #!/bin/sh
-
+#
+cd $HOME
 sudo apt install git
 
-cd ~
-git clone https://github.com/evanlh/dotfiles
+if [ ! -d "$HOME/dotfiles" ] ; then
+    git clone https://github.com/evanlh/dotfiles
+fi
+
+if [ ! -d "$HOME/.ssh" ] ; then
+    ssh-keygen
+fi
 
 sudo apt install emacs
 sudo apt install sway
+sudo apt install foot
 sudo apt install zsh
+sudo apt install silversearcher-ag
 sudo apt install pmbootstrap
 
 rm ~/.gitconfig; ln -s ./dotfiles/dotgitconfig ~/.gitconfig
