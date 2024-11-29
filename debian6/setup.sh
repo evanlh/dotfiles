@@ -36,6 +36,11 @@ git config --global core.excludesFile '~/.gitignore'
 # gnome config
 gsettings set org.gnome.desktop.interface enable-animations false
 
+gsettings set org.gnome.shell.keybindings toggle-overview '[]'
+gsettings set org.gnome.shell.keybindings toggle-message-tray '[]'
+gsettings set org.gnome.shell.keybindings shift-overview-down '[]'
+gsettings set org.gnome.shell.keybindings shift-overview-up '[]'
+
 # foot terminal config
 mkdir -p ~/.config/foot
 ln -s ~/dotfiles/debian6/foot.ini ~/.config/foot
