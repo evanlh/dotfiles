@@ -9,7 +9,6 @@ brotli
 c-ares
 cabal-install
 cairo
-camlp4
 clang-format
 clasp
 clingo
@@ -89,7 +88,6 @@ plantuml
 portmidi
 python
 python3
-python@2
 readline
 sqlite
 the_silver_searcher
@@ -97,8 +95,6 @@ tmux
 unixodbc
 webp
 wget
-wireshark
-wxmac
 x264
 xvid
 zsh

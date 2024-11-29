@@ -53,7 +53,7 @@ plugins=(git nvm)
 
 # User configuration
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="$PATH:/Users/elawrencehur/code/mactoolkit"
 export PATH="$PATH:$HOME/bin"
 #export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home"
@@ -108,14 +108,20 @@ pills() {
 }
 
 
-. ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+# fix home/end keys
+bindkey  "^[[H"   beginning-of-line
+bindkey  "^[[F"   end-of-line
+bindkey  "^[[3~"  delete-char
 
-alias sshdev="ssh -tt v5dev inline"
-alias sshprod="ssh -tt v5prod inline"
+# . ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+
+alias sshdev="ssh -tt v5devgateway.bdns.bloomberg.com inline"
+alias sshprod="ssh -tt v5prodgateway.bdns.bloomberg.com inline"
 
 #proxies  -- these are probably unnecessary with nodeproxy
 alias dev_proxy='http_proxy=http://bproxy.tdmz1.bloomberg.com:80 https_proxy=http://bproxy.tdmz1.bloomberg.com:80'
 alias ext_proxy='http_proxy=http://proxy.bloomberg.com:77 https_proxy=http://proxy.bloomberg.com:77'
+alias no_proxy='http_proxy= https_proxy='
 
 #node nenv
 ##export PATH="$HOME/.nenv/bin:$HOME/.nenv/shims:$PATH"
@@ -123,17 +129,17 @@ alias ext_proxy='http_proxy=http://proxy.bloomberg.com:77 https_proxy=http://pro
 
 # nvm
 # place this after nvm initialization!
-autoload -U add-zsh-hook
-load-nvmrc() {
-  if [[ -f .nvmrc && -r .nvmrc ]]; then
-    nvm use
-  elif [[ $(nvm version) != $(nvm version default)  ]]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
+# autoload -U add-zsh-hook
+# load-nvmrc() {
+#   if [[ -f .nvmrc && -r .nvmrc ]]; then
+#     nvm use
+#   elif [[ $(nvm version) != $(nvm version default)  ]]; then
+#     echo "Reverting to nvm default version"
+#     nvm use default
+#   fi
+# }
+# add-zsh-hook chpwd load-nvmrc
+# load-nvmrc
 
 #go
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
@@ -155,11 +161,22 @@ export RPPATH=/Users/elawrencehur/code/btarseval
 #export https_proxy="http://127.0.0.1:8888/"
 
 # protoc
-export PATH=$PATH:~/protoc-3/bin
+export PATH=$PATH:~/protoc-2/bin
+export PATH=~/.local/bin:$PATH
 
 # work jenkins instance
-export JENKINS_URL=https://cc.jaas.dev.bloomberg.com
-export JENKINS_AUTH_TOKEN=`cat ~/etc/JENKINS_AUTH_TOKEN`
+# export JENKINS_URL=https://cc.jaas.dev.bloomberg.com
+# export JENKINS_AUTH_TOKEN=`cat ~/etc/JENKINS_AUTH_TOKEN`
 # auth token generated from https://cc.jaas.dev.bloomberg.com//me/configure
-alias jenkins-cli='java -jar ~/bin/jenkins-cli.jar -auth elawrencehur:$JENKINS_AUTH_TOKEN'
-source ~/.bash_profile
+# alias jenkins-cli='java -jar ~/bin/jenkins-cli.jar -auth elawrencehur:$JENKINS_AUTH_TOKEN'
+# source ~/.bash_profile
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
+
+export PATH="/opt/homebrew/opt/ncurses/bin:$PATH"
+
+source ~/.lcldevrc

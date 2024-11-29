@@ -29,4 +29,6 @@
 [core]
 	excludesfile = /Users/elawrencehur/.gitignore_global
 [url "bbgithub:"]
-    insteadOf = https://bbgithub.dev.bloomberg.com
+	insteadof = https://bbgithub.dev.bloomberg.com/
+[init]
+	defaultBranch = main
