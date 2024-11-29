@@ -714,5 +714,3 @@
 	(replace-regexp "\t" "    ")
 	))
 
-
-(require 'dyalog-apl-input)
