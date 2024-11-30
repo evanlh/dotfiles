@@ -21,6 +21,8 @@ fi
 sudo apt install emacs
 sudo apt install silversearcher-ag
 sudo apt install zsh
+sudo apt install curl
+sudo apt install wget
 
 # current wm / term favorites
 sudo apt install sway
@@ -33,8 +35,18 @@ sudo apt install guile-3.0
 sudo apt install sbcl
 
 # misc
-sudo apt install pmbootstrap
+#sudo apt install pmbootstrap
+# TODO
+# babashka
 
+# setup preferred directories
+mkdir -p $HOME/bin
+mkdir -p $HOME/code
+mkdir -p $HOME/scratch
+
+# bash config
+ln -s ./dotfiles/dotbashrc ~/.bashrc
+ln -s ./dotfiles/dotbashrc_linux ~/.bashrc_linux
 
 # git config
 rm ~/.gitconfig; ln -s ./dotfiles/dotgitconfig ~/.gitconfig
