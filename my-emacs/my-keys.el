@@ -11,6 +11,7 @@
 
 ;; copy & paste (kill & yank) via cmd
 (global-set-key (kbd "s-x") 'kill-region)
+(global-set-key (kbd "s-c") 'kill-ring-save)
 (global-set-key (kbd "s-v") 'yank)
 
 ;; save
@@ -22,15 +23,6 @@
 ;; C-f C-f to fuzzy match on filename
 (global-set-key (kbd "C-S-f") 'projectile-find-file)
 
-;; moving between windows, normalize with iTerm2 and (mod'd) tmux
-(progn (global-set-key [M-s-left] 'windmove-left)
-       (global-set-key [M-s-right] 'windmove-right)
-       (global-set-key [M-s-up] 'windmove-up)
-       (global-set-key [M-s-down] 'windmove-down))
-(progn (global-set-key (kbd "C-c <left>") 'windmove-left)
-       (global-set-key (kbd "C-c <right>") 'windmove-right)
-       (global-set-key (kbd "C-c <up>") 'windmove-up)
-       (global-set-key (kbd "C-c <down>") 'windmove-down))
 
 ;;(set-default-font "-*-Source Code Pro-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
 
@@ -47,8 +39,6 @@
 ;;   (dolist (buffer (buffer-list))
 ;;     (with-current-buffer buffer
 ;;       ad-do-it)))
-
-;; move between windows
 
 ;; moving between windows, normalize with iTerm2 and (mod'd) tmux
 (global-set-key [M-s-left] 'windmove-left)
@@ -101,8 +91,9 @@
 ;; make M-up and M-down the same as C-up and C-down
 (global-set-key (kbd "<M-up>") 'backward-paragraph)
 (global-set-key (kbd "<M-down>") 'forward-paragraph)
-(global-set-key (kbd "<M-right>") 'end-of-line)
-(global-set-key (kbd "<M-left>") 'beginning-of-line)
+;; make M-left and M-right move forward and back by a word
+(global-set-key (kbd "<M-right>") 'forward-word)
+(global-set-key (kbd "<M-left>") 'backward-word)
 
 ;; like in the shell
 (global-set-key (kbd "C-d") 'delete-forward-char)

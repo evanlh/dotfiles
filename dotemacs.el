@@ -84,12 +84,14 @@
      (package-install p))))
 
 (setq MY-ORG-DIRECTORY "~/writing")
-(require 'my-darwin)
-(require 'my-windows)
-(require 'my-linux)
+
 (require 'my-keys)
 (require 'my-appearance)
 (require 'my-packages)
+(require 'my-darwin)
+(require 'my-windows)
+(require 'my-linux)
+
 ;; (require 'init-bde-style)
 
 ;;temporary-file-directory

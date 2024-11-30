@@ -22,8 +22,7 @@
 
 ;; restore window state with C-c <left>
 (winner-mode t)
-; show menu
-(menu-bar-mode 1)
+
 ;; turn off splash screen messages
 (setq inhibit-startup-echo-area-message t
       inhibit-startup-screen t)
