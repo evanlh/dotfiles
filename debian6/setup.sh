@@ -17,16 +17,24 @@ if [ ! -d "$HOME/.ssh" ] ; then
 fi
 
 # install favorite packages
+# essentials
 sudo apt install emacs
+sudo apt install silversearcher-ag
+sudo apt install zsh
+
+# current wm / term favorites
 sudo apt install sway
 sudo apt install foot
-sudo apt install zsh
-sudo apt install silversearcher-ag
-sudo apt install pmbootstrap
+sudo apt install wl-clipboard
+
+# programming languages
 sudo apt install clojure
 sudo apt install guile-3.0
 sudo apt install sbcl
-sudo apt install wl-clipboard
+
+# misc
+sudo apt install pmbootstrap
+
 
 # git config
 rm ~/.gitconfig; ln -s ./dotfiles/dotgitconfig ~/.gitconfig
@@ -50,6 +58,8 @@ gsettings set org.gnome.shell.keybindings toggle-overview '[]'
 gsettings set org.gnome.shell.keybindings toggle-message-tray '[]'
 gsettings set org.gnome.shell.keybindings shift-overview-down '[]'
 gsettings set org.gnome.shell.keybindings shift-overview-up '[]'
+gsettings set org.gnome.shell.keybindings show-screen-recording-ui "['<Ctrl><Shift><Alt>R', '<Super><Shift>5']"
+gsettings set org.gnome.shell.keybindings show-screenshot-ui "['Print', '<Super><Shift>4']"
 
 # gnome wm keybindings
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down []
