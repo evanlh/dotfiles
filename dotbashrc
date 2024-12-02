@@ -117,7 +117,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$HOME/bin:$HOME/.local/bin"
 
 if [ `uname -o` = "GNU/Linux" ]; then
   if [ -f ~/.bashrc_linux ]; then

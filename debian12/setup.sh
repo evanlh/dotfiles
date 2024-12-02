@@ -1,6 +1,11 @@
 #!/bin/sh
 
 cd $HOME
+# setup preferred directories
+mkdir -p $HOME/bin
+mkdir -p $HOME/code
+mkdir -p $HOME/scratch
+
 sudo apt install git
 
 # clone dotfiles and setup core directories
@@ -11,6 +16,12 @@ fi
 if [ ! -d "$HOME/writing" ] ; then
     git clone git@github.com:evanlh/writing.git
 fi
+
+for repo in cheatsheets graph cl-masterblaster ts-datastructures; do
+    cd $HOME/code/
+    git clone git@github.com:evanlh/${repo}.git
+done
+cd $HOME
 
 if [ ! -d "$HOME/.ssh" ] ; then
     ssh-keygen
@@ -28,21 +39,26 @@ sudo apt install wget
 sudo apt install sway
 sudo apt install foot
 sudo apt install wl-clipboard
+sudo apt install fonts-powerline
+sudo apt install powerline
+
 
 # programming languages
 sudo apt install clojure
 sudo apt install guile-3.0
 sudo apt install sbcl
 
+# sudo apt install python3
+# sudo apt install virtualenv
+# TODO pip?
+
 # misc
-#sudo apt install pmbootstrap
+# sudo apt install pmbootstrap
 # TODO
 # babashka
 
-# setup preferred directories
-mkdir -p $HOME/bin
-mkdir -p $HOME/code
-mkdir -p $HOME/scratch
+# refresh font cache
+fc-cache
 
 # bash config
 ln -s ./dotfiles/dotbashrc ~/.bashrc
@@ -55,7 +71,7 @@ git config --global core.excludesFile '~/.gitignore'
 
 # foot terminal config
 mkdir -p ~/.config/foot
-ln -s ~/dotfiles/debian6/foot.ini ~/.config/foot
+ln -s ~/dotfiles/debian12/foot.ini ~/.config/foot
 
 # emacs config
 mkdir -p ~/.emacs.d/
@@ -64,6 +80,7 @@ ln -s ~/dotfiles/my-emacs/ ~/.emacs.d/
 
 # gnome config
 gsettings set org.gnome.desktop.interface enable-animations false
+gsettings set org.gnome.desktop.default-applications.terminal exec 'foot'
 
 # gnome shell keybindings
 gsettings set org.gnome.shell.keybindings toggle-overview '[]'
@@ -98,19 +115,23 @@ gsettings set org.gnome.desktop.wm.keybindings move-to-side-e "[]"
 gsettings set org.gnome.desktop.wm.keybindings move-to-side-w "[]"
 
 # gnome keybindings rebind super-# to switch workspaces
-gsettings set org.gnome.shell.keybindings switch-to-application-1 "[]"
-gsettings set org.gnome.shell.keybindings switch-to-application-2 "[]"
-gsettings set org.gnome.shell.keybindings switch-to-application-3 "[]"
-gsettings set org.gnome.shell.keybindings switch-to-application-4 "[]"
-gsettings set org.gnome.shell.keybindings switch-to-application-5 "[]"
-gsettings set org.gnome.shell.keybindings switch-to-application-6 "[]"
-gsettings set org.gnome.shell.keybindings switch-to-application-7 "[]"
-gsettings set org.gnome.shell.keybindings switch-to-application-8 "[]"
-gsettings set org.gnome.shell.keybindings switch-to-application-9 "[]"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>1']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>2']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Super>3']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Super>4']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 "['<Super>5']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-6 "['<Super>6']"
+# first clear out the switch-to-application bindings
+for i in {1..9}; do
+    gsettings set org.gnome.shell.keybindings switch-to-application-$i "[]";
+done
+
+for i in {1..9}; do
+    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-$i "['<Super>$i']";
+done
+
+# gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>1']"
+# gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>2']"
+# gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Super>3']"
+# gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Super>4']"
+# gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 "['<Super>5']"
+# gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-6 "['<Super>6']"
+
+# TODO
+# - default fonts - not sure Source Code Pro is configured, need to increase default size
+# - Bash prompt - Ideas - Current time - Location of logged in IP as flag emoji - Process exit code (powerline) - Powerline arrows - Mushroom/magic for not/root - username & machine
 
