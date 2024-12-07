@@ -64,13 +64,23 @@
              '("gnu" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
 
-;; this approached is taken from Prelude
-(setq evanlh-packages '(undo-tree projectile helm-projectile helm ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode idle-highlight-mode ido-completing-read+ inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline restclient ruby-end ruby-mode skewer-mode slime smex js-comint twilight-theme undo-tree yaml-mode ein cider tern tern-auto-complete jedi flycheck ocp-indent merlin lsp-mode elpy ox-hugo ox-gfm))
 
+(setq packages-emacs29 '(idle-highlight-mode tree-sitter-langs))
+(setq packages-emacs28 '(eglot))
+;; this approached is taken from Prelude
+(setq evanlh-packages '(ag undo-tree projectile helm-projectile helm ac-slime auto-complete clojure-mode coffee-mode color-theme-sanityinc-tomorrow css-mode elisp-slime-nav expand-region find-file-in-project go-mode haml-mode haskell-mode ido-completing-read+ inf-ruby js2-mode js2-refactor magit markdown-mode molokai-theme paredit popup powerline rainbow-delimiters restclient ruby-end ruby-mode skewer-mode slime smex js-comint twilight-theme undo-tree yaml-mode ein cider tern tern-auto-complete jedi flycheck ocp-indent merlin elpy ox-hugo ox-gfm rust-mode))
+
+(cond ((eq emacs-major-version 28)
+       (setq packages-to-install
+             (append evanlh-packages packages-emacs28)))
+      ((eq emacs-major-version 29)
+       (setq packages-to-install
+             (append evanlh-packages packages-emacs29)))
+      (t (setq packages-to-install evanlh-packages)))
 
 (defun evanlh-packages-installed-p ()
-  (cl-loop for p in evanlh-packages
-           when (not (package-installed-p p)) do (cl-return t)
+  (cl-loop for p in packages-to-install
+           when (not (package-installed-p p)) do (cl-return nil)
            finally (cl-return t)))
 
 (unless (evanlh-packages-installed-p)
@@ -79,7 +89,7 @@
  (message "%s" " done.")
 
   ;;install the missing packages
- (dolist (p evanlh-packages)
+ (dolist (p packages-to-install)
    (when (not (package-installed-p p))
      (package-install p))))
 
@@ -108,9 +118,9 @@
    "(do (require 'cljs.repl.node) (cemerick.piggieback/cljs-repl (cljs.repl.node/repl-env)))")
  '(custom-enabled-themes '(sanityinc-tomorrow-bright))
  '(custom-safe-themes
-   '("b11edd2e0f97a0a7d5e66a9b82091b44431401ac394478beb44389cf54e6db28" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default))
+   '("6fc9e40b4375d9d8d0d9521505849ab4d04220ed470db0b78b700230da0a86c1" "b11edd2e0f97a0a7d5e66a9b82091b44431401ac394478beb44389cf54e6db28" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default))
  '(package-selected-packages
-   '(epresent dyalog-mode gnu-apl-mode undo-tree typescript-mode org-capture-pop-frame org-roam yafolding notmuch ox-tufte ox-hugo ox-gfm rainbow-delimiters ein markdown-mode js2-mode ido-completing-read+ clojure-mode projectile "cider" ox-rst groovy-mode tide pep8 flycheck-pyflakes py-autopep8 elpy jedi-direx popwin rust-mode impatient-mode irony company-tern company-lsp lsp-javascript-typescript lsp-mode yaml-mode utop twilight-theme tuareg smex slime-ritz skewer-mode sicp ruby-end ruby-block restclient rect-mark powerline paredit org-jira ocp-indent molokai-theme merlin markdown-mode+ magit jsx-mode json-mode js2-refactor js-comint jedi inf-ruby ido-ubiquitous idle-highlight-mode icicles helm-projectile haskell-mode haml-mode go-mode geiser flycheck find-file-in-project expand-region exec-path-from-shell evil elisp-slime-nav ein-mumamo color-theme-sanityinc-tomorrow coffee-mode cider aggressive-fill-paragraph ag ac-slime))
+   '(tree-sitter-langs tree-sitter typescript-ts-mode js-ts-mode eglot tern-auto-complete tern epresent dyalog-mode gnu-apl-mode undo-tree typescript-mode org-capture-pop-frame org-roam yafolding notmuch ox-tufte ox-hugo ox-gfm rainbow-delimiters ein markdown-mode js2-mode ido-completing-read+ clojure-mode projectile "cider" ox-rst groovy-mode tide pep8 flycheck-pyflakes py-autopep8 elpy jedi-direx popwin rust-mode impatient-mode irony company-tern company-lsp lsp-javascript-typescript lsp-mode yaml-mode utop twilight-theme tuareg smex slime-ritz skewer-mode sicp ruby-end ruby-block restclient rect-mark powerline paredit org-jira ocp-indent molokai-theme merlin markdown-mode+ magit jsx-mode json-mode js2-refactor js-comint jedi inf-ruby ido-ubiquitous idle-highlight-mode icicles helm-projectile haskell-mode haml-mode go-mode geiser flycheck find-file-in-project expand-region exec-path-from-shell evil elisp-slime-nav ein-mumamo color-theme-sanityinc-tomorrow coffee-mode cider aggressive-fill-paragraph ag ac-slime))
  '(safe-local-variable-values '((Base . 10) (Package . LAPIDARY) (Syntax . Common-Lisp))))
 
 (custom-set-faces

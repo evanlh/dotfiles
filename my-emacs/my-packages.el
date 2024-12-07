@@ -24,17 +24,12 @@
   (global-set-key (kbd "C-x p") 'popwin:display-last-buffer)
   )
 
-;; (describe-mode)
 
 ;; use SBCL w/ SLIME
-
-
-
 (cond ((file-exists-p "/usr/local/bin/sbcl")
        (setq inferior-lisp-program "/usr/local/bin/sbcl"))
       ((file-exists-p "/opt/homebrew/bin/sbcl")
        (setq inferior-lisp-program "/opt/homebrew/bin/sbcl")))
-
 ;; ;; use CCL w/ slime
 ;; (setq inferior-lisp-program "/usr/local/bin/ccl64")
 
@@ -54,8 +49,11 @@
     "Copy a rectangular region to the kill ring." t)
   )
 
-
-
+;; load eglot before magit to avoid https://github.com/joaotavora/eglot/discussions/1436
+;; eglot
+(require 'eglot nil 'noerror)
+;; magit
+(require 'magit nil 'noerror)
 
 ;; autocomplete-mode
 (when (require 'auto-complete nil 'noerror)
@@ -88,7 +86,6 @@
 
 (eval-after-load 'emacs-lisp
   (define-key emacs-lisp-mode-map (kbd "<s-return>") 'eval-defun))
-
 
 (when (require 'geiser nil 'noerror)
   (setq geiser-chez-binary "/usr/local/bin/chez")
@@ -159,7 +156,6 @@
   (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'slime-mode-hook 'rainbow-delimiters-mode))
 
-
 ;; Tern for JS
 (eval-after-load 'tern
    '(progn
@@ -194,16 +190,6 @@
       ad-do-it))
   )
 
-;; ACK -- fallback search
-(when (require 'ack-and-a-half nil 'noerror)
-  (progn
-    (defalias 'ack 'ack-and-a-half)
-    (defalias 'ack-same 'ack-and-a-half-same)
-    (defalias 'ack-find-file 'ack-and-a-half-find-file)
-    (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
-    (global-set-key (kbd "C-x C-a") 'ack))
-  )
-
 ;; AG -- preferred search
 (when (require 'ag nil 'noerror)
   (progn
@@ -217,7 +203,6 @@
   (add-to-list 'auto-mode-alist '("\\.json" . json-mode))
   (add-to-list 'auto-mode-alist '("\\.bml" . xml-mode))
 )
-
 
 (add-to-list 'auto-mode-alist '("\\.bml" . xml-mode))
 
@@ -233,21 +218,6 @@
       (message "Ready to skewer the browser. Now jack in with the bookmarklet.")))
   )
 
-;; clojure's nrepl
-(when (require 'nrepl nil 'noerror)
-  ;; this is needed to prevent ac-nrepl from breaking
-  ;; clojure-mode's starting of nrepl-interaction mode
-  ;; on nrepl-jack-in
-  (setq nrepl-connected-hook (reverse nrepl-connected-hook))
-
-  ;; disable stack traces outside of repl
-  (setq nrepl-popup-stacktraces nil)
-  ;; rainbow parens
-  (add-hook 'nrepl-mode-hook 'rainbow-delimiters-mode)
-  ;; hide special buffers
-  (setq nrepl-hide-special-buffers t)
-)
-
 ;; Clojure CIDER. I think this supersedes nrepl?
 (when (require 'cider nil 'noerror)
   ;; NextJournal's Clerk
@@ -260,17 +230,14 @@
       (when filename
         (cider-interactive-eval
          (concat "(nextjournal.clerk/show! \"" filename "\")")))))
-  (add-hook 'clojure-mode-hook (lambda  ()
-                                 (define-key clojure-mode-map (kbd "<M-return>") 'clerk-show)
-                                 (define-key clojure-mode-map (kbd "<s-return>") 'cider-eval-last-sexp)
-                                 ;; I like to unify the help keybinding between HyperSpec & Clojureweb
-                                 (define-key clojure-mode-map (kbd "C-c C-d h") 'cider-clojuredocs-web)
-                                 ))
-  )
+  (add-hook 'clojure-mode-hook
+            (lambda  ()
+              (define-key clojure-mode-map (kbd "<M-return>") 'clerk-show)
+              (define-key clojure-mode-map (kbd "<s-return>") 'cider-eval-last-sexp)
+              ;; I like to unify the help keybinding between HyperSpec & Clojureweb
+              (define-key clojure-mode-map (kbd "C-c C-d h") 'cider-clojuredocs-web)
+              )))
 
-;; sayid debugger for clojure
-;; (eval-after-load 'clojure-mode
-;;   '(sayid-setup-package))
 
 ;; Ocaml
 (when (require 'utop nil 'noerror)
@@ -295,6 +262,7 @@
    (add-to-list 'auto-mode-alist '("\\.ml\\'" . tuareg-mode))
    )
 
+(require 'project)
 
 ;; projectile
 (when (require 'projectile nil 'noerror)
@@ -311,10 +279,6 @@
     (setq ein:use-auto-complete t))
   )
 
-;; (when (and (not (is-home-machine)) (require 'elpy))
-;;   (elpy-enable)
-;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
 (when (require 'org-jira nil 'noerror)
   (progn
@@ -322,14 +286,6 @@
 	))
 
 (require 'ox-tufte nil 'noerror)
-
-;; Find file in project
-;; (when (require 'find-file-in-project nil 'noerror)
-;;   (progn
-;;     (setq ffip-patterns '("*.html" "*.org" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" "*.ts" "*.pl" "*.sh" "*.erl" "*.hs" "*.ml" "*.php" "*.html" "*.rs" "*.phtml" "*.cpp" "*.h" "*.hpp" "*.txt" "*.conf" ".bml" ".xml"))
-;;     (setq ffip-limit 65536)
-;;     (global-set-key (kbd "C-x f") 'find-file-in-project))
-;;   )
 
 ;; IDO
 (when (require 'ido nil 'noerror)
@@ -589,27 +545,6 @@
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   )
 
-;; DEFT for quick notes
-(when (require 'deft nil 'noerror)
-  (define-minor-mode deft-note-mode "Deft notes" nil " Deft-Notes" nil)
-  (setq deft-text-mode 'deft-note-mode)
-  (defun kill-all-deft-notes ()
-    (interactive)
-    (save-excursion
-      (let((count 0))
-        (dolist(buffer (buffer-list))
-          (set-buffer buffer)
-          (when (not (eq nil deft-note-mode))
-            (setq count (1+ count))
-            (kill-buffer buffer)))
-        )))
-  (defun deft-or-close () (interactive) (if (or (eq major-mode 'deft-mode) (not (eq nil deft-note-mode)))
-                                            (progn (kill-all-deft-notes) (kill-buffer "*Deft*"))
-                                          (deft)
-                                          ))
-  (global-set-key [f5] 'deft-or-close)
-  )
-
 ;; markdown-mode
 (when (require 'markdown-mode nil 'noerror)
   (setq auto-mode-alist
@@ -627,51 +562,6 @@
   (define-key rust-mode-map (kbd "C-x C-e") 'rust-compile)
   )
 
-(when (require 'lsp-mode nil 'noerror)
-  ;; config lsp
-  (setq lsp-lens-enable t)
-  )
-
-(add-to-list 'load-path "/usr/local/lib/node_modules/tern/emacs/")
-(autoload 'tern-mode "tern.el" nil t)
-(when (require 'company nil 'noerror)
-  (add-hook 'after-init-hook 'global-company-mode)
-  (setq company-backends ())
-  (when (require 'company-tern nil 'noerror)
-    (add-to-list 'company-backends 'company-tern))
-  (add-hook 'js2-mode-hook 'company-mode)
-  ;; Key to force trigger company-complete
-  (define-key company-mode-map [(control .)] 'company-complete)
-
-  ;; (add-to-list 'company-backends 'company-clang)
-  ;; (define-key c-mode-map  [(tab)] 'company-complete)
-  ;; (define-key c++-mode-map  [(tab)] 'company-complete)
-  )
-;; (require 'company-lsp)
-;; (setq company-lsp-cache-candidates 'auto)
-;; (setq company-lsp-enable-snippet t)
-;; (push 'company-lsp company-backends)
-
-;; (when (require 'tide nil 'noerrr)
-;;   (defun setup-tide-mode ()
-;;     (interactive)
-;;     (tide-setup)
-;;     (flycheck-mode +1)
-;;     (setq flycheck-check-syntax-automatically '(save mode-enabled))
-;;     (eldoc-mode +1)
-;;     (tide-hl-identifier-mode +1)
-;;     ;; company is an optional dependency. You have to
-;;     ;; install it separately via package-install
-;;     ;; `M-x package-install [ret] company`
-;;     (company-mode +1))
-
-;;   ;; aligns annotation to the right hand side
-;;   (setq company-tooltip-align-annotations t)
-
-;;   ;; formats the buffer before saving
-;;   (add-hook 'before-save-hook 'tide-format-before-save)
-;;   (add-hook 'typescript-mode-hook #'setup-tide-mode))
-
 (when (require 'yafolding nil 'noerror)
   (define-key yafolding-mode-map (kbd "<C-S-return>") nil)
   (define-key yafolding-mode-map (kbd "<C-M-return>") nil)
@@ -681,7 +571,6 @@
   (define-key yafolding-mode-map (kbd "<C-tab>") 'yafolding-toggle-element)
   (add-hook 'prog-mode-hook
             (lambda () (yafolding-mode))))
-
 
 
 ;; from https://emacs.wordpress.com/2007/01/17/eval-and-replace-anywhere/
