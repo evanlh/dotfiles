@@ -60,6 +60,11 @@ sudo apt install sbcl
 # refresh font cache
 fc-cache
 
+# install out-of-distro packages
+if [ ! -d "$HOME/.nvm" ] ; then
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+fi
+
 # bash config
 ln -s ./dotfiles/dotbashrc ~/.bashrc
 ln -s ./dotfiles/dotbashrc_linux ~/.bashrc_linux
