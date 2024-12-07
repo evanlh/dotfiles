@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 cd $HOME
 # setup preferred directories
@@ -27,13 +27,21 @@ if [ ! -d "$HOME/.ssh" ] ; then
     ssh-keygen
 fi
 
+# TODO need to manually install backports, below:
+# apt edit-sources
+# deb http://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware
+# apt update
+
 # install favorite packages
+
 # essentials
-sudo apt install emacs
+# sudo apt install emacs-gtk/bookworm-backports
+# sudo apt install emacs
 sudo apt install silversearcher-ag
 sudo apt install zsh
 sudo apt install curl
 sudo apt install wget
+sudo apt install pandoc
 
 # current wm / term favorites
 sudo apt install sway
@@ -47,6 +55,7 @@ sudo apt install powerline
 sudo apt install clojure
 sudo apt install guile-3.0
 sudo apt install sbcl
+sudo apt install clang
 
 # sudo apt install python3
 # sudo apt install virtualenv
@@ -61,8 +70,17 @@ sudo apt install sbcl
 fc-cache
 
 # install out-of-distro packages
+
+# nvm
 if [ ! -d "$HOME/.nvm" ] ; then
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+fi
+# nvm install 20
+# npm install -g typescript-language-server typescript
+
+# rust
+if [ ! -d "$HOME/.cargo" ] ; then
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 fi
 
 # bash config
@@ -122,11 +140,11 @@ gsettings set org.gnome.desktop.wm.keybindings move-to-side-w "[]"
 # gnome keybindings rebind super-# to switch workspaces
 # first clear out the switch-to-application bindings
 for i in {1..9}; do
-    gsettings set org.gnome.shell.keybindings switch-to-application-$i "[]";
+    gsettings set org.gnome.shell.keybindings switch-to-application-"$i" "[]";
 done
 
 for i in {1..9}; do
-    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-$i "['<Super>$i']";
+    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-"$i" "['<Super>$i']";
 done
 
 # gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>1']"
