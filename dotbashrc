@@ -96,6 +96,9 @@ alias l='ls -CF'
 alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias genpass="openssl rand -base64 32 |head -c 16;echo;"
 
+mdless() {
+  pandoc $1 | lynx -stdin
+}
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -129,11 +132,5 @@ if [ `uname -o` = "Darwin" ]; then
   if [ -f ~/.bashrc_mac ]; then
     . ~/.bashrc_mac
   fi
-fi
-
-if [ -d "$HOME/.nvm" ]; then
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
