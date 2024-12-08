@@ -56,8 +56,8 @@
 (setq package-archives '())
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
+;; (add-to-list 'package-archives
+;;              '("melpa" . "https://melpa.org/packages/"))
 ;; (add-to-list 'package-archives
 ;; 	         '("marmalade" . "https://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
@@ -107,7 +107,7 @@
  '(custom-safe-themes
    '("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default))
  '(package-selected-packages
-   '(org-capture-pop-frame org-roam yafolding org-protocol-jekyll notmuch ox-tufte ox-hugo ox-gfm rainbow-delimiters tern ein markdown-mode js2-mode ido-completing-read+ clojure-mode projectile undo-tree "cider" ox-rst groovy-mode tide pep8 flycheck-pyflakes py-autopep8 elpy jedi-direx popwin rust-mode impatient-mode irony company-tern company-lsp lsp-javascript-typescript lsp-mode yaml-mode utop twilight-theme tuareg tern-auto-complete smex slime-ritz skewer-mode sicp ruby-end ruby-block restclient rect-mark powerline paredit org-jira ocp-indent molokai-theme merlin markdown-mode+ magit jsx-mode json-mode js2-refactor js-comint jedi inf-ruby ido-ubiquitous idle-highlight-mode icicles helm-projectile haskell-mode haml-mode go-mode geiser flycheck find-file-in-project expand-region exec-path-from-shell evil elisp-slime-nav ein-mumamo color-theme-sanityinc-tomorrow coffee-mode cider aggressive-fill-paragraph ag ac-slime))
+   '(el-get maxima swift-mode sesman cider org-capture-pop-frame org-roam yafolding org-protocol-jekyll notmuch ox-tufte ox-hugo ox-gfm rainbow-delimiters tern ein markdown-mode js2-mode ido-completing-read+ clojure-mode projectile undo-tree "cider" ox-rst groovy-mode tide pep8 flycheck-pyflakes py-autopep8 elpy jedi-direx popwin rust-mode impatient-mode irony company-tern company-lsp lsp-javascript-typescript lsp-mode yaml-mode utop twilight-theme tuareg tern-auto-complete smex slime-ritz skewer-mode sicp ruby-end ruby-block restclient rect-mark powerline paredit org-jira ocp-indent molokai-theme merlin markdown-mode+ magit jsx-mode json-mode js2-refactor js-comint jedi inf-ruby ido-ubiquitous idle-highlight-mode icicles helm-projectile haskell-mode haml-mode go-mode geiser flycheck find-file-in-project expand-region exec-path-from-shell evil elisp-slime-nav ein-mumamo color-theme-sanityinc-tomorrow coffee-mode aggressive-fill-paragraph ag ac-slime))
  '(safe-local-variable-values '((Base . 10) (Package . LAPIDARY) (Syntax . Common-Lisp))))
 
 (custom-set-faces
@@ -115,6 +115,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-done ((t (:strike-through nil))))
  '(org-drawer ((t (:foreground "LightSkyBlue" :height 0.6))))
  '(org-level-1 ((t (:inherit outline-1 :extend nil :height 1.3)))))
 (put 'upcase-region 'disabled nil)

@@ -65,7 +65,7 @@
 
 ;; global line numbering
 (setq linum-format " %5i ")
-(global-linum-mode 0)
+;; (global-linum-mode 0)
 
 
 ;; Highlight matching parentheses when the point is on them.
@@ -83,7 +83,7 @@
 
 ;; powerline gives a much aesthetically improved mode line, the look
 ;; of which is stolen from vi.
-(when (require 'powerline nil 'noerror))
+;; (when (require 'powerline nil 'noerror))
 ;;(powerline-default)
 
 ;; I hate the box on the mode-line
@@ -118,7 +118,7 @@
 (setq revert-without-query '(".*"))
 
 ;; save buffer state
-(desktop-save-mode 1)
+;; (desktop-save-mode 1)
 
 ;; wrap long lines visually but not in file
 ;; (visual-line-mode t)

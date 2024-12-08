@@ -112,6 +112,9 @@
 (global-set-key (kbd "C-x 9") 'my-close-and-kill)
 ;; one handed close window
 (global-set-key (kbd "C-x c") 'delete-window)
+;; remap exit since it's too close to delete-window
+(global-set-key (kbd "C-x C-c") nil)
+(global-set-key (kbd "C-x C-<escape>") 'save-buffers-kill-terminal)
 
 ;; search for thing at point
 (defun my-search-at-point (begin end)

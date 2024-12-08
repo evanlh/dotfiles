@@ -56,17 +56,19 @@ source $ZSH/oh-my-zsh.sh
 
 export PATH="$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/X11/bin:/usr/local/opt/php54/bin:/Users/elh/bin:/usr/local/sbin:/Users/elh/.rvm/bin:/usr/local/share/npm/bin:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/bin"
 export PATH="/Users/elh/code/depot_tools:$PATH"
+export PATH="$HOME/.docker/bin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='/usr/local/bin/emacsclient -n'
+fi
+
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -106,3 +108,7 @@ alias grun='java org.antlr.v4.gui.TestRig'
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
 if [ -e /Users/elh/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/elh/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

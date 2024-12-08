@@ -82,6 +82,8 @@
 (eval-after-load 'emacs-lisp
   (define-key emacs-lisp-mode-map (kbd "<s-return>") 'eval-defun))
 
+(with-eval-after-load 'undo-tree
+  (setq undo-tree-auto-save-history nil))
 
 (when (require 'geiser nil 'noerror)
   (setq geiser-chez-binary "/usr/local/bin/chez")
@@ -201,6 +203,7 @@
 (when (require 'ag nil 'noerror)
   (progn
     (setq ag-reuse-buffers 't)
+    (setq ag-ignore-list '("logseq"))
     (global-set-key (kbd "C-x C-a") 'ag))
   )
 
@@ -215,16 +218,16 @@
 (add-to-list 'auto-mode-alist '("\\.bml" . xml-mode))
 
 ;; skewer-mode for browser mind control
-(when (require 'skewer-mode nil 'noerror)
-  (require 'skewer-repl)
-  (require 'skewer-html)
-  (require 'skewer-css)
-  (defun skewer-start ()
-    (interactive)
-    (let ((httpd-port 8023))
-      (httpd-start)
-      (message "Ready to skewer the browser. Now jack in with the bookmarklet.")))
-  )
+;; (when (require 'skewer-mode nil 'noerror)
+;;   (require 'skewer-repl)
+;;   (require 'skewer-html)
+;;   (require 'skewer-css)
+;;   (defun skewer-start ()
+;;     (interactive)
+;;     (let ((httpd-port 8023))
+;;       (httpd-start)
+;;       (message "Ready to skewer the browser. Now jack in with the bookmarklet.")))
+;;   )
 
 ;; clojure's nrepl
 (when (require 'nrepl nil 'noerror)
@@ -255,7 +258,7 @@
          (concat "(nextjournal.clerk/show! \"" filename "\")")))))
   (add-hook 'clojure-mode-hook (lambda  ()
                                  (define-key clojure-mode-map (kbd "<M-return>") 'clerk-show)
-                                 (define-key clojure-mode-map (kbd "<s-return>") 'cider-eval-last-sexp)
+                                 (define-key clojure-mode-map (kbd "<s-return>") 'cider-eval-defun-at-point)
                                  ;; I like to unify the help keybinding between HyperSpec & Clojureweb
                                  (define-key clojure-mode-map (kbd "C-c C-d h") 'cider-clojuredocs-web)
                                  ))
@@ -460,13 +463,17 @@
     (setq org-todo-keywords
 		  '((sequence "TODO" "IN-PROGRESS"  "DEFERRED" "DONE")))
 
-    (setq org-tag-alist '(("tft" . ?t) ("quote" . ?q) ("excerpt" . ?x) ("design" . ?d) ("meetingnotes" . ?m) ("essayideas" . ?e) ("projectideas" . ?p) ("important" . ?i) ("condensedideas" . ?c)))
+    (setq org-tag-alist '(("tft" . ?t) ("quote" . ?q) ("excerpt" . ?x) ("design" . ?d) ("meetingnotes" . ?m) ("essayideas" . ?e) ("projectideas" . ?p) ("important" . ?!) ("condensedideas" . ?i) ("career" . ?c) ("questions" . ??) ("recipe" . ?r)))
 
     ;; ORG-ROAM
-    (when (require 'org-roam nil 'noerror)
-      (setq org-roam-directory (file-truename "~/writing/capture/org-roam/"))
-      (org-roam-db-autosync-mode))
-  )
+    ;; (when (require 'org-roam nil 'noerror)
+    ;;   (setq org-roam-directory (file-truename "~/writing/capture/org-roam/"))
+    ;;   (org-roam-db-autosync-mode))
+
+
+    (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+    )
+
 
 (when (require 'org-capture-pop-frame nil 'noerror))
 
@@ -672,6 +679,18 @@
   (add-hook 'prog-mode-hook
             (lambda () (yafolding-mode))))
 
+;; Maxima
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/maxima/")
+(autoload 'maxima-mode "maxima" "Maxima mode" t)
+(autoload 'imaxima "imaxima" "Frontend for maxima with Image support" t)
+(autoload 'maxima "maxima" "Maxima interaction" t)
+(autoload 'imath-mode "imath" "Imath mode for math formula input" t)
+(setq imaxima-use-maxima-mode-flag t)
+(add-to-list 'auto-mode-alist '("\\.ma[cx]\\'" . maxima-mode))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((maxima . t)))
 
 
 ;; from https://emacs.wordpress.com/2007/01/17/eval-and-replace-anywhere/
