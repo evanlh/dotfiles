@@ -101,6 +101,9 @@ mkdir -p ~/.emacs.d/
 ln -s ~/dotfiles/dotemacs.el ~/.emacs.el
 ln -s ~/dotfiles/my-emacs/ ~/.emacs.d/
 
+# sway config
+ln -s ~/dotfiles/debian12/sway ~/.config/sway
+
 # gnome config
 gsettings set org.gnome.desktop.interface enable-animations false
 gsettings set org.gnome.desktop.default-applications.terminal exec 'foot'
@@ -130,7 +133,7 @@ gsettings set org.gnome.desktop.wm.keybindings move-to-corner-ne "['<Control><Al
 gsettings set org.gnome.desktop.wm.keybindings move-to-corner-nw "['<Control><Alt>U']"
 gsettings set org.gnome.desktop.wm.keybindings move-to-corner-se "['<Control><Alt>period']"
 gsettings set org.gnome.desktop.wm.keybindings move-to-corner-sw "['<Control><Alt>M']"
-gsettings set org.gnome.mutter.keybindings toggle-tiled-left "['<Control><Alt>Left', '<Control><Alt>J']"
+gsettings set org.gnome.mutter.keybindings toggle-tiled-left "['<Control><Alt>Left', '<Control><Alt>j']"
 gsettings set org.gnome.mutter.keybindings toggle-tiled-right "['<Control><Alt>Right', '<Control><Alt>l']"
 gsettings set org.gnome.desktop.wm.keybindings move-to-side-n "['<Control><Alt>i']"
 gsettings set org.gnome.desktop.wm.keybindings move-to-side-s "['<Control><Alt>comma']"
