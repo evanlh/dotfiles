@@ -66,6 +66,13 @@ include /etc/sway/config-vars.d/*
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
 
+    input "1575:1:QEMU_QEMU_USB_Mouse" {
+        dwt enabled
+        tap disabled
+        natural_scroll disabled
+        middle_emulation enabled
+    }
+
 ### Key bindings
 #
 # Basics:
@@ -116,7 +123,18 @@ include /etc/sway/config-vars.d/*
     bindsym $mod+Shift+Down move down
     bindsym $mod+Shift+Up move up
     bindsym $mod+Shift+Right move right
-#
+
+# Custom corners, split top/bottom/left/right
+    bindsym $mod+$upleft resize set width 50 ppt height 50 ppt; move position 0 ppt 0 ppt
+    bindsym $mod+$up resize set width 100 ppt height 50 ppt; move position 0 ppt 0 ppt
+    bindsym $mod+$upright resize set width 50 ppt height 50 ppt; move position 50 ppt 0 ppt
+    bindsym $mod+$left resize set width 50 ppt height 100 ppt; move position 0 ppt 0 ppt
+    bindsym $mod+$right resize set width 50 ppt height 100 ppt; move position 50 ppt 0 ppt
+    bindsym $mod+$downleft resize set width 50 ppt height 50 ppt; move position 0 ppt 50 ppt
+    bindsym $mod+$downright resize set width 50 ppt height 50 ppt; move position 50 ppt 50 ppt
+    bindsym $mod+$down resize set width 100 ppt height 50 ppt; move position 0 ppt 50 ppt
+    bindsym $mod+$center resize set width 100 ppt height 50 ppt; move position 0 ppt 25 ppt
+
 # Workspaces:
 #
     # Switch to workspace
@@ -143,6 +161,10 @@ include /etc/sway/config-vars.d/*
     bindsym $mod+0 move container to workspace number 10
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
+
+    # Next/previous workspace, same as on MBP
+    bindsym Control+Left workspace prev
+    bindsym Control+Right workspace next
 #
 # Layout stuff:
 #
@@ -156,15 +178,16 @@ include /etc/sway/config-vars.d/*
     bindsym $mod+s layout stacking
     bindsym $mod+w layout tabbed
     bindsym $mod+e layout toggle split
+    #bindsym $mod+l layout toggle split tabbed stacking splitv splith
 
     # Make the current focus fullscreen
     bindsym $mod+space fullscreen
 
     # Toggle the current focus between tiling and floating mode
-    bindsym $mod+Shift+f floating toggle
+    bindsym $mod+f floating toggle
 
     # Swap focus between the tiling area and the floating area
-    bindsym $mod+f focus mode_toggle
+    bindsym $mod+Shift+f focus mode_toggle
 
     # Move focus to the parent container
     bindsym $mod+a focus parent
@@ -202,6 +225,7 @@ mode "resize" {
     # Return to default mode
     bindsym Return mode "default"
     bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
 }
 bindsym $mod+r mode "resize"
 
