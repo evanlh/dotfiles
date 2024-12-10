@@ -7,3 +7,5 @@ fi
 if [ -d "$HOME/.cargo" ]; then
   . "$HOME/.cargo/env"
 fi
+
+export XDG_CONFIG_HOME="$HOME/.config"
