@@ -96,9 +96,15 @@ alias l='ls -CF'
 alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias genpass="openssl rand -base64 32 |head -c 16;echo;"
 
+# custom useful bash functions mostly from stack overflow
 mdless() {
   pandoc $1 | lynx -stdin
 }
+
+show_colour() {
+    perl -e 'foreach $a(@ARGV){print "\e[48:2::".join(":",unpack("C*",pack("H*",$a)))."m \e[49m "};print "\n"' "$@"
+}
+
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
