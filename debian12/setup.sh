@@ -42,6 +42,7 @@ sudo apt install zsh
 sudo apt install curl
 sudo apt install wget
 sudo apt install pandoc
+sudo apt install plocate
 
 # current wm / term favorites
 sudo apt install sway
@@ -49,7 +50,6 @@ sudo apt install foot
 sudo apt install wl-clipboard
 sudo apt install fonts-powerline
 sudo apt install powerline
-
 
 # programming languages
 sudo apt install clojure
@@ -160,4 +160,14 @@ done
 # TODO
 # - default fonts - not sure Source Code Pro is configured, need to increase default size
 # - Bash prompt - Ideas - Current time - Location of logged in IP as flag emoji - Process exit code (powerline) - Powerline arrows - Mushroom/magic for not/root - username & machine
-
+# - Emacs config
+#   - Want / need to get typescript-ts-mode working (currently blocked on not having aarch64 treesitter ... or?). Ideal ts modes for: rust, swift.
+#   - Confirm sbcl & clojure work out of the box
+#   - General housecleaning
+#   - migrate to modern use-package?
+#
+# - Sway
+#   - Love the launcher & tiling modes :)
+#   - Bug with cursor placement needs new wlroots https://gitlab.freedesktop.org/wlroots/wlroots/-/merge_requests/4621
+#   - Color scheme to match shell
+#   - Swaybar bells and whistles
