@@ -1,0 +1,24 @@
+# playing on pallete editor
+000000 #black
+bda7a6 #rosy quarts
+bd0f0c # red
+fff461 # yellow
+ffffff # white
+
+# taken from airplane runway photo
+e30b34 # red light
+
+# taken from screenshots
+33ff33 # apple II green
+e0c207 # bbg yellow
+ffa029 # bbg amber
+870f1e # bbg dark red
+
+# apple II green shades
+33ff33 339933 336633 113311
+
+# bbg amber shades
+ffa029 996018 664010 332008
+
+# shades of grey
+333333 666666 999999
