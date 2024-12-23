@@ -43,6 +43,7 @@ sudo apt install curl
 sudo apt install wget
 sudo apt install pandoc
 sudo apt install plocate
+sudo apt install libportaudio2
 
 # current wm / term favorites
 sudo apt install sway
@@ -63,26 +64,11 @@ sudo apt install clang
 
 # misc
 # sudo apt install pmbootstrap
-# TODO
-# babashka
 
 # refresh font cache
 fc-cache
 
-# install out-of-distro packages
-
-# nvm
-if [ ! -d "$HOME/.nvm" ] ; then
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-fi
-# nvm install 20
-# npm install -g typescript-language-server typescript
-
-# rust
-if [ ! -d "$HOME/.cargo" ] ; then
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-fi
-
+# Install configs............
 # bash config
 ln -s ./dotfiles/dotbashrc ~/.bashrc
 ln -s ./dotfiles/dotbashrc_linux ~/.bashrc_linux
@@ -104,58 +90,44 @@ ln -s ~/dotfiles/my-emacs/ ~/.emacs.d/
 # sway config
 ln -s ~/dotfiles/debian12/sway ~/.config/sway
 
-# gnome config
-gsettings set org.gnome.desktop.interface enable-animations false
-gsettings set org.gnome.desktop.default-applications.terminal exec 'foot'
+# sbcl
+ln -s ~/dotfiles/dotsbclrc ~/.sbclrc
 
-# gnome shell keybindings
-gsettings set org.gnome.shell.keybindings toggle-overview '[]'
-gsettings set org.gnome.shell.keybindings toggle-message-tray '[]'
-gsettings set org.gnome.shell.keybindings shift-overview-down '[]'
-gsettings set org.gnome.shell.keybindings shift-overview-up '[]'
-gsettings set org.gnome.shell.keybindings show-screen-recording-ui "['<Ctrl><Shift><Alt>R', '<Super><Shift>5']"
-gsettings set org.gnome.shell.keybindings show-screenshot-ui "['Print', '<Super><Shift>4']"
+# Install out-of-distro packages...........
+# nvm
+if [ ! -d "$HOME/.nvm" ] ; then
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+fi
+# nvm install 20
+# npm install -g typescript-language-server typescript
 
-# gnome wm keybindings
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down []
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up []
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-last []
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "['<Control>Left']"
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "['<Control>Right']"
-gsettings set org.gnome.desktop.wm.keybindings maximize "[]"
-gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Control><Alt>Space']"
-gsettings set org.gnome.desktop.wm.keybindings unmaximize "[]"
-gsettings set org.gnome.desktop.wm.keybindings maximize-horizontally []
-gsettings set org.gnome.desktop.wm.keybindings maximize-vertically []
-gsettings set org.gnome.desktop.wm.keybindings minimize []
+# rust
+if [ ! -d "$HOME/.cargo" ] ; then
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+fi
 
-gsettings set org.gnome.desktop.wm.keybindings move-to-corner-ne "['<Control><Alt>O']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-corner-nw "['<Control><Alt>U']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-corner-se "['<Control><Alt>period']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-corner-sw "['<Control><Alt>M']"
-gsettings set org.gnome.mutter.keybindings toggle-tiled-left "['<Control><Alt>Left', '<Control><Alt>j']"
-gsettings set org.gnome.mutter.keybindings toggle-tiled-right "['<Control><Alt>Right', '<Control><Alt>l']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-side-n "['<Control><Alt>i']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-side-s "['<Control><Alt>comma']"
-gsettings set org.gnome.desktop.wm.keybindings move-to-side-e "[]"
-gsettings set org.gnome.desktop.wm.keybindings move-to-side-w "[]"
+if [ ! -f "$HOME/quicklisp.lisp" ] ; then
+  curl -O https://beta.quicklisp.org/quicklisp.lisp
+  curl -O https://beta.quicklisp.org/quicklisp.lisp.asc
+  gpg --verify quicklisp.lisp.asc quicklisp.lisp
+  sbcl --load quicklisp.lisp
+fi
 
-# gnome keybindings rebind super-# to switch workspaces
-# first clear out the switch-to-application bindings
-for i in {1..9}; do
-    gsettings set org.gnome.shell.keybindings switch-to-application-"$i" "[]";
-done
+# babashka
+if [ ! -f "$HOME/bin/bb" ] ; then
+  cd $HOME/bin
+  wget https://github.com/babashka/babashka/releases/download/v1.12.195/babashka-1.12.195-linux-aarch64-static.tar.gz
+  tar -xzvf babashka-1.12.195-linux-aarch64-static.tar.gz
+  rm babashka-1.12.195-linux-aarch64-static.tar.gz
+  cd $HOME
+fi
 
-for i in {1..9}; do
-    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-"$i" "['<Super>$i']";
-done
+# flatpak
+sudo apt install flatpak
+sudo apt install gnome-software-plugin-flatpak
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
-# gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>1']"
-# gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>2']"
-# gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Super>3']"
-# gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Super>4']"
-# gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 "['<Super>5']"
-# gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-6 "['<Super>6']"
+~/dotfiles/debian12/setup_gnome.sh
 
 # TODO
 # - default fonts - not sure Source Code Pro is configured, need to increase default size
@@ -171,3 +143,7 @@ done
 #   - Bug with cursor placement needs new wlroots https://gitlab.freedesktop.org/wlroots/wlroots/-/merge_requests/4621
 #   - Color scheme to match shell
 #   - Swaybar bells and whistles
+
+# sudo apt upgrade
+# sudo apt update
+
