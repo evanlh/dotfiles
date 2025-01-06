@@ -98,8 +98,9 @@ ln -s ~/dotfiles/dotsbclrc ~/.sbclrc
 if [ ! -d "$HOME/.nvm" ] ; then
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 fi
-# nvm install 20
-# npm install -g typescript-language-server typescript
+
+nvm install 20
+npm install -g typescript-language-server typescript
 
 # rust
 if [ ! -d "$HOME/.cargo" ] ; then
@@ -129,12 +130,15 @@ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.f
 
 ~/dotfiles/debian12/setup_gnome.sh
 
+# sudo apt upgrade
+# sudo apt update
+
 # TODO
 # - default fonts - not sure Source Code Pro is configured, need to increase default size
 # - Bash prompt - Ideas - Current time - Location of logged in IP as flag emoji - Process exit code (powerline) - Powerline arrows - Mushroom/magic for not/root - username & machine
 # - Emacs config
 #   - Want / need to get typescript-ts-mode working (currently blocked on not having aarch64 treesitter ... or?). Ideal ts modes for: rust, swift.
-#   - Confirm sbcl & clojure work out of the box
+#   - Confirm sbcl & clojure work out of the box [x] sbcl [x] bb
 #   - General housecleaning
 #   - migrate to modern use-package?
 #
@@ -144,6 +148,4 @@ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.f
 #   - Color scheme to match shell
 #   - Swaybar bells and whistles
 
-# sudo apt upgrade
-# sudo apt update
 

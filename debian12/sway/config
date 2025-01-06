@@ -39,6 +39,7 @@ include /etc/sway/config-vars.d/*
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
+output * bg /home/debian/Pictures/NASA/47521445822-33b44873ed-o.jpg fill
 ### Idle configuration
 #
 # Example configuration:
@@ -238,7 +239,8 @@ bar {
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+    #status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+    status_command ~/.config/sway/bar.sh
 
     colors {
         statusline #ffffff
