@@ -8,6 +8,10 @@ mkdir -p $HOME/scratch
 
 sudo apt install git
 
+if [ ! -d "$HOME/.ssh" ] ; then
+    ssh-keygen
+fi
+
 # clone dotfiles and setup core directories
 if [ ! -d "$HOME/dotfiles" ] ; then
     git clone git@github.com:evanlh/dotfiles.git
@@ -23,9 +27,8 @@ for repo in cheatsheets graph cl-masterblaster ts-datastructures; do
 done
 cd $HOME
 
-if [ ! -d "$HOME/.ssh" ] ; then
-    ssh-keygen
-fi
+#TODO
+# if ! `fc-list|grep "Source"`; then $HOME/dotfiles/debian12/install_fonts.sh; fi
 
 # TODO need to manually install backports, below:
 # apt edit-sources
@@ -44,6 +47,7 @@ sudo apt install wget
 sudo apt install pandoc
 sudo apt install plocate
 sudo apt install libportaudio2
+sudo apt install vim
 
 # current wm / term favorites
 sudo apt install sway
@@ -70,8 +74,8 @@ fc-cache
 
 # Install configs............
 # bash config
-ln -s ./dotfiles/dotbashrc ~/.bashrc
-ln -s ./dotfiles/dotbashrc_linux ~/.bashrc_linux
+ln -fs ./dotfiles/dotbashrc ~/.bashrc
+ln -fs ./dotfiles/dotbashrc_linux ~/.bashrc_linux
 
 # git config
 rm ~/.gitconfig; ln -s ./dotfiles/dotgitconfig ~/.gitconfig
@@ -80,18 +84,21 @@ git config --global core.excludesFile '~/.gitignore'
 
 # foot terminal config
 mkdir -p ~/.config/foot
-ln -s ~/dotfiles/debian12/foot.ini ~/.config/foot
+ln -sf ~/dotfiles/debian12/foot.ini ~/.config/foot/foot.ini
 
 # emacs config
 mkdir -p ~/.emacs.d/
-ln -s ~/dotfiles/dotemacs.el ~/.emacs.el
-ln -s ~/dotfiles/my-emacs/ ~/.emacs.d/
+ln -sf ~/dotfiles/dotemacs.el ~/.emacs.el
+ln -sf ~/dotfiles/my-emacs/ ~/.emacs.d/
 
 # sway config
-ln -s ~/dotfiles/debian12/sway ~/.config/sway
+ln -sf ~/dotfiles/debian12/sway ~/.config/sway
 
 # sbcl
-ln -s ~/dotfiles/dotsbclrc ~/.sbclrc
+ln -sf ~/dotfiles/dotsbclrc ~/.sbclrc
+
+# powerline
+ln -sf ~/dotfiles/dotpowerline ~/.config/powerline
 
 # Install out-of-distro packages...........
 # nvm
