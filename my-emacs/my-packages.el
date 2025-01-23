@@ -470,6 +470,8 @@
     (setq org-todo-keywords
 		  '((sequence "TODO" "IN-PROGRESS"  "DEFERRED" "DONE")))
 
+    (set-face-attribute 'org-headline-done nil :strike-through nil :weight 'normal :foreground "gray66")
+
     (setq org-tag-alist '(("tft" . ?t) ("quote" . ?q) ("excerpt" . ?x) ("design" . ?d) ("meetingnotes" . ?m) ("essayideas" . ?e) ("projectideas" . ?p) ("important" . ?i) ("condensedideas" . ?c)))
 
     ;; ORG-ROAM
