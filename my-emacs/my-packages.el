@@ -29,7 +29,10 @@
 (cond ((file-exists-p "/usr/local/bin/sbcl")
        (setq inferior-lisp-program "/usr/local/bin/sbcl"))
       ((file-exists-p "/opt/homebrew/bin/sbcl")
-       (setq inferior-lisp-program "/opt/homebrew/bin/sbcl")))
+       (setq inferior-lisp-program "/opt/homebrew/bin/sbcl"))
+      ((file-exists-p "/usr/bin/sbcl")
+       (setq inferior-lisp-program "/usr/bin/sbcl")))
+
 ;; ;; use CCL w/ slime
 ;; (setq inferior-lisp-program "/usr/local/bin/ccl64")
 
@@ -157,10 +160,10 @@
   (add-hook 'slime-mode-hook 'rainbow-delimiters-mode))
 
 ;; Tern for JS
-(eval-after-load 'tern
-   '(progn
-      (require 'tern-auto-complete)
-      (tern-ac-setup)))
+;; (eval-after-load 'tern
+;;    '(progn
+;;       (require 'tern-auto-complete)
+;;       (tern-ac-setup)))
 
 ;; JSX mode
 (when (require 'jsx-mode nil 'noerror)
@@ -205,18 +208,6 @@
 )
 
 (add-to-list 'auto-mode-alist '("\\.bml" . xml-mode))
-
-;; skewer-mode for browser mind control
-(when (require 'skewer-mode nil 'noerror)
-  (require 'skewer-repl)
-  (require 'skewer-html)
-  (require 'skewer-css)
-  (defun skewer-start ()
-    (interactive)
-    (let ((httpd-port 8023))
-      (httpd-start)
-      (message "Ready to skewer the browser. Now jack in with the bookmarklet.")))
-  )
 
 ;; Clojure CIDER. I think this supersedes nrepl?
 (when (require 'cider nil 'noerror)

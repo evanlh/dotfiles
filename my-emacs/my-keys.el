@@ -50,6 +50,11 @@
 (global-set-key (kbd "M-s-l") 'windmove-right)
 (global-set-key (kbd "M-s-i") 'windmove-up)
 (global-set-key (kbd "M-s-k") 'windmove-down)
+;; use C-M when inside qemu where M-s toggles window locking
+(global-set-key (kbd "s-S-<left>") 'windmove-left)
+(global-set-key (kbd "s-S-<right>") 'windmove-right)
+(global-set-key (kbd "s-S-<up>") 'windmove-up)
+(global-set-key (kbd "s-S-<down>") 'windmove-down)
 
 ;; resize windows
 (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
